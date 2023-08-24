@@ -1,19 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './users.model';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User) private userRepository: typeof User) {}
 
+  async createUser(userDto: CreateUserDto): Promise<User> {
+    const user = await this.userRepository.create(userDto);
+
+    //прикрепить роль
+    return user;
+  }
+
   async getAll(): Promise<User[]> {
     return this.userRepository.findAll({ include: { all: true } });
   }
 
-  async getById(id: number): Promise<User> {
+  async getByEmail(email: string): Promise<User> {
     return this.userRepository.findOne({
       where: {
-        id,
+        email,
+      },
+      include: {
+        all: true,
       },
     });
   }
