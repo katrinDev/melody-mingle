@@ -1,5 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Table, Model, Column, DataType, HasOne } from 'sequelize-typescript';
+import {
+  Table,
+  Model,
+  Column,
+  DataType,
+  HasOne,
+  BelongsToMany,
+} from 'sequelize-typescript';
+import { Role } from 'src/roles/roles.model';
+import { UserRoles } from 'src/roles/user-roles.model';
 import { Token } from 'src/tokens/token.model';
 
 interface UserCreationAttrs {
@@ -35,4 +44,7 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @HasOne(() => Token)
   refreshToken: Token;
+
+  @BelongsToMany(() => Role, () => UserRoles)
+  roles: Role[];
 }
