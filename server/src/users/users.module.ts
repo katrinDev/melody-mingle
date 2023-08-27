@@ -9,6 +9,6 @@ import { User } from './users.model';
   //we specify which repository this module should have access to by using forFeature
   controllers: [UsersController],
   providers: [UsersService],
-  exports: [SequelizeModule],
+  exports: [SequelizeModule, UsersService],
 })
 export class UsersModule {}

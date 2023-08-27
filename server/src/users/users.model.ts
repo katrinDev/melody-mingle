@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Table, Model, Column, DataType } from 'sequelize-typescript';
+import { Table, Model, Column, DataType, HasOne } from 'sequelize-typescript';
+import { Token } from 'src/tokens/token.model';
 
 interface UserCreationAttrs {
   email: string;
@@ -31,4 +32,7 @@ export class User extends Model<User, UserCreationAttrs> {
     allowNull: false,
   })
   password: string;
+
+  @HasOne(() => Token)
+  refreshToken: Token;
 }

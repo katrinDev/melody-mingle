@@ -14,11 +14,11 @@ export class UsersService {
     return user;
   }
 
-  async getAll(): Promise<User[]> {
+  async findAll(): Promise<User[]> {
     return this.userRepository.findAll({ include: { all: true } });
   }
 
-  async getByEmail(email: string): Promise<User> {
+  async findByEmail(email: string): Promise<User> {
     return this.userRepository.findOne({
       where: {
         email,

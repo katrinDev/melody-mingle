@@ -21,8 +21,8 @@ export class UsersController {
   @ApiOperation({ summary: 'Просмотр всех пользователей' })
   @ApiResponse({ status: 200, type: [User] })
   @Get()
-  async getAll(): Promise<User[]> {
-    return this.usersService.getAll();
+  async findAll(): Promise<User[]> {
+    return this.usersService.findAll();
   }
 
   @ApiOperation({ summary: 'Создание пользователя' })
