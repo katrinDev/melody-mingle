@@ -33,6 +33,8 @@ export class AuthService {
 
     const tokens = await this.tokensService.generateTokens(user);
 
+    await this.tokensService.saveRefreshToken(user.id, tokens.refreshToken);
+
     return tokens;
   }
 
@@ -40,6 +42,8 @@ export class AuthService {
     const user = await this.validateUser(userDto);
 
     const tokens = await this.tokensService.generateTokens(user);
+
+    await this.tokensService.saveRefreshToken(user.id, tokens.refreshToken);
 
     return tokens;
   }
