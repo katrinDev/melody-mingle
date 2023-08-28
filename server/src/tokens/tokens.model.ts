@@ -27,7 +27,13 @@ export class Token extends Model<Token, TokenCreationAttrs> {
   refreshToken: string;
 
   @ForeignKey(() => User)
-  @Column({ type: DataType.INTEGER, allowNull: false, unique: true })
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+    unique: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   userId: number;
 
   @BelongsTo(() => User)
