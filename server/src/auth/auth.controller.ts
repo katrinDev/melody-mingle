@@ -1,7 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -10,14 +11,26 @@ export class AuthController {
   @ApiOperation({ summary: 'Регистрация пользователя' })
   @ApiResponse({ status: 200 })
   @Post('/registration')
-  async registration(@Body() userDto: CreateUserDto) {
-    return this.authService.registration(userDto);
+  async registration(
+    @Body() userDto: CreateUserDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const tokens = await this.authService.registration(userDto);
+
+    response.cookie('refreshToken', tokens.refreshToken, { httpOnly: true });
+    return tokens;
   }
 
   @ApiOperation({ summary: 'Аутентификация пользователя' })
   @ApiResponse({ status: 200 })
   @Post('/login')
-  async login(@Body() userDto: CreateUserDto) {
-    return this.authService.login(userDto);
+  async login(
+    @Body() userDto: CreateUserDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const tokens = await this.authService.login(userDto);
+
+    response.cookie('refreshToken', tokens.refreshToken, { httpOnly: true });
+    return tokens;
   }
 }
