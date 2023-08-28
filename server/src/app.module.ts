@@ -5,6 +5,9 @@ import { UsersModule } from './users/users.module';
 import { User } from './users/users.model';
 import { AuthModule } from './auth/auth.module';
 import { TokensService } from './tokens/tokens.service';
+import { RolesModule } from './roles/roles.module';
+import { takeCoverage } from 'v8';
+import { TokensModule } from './tokens/tokens.module';
 
 @Module({
   imports: [
@@ -23,8 +26,8 @@ import { TokensService } from './tokens/tokens.service';
     }),
     UsersModule,
     AuthModule,
+    RolesModule,
+    TokensModule,
   ],
-  controllers: [],
-  providers: [TokensService],
 })
 export class AppModule {}

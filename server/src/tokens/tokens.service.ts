@@ -37,10 +37,7 @@ export class TokensService {
   async saveRefreshToken(userId: number, token: string) {
     const tokenData = await this.tokenRepository.findOne({ where: { userId } });
     if (tokenData) {
-      await this.tokenRepository.update(
-        { refreshToken: token },
-        { where: { userId } },
-      );
+      await tokenData.$set('refreshToken', token);
     } else {
       await this.tokenRepository.create({ userId, refreshToken: token });
     }
