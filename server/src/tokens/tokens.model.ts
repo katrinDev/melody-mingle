@@ -23,7 +23,11 @@ export class Token extends Model<Token, TokenCreationAttrs> {
   })
   id: number;
 
-  @Column({ type: DataType.STRING, allowNull: false, unique: true })
+  @Column({
+    type: DataType.TEXT,
+    allowNull: false,
+    unique: true,
+  })
   refreshToken: string;
 
   @ForeignKey(() => User)

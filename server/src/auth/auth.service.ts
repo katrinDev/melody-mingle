@@ -1,10 +1,4 @@
-import {
-  BadRequestException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
@@ -24,12 +18,8 @@ export class AuthService {
         'User with such email has been already created',
       );
     }
-    const hashedPassword = await bcrypt.hash(userDto.password, 5);
 
-    const user = await this.usersService.createUser({
-      ...userDto,
-      password: hashedPassword,
-    });
+    const user = await this.usersService.createUser(userDto);
 
     const tokens = await this.tokensService.generateTokens(user);
 
@@ -52,7 +42,7 @@ export class AuthService {
     const existingUser = await this.usersService.findByEmail(userDto.email);
 
     if (!existingUser) {
-      throw new BadRequestException('Incorrect email');
+      throw new BadRequestException('There is no user with such email');
     }
 
     const isMatch = await bcrypt.compare(
