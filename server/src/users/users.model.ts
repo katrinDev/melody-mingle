@@ -9,7 +9,7 @@ import {
 } from 'sequelize-typescript';
 import { Role } from 'src/roles/roles.model';
 import { UserRoles } from 'src/roles/user-roles.model';
-import { Token } from 'src/tokens/token.model';
+import { Token } from 'src/tokens/tokens.model';
 
 interface UserCreationAttrs {
   email: string;
