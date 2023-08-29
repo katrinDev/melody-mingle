@@ -4,6 +4,7 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Response } from 'express';
 import { ValidationPipe } from 'src/pipes/validation.pipe';
+import { Public } from './public.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -12,6 +13,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Регистрация пользователя' })
   @ApiResponse({ status: 200 })
   @UsePipes(ValidationPipe)
+  @Public()
   @Post('registration')
   async registration(
     @Body() userDto: CreateUserDto,
@@ -26,6 +28,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Аутентификация пользователя' })
   @ApiResponse({ status: 200 })
   @UsePipes(ValidationPipe)
+  @Public()
   @Post('login')
   async login(
     @Body() userDto: CreateUserDto,
