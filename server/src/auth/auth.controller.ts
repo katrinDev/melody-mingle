@@ -2,7 +2,7 @@ import { Body, Controller, Post, Req, Res, UsePipes } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { ValidationPipe } from 'src/pipes/validation.pipe';
 import { Public } from './public.decorator';
 
@@ -36,7 +36,10 @@ export class AuthController {
   ) {
     const tokens = await this.authService.login(userDto);
 
-    response.cookie('refreshToken', tokens.refreshToken, { httpOnly: true });
+    response.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+    });
     return tokens;
   }
 
@@ -44,7 +47,7 @@ export class AuthController {
   @ApiResponse({ status: 200 })
   @Post('logout')
   async logout(
-    @Req() req,
+    @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ): Promise<void> {
     const refreshToken = req.cookies['refreshToken'];
@@ -52,5 +55,24 @@ export class AuthController {
 
     res.clearCookie('refreshToken');
     return;
+  }
+
+  @ApiOperation({ summary: 'Обновить токены доступа' })
+  @ApiResponse({ status: 200 })
+  @Post('refresh')
+  async refresh(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const refreshToken = req.cookies['refreshToken'];
+
+    const tokens = await this.authService.refresh(refreshToken);
+
+    res.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+    });
+
+    return tokens;
   }
 }

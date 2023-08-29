@@ -60,4 +60,8 @@ export class AuthService {
 
     return existingUser;
   }
+
+  async refresh(token: string) {
+    return this.tokensService.refresh(token);
+  }
 }

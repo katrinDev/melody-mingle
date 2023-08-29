@@ -3,10 +3,15 @@ import { TokensService } from './tokens.service';
 import { JwtModule } from '@nestjs/jwt';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Token } from './tokens.model';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   providers: [TokensService],
-  imports: [JwtModule.register({}), SequelizeModule.forFeature([Token])],
+  imports: [
+    JwtModule.register({}),
+    SequelizeModule.forFeature([Token]),
+    UsersModule,
+  ],
   exports: [TokensService, JwtModule],
 })
 export class TokensModule {}

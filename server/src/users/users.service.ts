@@ -42,6 +42,10 @@ export class UsersService {
     });
   }
 
+  async findById(id: number) {
+    return this.userRepository.findByPk(id);
+  }
+
   async deleteUser(id: number): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
     await user.destroy();

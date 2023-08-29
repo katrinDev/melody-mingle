@@ -1,14 +1,16 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Token } from './tokens.model';
 import { User } from 'src/users/users.model';
 import { JwtService } from '@nestjs/jwt';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class TokensService {
   constructor(
     @InjectModel(Token) private tokenRepository: typeof Token,
     private jwtService: JwtService,
+    private usersService: UsersService,
   ) {}
 
   async generateTokens(user: User) {
@@ -45,5 +47,38 @@ export class TokensService {
 
   async removeRefreshToken(token: string) {
     return this.tokenRepository.destroy({ where: { refreshToken: token } });
+  }
+
+  async verifyAccessToken(accessToken: string) {
+    return this.jwtService.verifyAsync(accessToken, {
+      secret: process.env.SECRET_ACCESS_KEY || 'SECRET_ACCESS',
+    });
+  }
+
+  async verifyRefreshToken(refreshToken: string) {
+    return this.jwtService.verifyAsync(refreshToken, {
+      secret: process.env.SECRET_REFRESH_KEY || 'SECRET_REFRESH',
+    });
+  }
+
+  async refresh(refreshToken: string) {
+    const payload = await this.verifyRefreshToken(refreshToken);
+    console.log(payload);
+
+    const tokenFromDb = await this.tokenRepository.findOne({
+      where: { refreshToken },
+    });
+
+    if (!payload || !tokenFromDb || payload.sub !== tokenFromDb.userId) {
+      throw new UnauthorizedException();
+    }
+
+    const user = await this.usersService.findById(payload.sub);
+    //to generate appropriate tokens, after month some properties can change
+
+    const tokens = await this.generateTokens(user);
+
+    await this.saveRefreshToken(user.id, tokens.refreshToken);
+    return tokens;
   }
 }
