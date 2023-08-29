@@ -42,4 +42,8 @@ export class TokensService {
       await this.tokenRepository.create({ userId, refreshToken: token });
     }
   }
+
+  async removeRefreshToken(token: string) {
+    return this.tokenRepository.destroy({ where: { refreshToken: token } });
+  }
 }

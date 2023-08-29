@@ -38,6 +38,10 @@ export class AuthService {
     return tokens;
   }
 
+  async logout(refreshToken: string) {
+    return this.tokensService.removeRefreshToken(refreshToken);
+  }
+
   private async validateUser(userDto: CreateUserDto) {
     const existingUser = await this.usersService.findByEmail(userDto.email);
 

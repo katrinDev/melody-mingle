@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res, UsePipes } from '@nestjs/common';
+import { Body, Controller, Post, Req, Res, UsePipes } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -38,5 +38,19 @@ export class AuthController {
 
     response.cookie('refreshToken', tokens.refreshToken, { httpOnly: true });
     return tokens;
+  }
+
+  @ApiOperation({ summary: 'Выход из аккаунта пользователя' })
+  @ApiResponse({ status: 200 })
+  @Post('logout')
+  async logout(
+    @Req() req,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<void> {
+    const refreshToken = req.cookies['refreshToken'];
+    await this.authService.logout(refreshToken);
+
+    res.clearCookie('refreshToken');
+    return;
   }
 }
