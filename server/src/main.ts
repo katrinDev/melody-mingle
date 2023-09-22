@@ -9,14 +9,13 @@ async function start() {
 
   const config = new DocumentBuilder()
     .setTitle('Melody Mingle')
-    .setDescription('Rest Api documentation')
+    .setDescription('Perfect musicians connector')
     .setVersion('1.0')
     .addTag('katrinDev')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/api/docs', app, document);
-  app.use(cookieParser());
+  SwaggerModule.setup('api/docs', app, document);
 
   await app.listen(PORT, () =>
     console.log(`Server was started on port ${PORT}`),

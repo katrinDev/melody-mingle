@@ -5,48 +5,49 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { PUBLIC_KEY } from 'src/auth/decorators/public.decorator';
+import { Observable } from 'rxjs';
+import { ROLES_KEY } from 'src/auth/decorators/roles.decorator';
 import { TokensService } from 'src/tokens/tokens.service';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class RolesGuard implements CanActivate {
   constructor(
     private tokenService: TokensService,
     private reflector: Reflector,
   ) {}
 
   async canActivate(context: ExecutionContext) {
-    const isPublic = this.reflector.getAllAndOverride<boolean>(PUBLIC_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+    const requiredRoles = this.reflector.getAllAndOverride<string[]>(
+      ROLES_KEY,
+      [context.getClass(), context.getHandler()],
+    );
 
-    if (isPublic) {
+    if (!requiredRoles) {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest();
+    const req = context.switchToHttp().getRequest();
 
     try {
-      const accessToken = this.extractToken(request);
+      const accessToken = this.extractToken(req);
 
       if (!accessToken) {
         throw new UnauthorizedException();
       }
 
       const payload = await this.tokenService.verifyAccessToken(accessToken);
+      req.user = payload;
 
-      request.user = payload;
-      return true;
-    } catch (e) {
+      return payload.roles.some((role) => requiredRoles.includes(role));
+    } catch (err) {
+      console.log(err);
       throw new UnauthorizedException('User is not authorized');
     }
   }
 
-  private extractToken(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
+  private extractToken(req: Request) {
+    const [type, token] = req.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
   }
 }

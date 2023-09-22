@@ -35,8 +35,6 @@ export class Token extends Model<Token, TokenCreationAttrs> {
     type: DataType.INTEGER,
     allowNull: false,
     unique: true,
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
   })
   userId: number;
 
