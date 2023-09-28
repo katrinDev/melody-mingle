@@ -16,6 +16,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { ValidationPipe } from 'src/pipes/validation.pipe';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { AddRoleDto } from './dto/add-role.dto';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('Пользователи')
 @Controller('users')
@@ -39,8 +41,15 @@ export class UsersController {
     return this.usersService.createUser(userDto);
   }
 
+  @Public()
   @Delete(':id')
   async deleteUser(@Param('id') id: number) {
     return this.usersService.deleteUser(id);
+  }
+
+  @UsePipes(ValidationPipe)
+  @Post('/role')
+  async addRole(@Body() addRoleDto: AddRoleDto) {
+    return this.usersService.addRole(addRoleDto);
   }
 }

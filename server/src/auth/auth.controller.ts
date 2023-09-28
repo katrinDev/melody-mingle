@@ -21,7 +21,10 @@ export class AuthController {
   ) {
     const tokens = await this.authService.registration(userDto);
 
-    response.cookie('refreshToken', tokens.refreshToken, { httpOnly: true });
+    response.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+    });
     return tokens;
   }
 

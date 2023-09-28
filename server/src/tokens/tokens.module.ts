@@ -1,16 +1,17 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TokensService } from './tokens.service';
 import { JwtModule } from '@nestjs/jwt';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Token } from './tokens.model';
 import { UsersModule } from 'src/users/users.module';
+import { User } from 'src/users/users.model';
 
 @Module({
   providers: [TokensService],
   imports: [
+    forwardRef(() => UsersModule),
     JwtModule.register({}),
     SequelizeModule.forFeature([Token]),
-    UsersModule,
   ],
   exports: [TokensService, JwtModule],
 })

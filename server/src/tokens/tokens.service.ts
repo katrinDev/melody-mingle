@@ -1,4 +1,9 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  UnauthorizedException,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Token } from './tokens.model';
 import { User } from 'src/users/users.model';
@@ -10,6 +15,7 @@ export class TokensService {
   constructor(
     @InjectModel(Token) private tokenRepository: typeof Token,
     private jwtService: JwtService,
+    @Inject(forwardRef(() => UsersService))
     private usersService: UsersService,
   ) {}
 
@@ -39,7 +45,9 @@ export class TokensService {
   async saveRefreshToken(userId: number, token: string) {
     const tokenData = await this.tokenRepository.findOne({ where: { userId } });
     if (tokenData) {
-      await tokenData.$set('refreshToken', token);
+      tokenData.refreshToken = token;
+      await tokenData.save();
+      // await tokenData.$set('refreshToken', token);
     } else {
       await this.tokenRepository.create({ userId, refreshToken: token });
     }

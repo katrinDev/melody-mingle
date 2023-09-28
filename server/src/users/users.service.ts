@@ -1,15 +1,27 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './users.model';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RolesService } from 'src/roles/roles.service';
 import * as bcrypt from 'bcrypt';
+import { AddRoleDto } from './dto/add-role.dto';
+import { TokensService } from 'src/tokens/tokens.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User) private userRepository: typeof User,
     private rolesService: RolesService,
+    @Inject(forwardRef(() => TokensService))
+    private tokensService: TokensService,
   ) {}
 
   async createUser(userDto: CreateUserDto): Promise<User> {
@@ -48,8 +60,26 @@ export class UsersService {
 
   async deleteUser(id: number): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new BadRequestException('There is no user with such id');
+    }
     await user.destroy();
 
     return user;
+  }
+
+  async addRole(addRoleDto: AddRoleDto) {
+    const user = await this.userRepository.findByPk(addRoleDto.userId);
+    const role = await this.rolesService.getByValue(addRoleDto.value);
+
+    //почитать про все методы!!! add/set
+    if (user && role) {
+      await user.$add('role', role);
+
+      await this.tokensService.refresh(user.refreshToken.refreshToken);
+      return addRoleDto;
+    }
+
+    throw new HttpException("User or role weren't find", HttpStatus.NOT_FOUND);
   }
 }
