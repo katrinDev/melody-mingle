@@ -71,7 +71,6 @@ export class TokensService {
 
   async refresh(refreshToken: string) {
     const payload = await this.verifyRefreshToken(refreshToken);
-    console.log(payload);
 
     const tokenFromDb = await this.tokenRepository.findOne({
       where: { refreshToken },

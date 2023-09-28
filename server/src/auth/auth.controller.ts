@@ -62,6 +62,7 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Обновить токены доступа' })
   @ApiResponse({ status: 200 })
+  @Public()
   @Post('refresh')
   async refresh(
     @Req() req: Request,

@@ -14,11 +14,13 @@ import { RolesService } from 'src/roles/roles.service';
 import * as bcrypt from 'bcrypt';
 import { AddRoleDto } from './dto/add-role.dto';
 import { TokensService } from 'src/tokens/tokens.service';
+import { Role } from 'src/roles/roles.model';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User) private userRepository: typeof User,
+    @InjectModel(Role) private roleRepository: typeof Role,
     private rolesService: RolesService,
     @Inject(forwardRef(() => TokensService))
     private tokensService: TokensService,
@@ -55,7 +57,15 @@ export class UsersService {
   }
 
   async findById(id: number) {
-    return this.userRepository.findByPk(id);
+    return this.userRepository.findByPk(id, {
+      include: [
+        {
+          model: this.roleRepository,
+          as: 'roles',
+          through: { attributes: [] }, // This will skip the attributes of the join table
+        },
+      ],
+    });
   }
 
   async deleteUser(id: number): Promise<User> {
