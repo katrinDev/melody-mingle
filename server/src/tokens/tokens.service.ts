@@ -20,10 +20,12 @@ export class TokensService {
   ) {}
 
   async generateTokens(user: User) {
+    const roles = user.roles.map((role) => role.value);
+
     const payload = {
-      sub: user.id,
+      id: user.id,
       email: user.email,
-      roles: user.roles,
+      roles: roles,
     };
 
     const accessToken = await this.jwtService.signAsync(payload, {
@@ -45,9 +47,7 @@ export class TokensService {
   async saveRefreshToken(userId: number, token: string) {
     const tokenData = await this.tokenRepository.findOne({ where: { userId } });
     if (tokenData) {
-      tokenData.refreshToken = token;
-      await tokenData.save();
-      // await tokenData.$set('refreshToken', token);
+      await tokenData.update({ refreshToken: token });
     } else {
       await this.tokenRepository.create({ userId, refreshToken: token });
     }

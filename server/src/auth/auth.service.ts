@@ -22,9 +22,6 @@ export class AuthService {
     const user = await this.usersService.createUser(userDto);
 
     const tokens = await this.tokensService.generateTokens(user);
-
-    await this.tokensService.saveRefreshToken(user.id, tokens.refreshToken);
-
     return tokens;
   }
 

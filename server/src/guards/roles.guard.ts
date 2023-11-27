@@ -6,8 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
-import { Observable } from 'rxjs';
-import { ROLES_KEY } from 'src/auth/decorators/roles.decorator';
+import { ROLES_KEY } from './decorators/roles.decorator';
 import { TokensService } from 'src/tokens/tokens.service';
 
 @Injectable()
@@ -39,12 +38,8 @@ export class RolesGuard implements CanActivate {
       const payload = await this.tokenService.verifyAccessToken(accessToken);
       req.user = payload;
 
-      console.log(req.user);
-      return payload.roles.some((role: { value: string }) =>
-        requiredRoles.includes(role.value),
-      );
+      return payload.roles.some((role) => requiredRoles.includes(role.value));
     } catch (err) {
-      console.log(err);
       throw new UnauthorizedException('User is not authorized');
     }
   }

@@ -12,11 +12,12 @@ import { Role } from 'src/roles/roles.model';
   controllers: [UsersController],
   providers: [UsersService],
   imports: [
+    //creates a dynamic provider for the User model that has its own injection token
     SequelizeModule.forFeature([User, Role]),
     RolesModule,
     forwardRef(() => TokensModule),
   ],
-  //we specify which repository this module should have access to by using forFeature
+  //we specify which repositories this module should have access to by using forFeature
   exports: [UsersService],
 })
 export class UsersModule {}

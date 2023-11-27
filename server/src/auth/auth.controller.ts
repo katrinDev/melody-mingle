@@ -4,7 +4,7 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { ValidationPipe } from 'src/pipes/validation.pipe';
-import { Public } from './decorators/public.decorator';
+import { Public } from '../guards/decorators/public.decorator';
 
 @Controller('auth')
 export class AuthController {

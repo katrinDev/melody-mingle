@@ -5,9 +5,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { PUBLIC_KEY } from 'src/auth/decorators/public.decorator';
+import { PUBLIC_KEY } from './decorators/public.decorator';
 import { TokensService } from 'src/tokens/tokens.service';
 
 @Injectable()

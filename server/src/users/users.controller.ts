@@ -14,10 +14,10 @@ import { UsersService } from './users.service';
 import { User } from './users.model';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ValidationPipe } from 'src/pipes/validation.pipe';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/guards/decorators/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { AddRoleDto } from './dto/add-role.dto';
-import { Public } from 'src/auth/decorators/public.decorator';
+import { Public } from 'src/guards/decorators/public.decorator';
 
 @ApiTags('Пользователи')
 @Controller('users')

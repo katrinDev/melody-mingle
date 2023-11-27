@@ -42,10 +42,7 @@ export class User extends Model<User, UserCreationAttrs> {
   })
   password: string;
 
-  @HasOne(() => Token, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
+  @HasOne(() => Token)
   refreshToken: Token;
 
   @BelongsToMany(() => Role, () => UserRoles)

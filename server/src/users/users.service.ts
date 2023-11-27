@@ -51,7 +51,9 @@ export class UsersService {
         email,
       },
       include: {
-        all: true,
+        model: Role,
+        attributes: ['value'],
+        through: { attributes: [] },
       },
     });
   }
@@ -82,9 +84,17 @@ export class UsersService {
     const user = await this.userRepository.findByPk(addRoleDto.userId);
     const role = await this.rolesService.getByValue(addRoleDto.value);
 
-    //почитать про все методы!!! add/set
     if (user && role) {
-      await user.$add('role', role);
+      const hasRole = await user.$has('role', role);
+      if (hasRole) {
+        throw new HttpException(
+          'User already has this role',
+          HttpStatus.CONFLICT,
+        );
+      } else {
+        //adds a new instance to the usersRole table
+        await user.$add('role', role);
+      }
 
       await this.tokensService.refresh(user.refreshToken.refreshToken);
       return addRoleDto;

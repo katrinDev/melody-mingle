@@ -38,6 +38,8 @@ export class Token extends Model<Token, TokenCreationAttrs> {
   })
   userId: number;
 
-  @BelongsTo(() => User)
+  @BelongsTo(() => User, {
+    onDelete: 'CASCADE',
+  })
   user: User;
 }
