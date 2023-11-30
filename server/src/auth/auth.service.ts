@@ -14,9 +14,7 @@ export class AuthService {
   async registration(userDto: CreateUserDto) {
     const existingUser = await this.usersService.findByEmail(userDto.email);
     if (existingUser) {
-      throw new BadRequestException(
-        'User with such email has been already created',
-      );
+      throw new BadRequestException('Данный email уже используется');
     }
 
     const user = await this.usersService.createUser(userDto);
@@ -43,7 +41,7 @@ export class AuthService {
     const existingUser = await this.usersService.findByEmail(userDto.email);
 
     if (!existingUser) {
-      throw new BadRequestException('There is no user with such email');
+      throw new BadRequestException('Пользователя с таким email не существует');
     }
 
     const isMatch = await bcrypt.compare(
@@ -52,7 +50,7 @@ export class AuthService {
     );
 
     if (!isMatch) {
-      throw new BadRequestException('Incorrect password');
+      throw new BadRequestException('Некорректный пароль');
     }
 
     return existingUser;

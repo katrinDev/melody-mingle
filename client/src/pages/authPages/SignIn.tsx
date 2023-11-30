@@ -1,10 +1,10 @@
 import * as React from "react";
+import { useEffect } from "react";
 import { CssVarsProvider, useColorScheme } from "@mui/joy/styles";
 import GlobalStyles from "@mui/joy/GlobalStyles";
 import CssBaseline from "@mui/joy/CssBaseline";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
-import Divider from "@mui/joy/Divider";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel, { formLabelClasses } from "@mui/joy/FormLabel";
 import IconButton, { IconButtonProps } from "@mui/joy/IconButton";
@@ -15,16 +15,15 @@ import Stack from "@mui/joy/Stack";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import LibraryMusicRoundedIcon from "@mui/icons-material/LibraryMusicRounded";
-import GoogleIcon from "../components/icons/GoogleIcon";
 import imageLight from "/src/assets/musicians1.jpg";
 import imageDark from "/src/assets/musicians2.jpg";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { FormHelperText } from "@mui/joy";
 import { InfoOutlined } from "@mui/icons-material";
-import AuthService from "../services/AuthService";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Context } from "../main";
-import { AuthRequest } from "../models/request/AuthRequest";
+import { Context } from "../../main";
+import { AuthRequest } from "../../models/request/AuthRequest";
+import { useNavigate } from "react-router-dom";
 
 function ColorSchemeToggle({ onClick, ...props }: IconButtonProps) {
   const { mode, setMode } = useColorScheme();
@@ -60,18 +59,26 @@ function ColorSchemeToggle({ onClick, ...props }: IconButtonProps) {
 export default function SignIn() {
   const {
     register,
+    reset,
     handleSubmit,
-    watch,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
   } = useForm<AuthRequest>();
 
-  const { userStore } = useContext(Context);
+  const { userStore, snackbarStore } = useContext(Context);
+  const navigate = useNavigate();
 
-  console.log({ watch: watch() });
+  const signInSubmit: SubmitHandler<AuthRequest> = async (data, event) => {
+    event?.preventDefault();
+    if (Object.keys(errors).length === 0) {
+      await userStore.login(data, snackbarStore);
 
-  const signInSubmit: SubmitHandler<AuthRequest> = async (data) => {
-    userStore.login(data);
+      navigate("/about");
+    }
   };
+
+  useEffect(() => {
+    reset();
+  }, [isSubmitSuccessful]);
 
   return (
     <CssVarsProvider defaultMode="dark" disableTransitionOnChange>
@@ -141,58 +148,31 @@ export default function SignIn() {
             component="main"
             sx={{
               my: "auto",
-              py: 2,
               pb: 5,
               display: "flex",
               flexDirection: "column",
-              gap: 2,
               width: 400,
               maxWidth: "100%",
               mx: "auto",
               borderRadius: "sm",
               "& form": {
                 flexDirection: "column",
-                gap: 2,
               },
               [`& .${formLabelClasses.asterisk}`]: {
                 visibility: "hidden",
               },
             }}
           >
-            <Stack gap={4} sx={{ mb: 2 }}>
-              <Stack gap={1}>
-                <Typography level="h3">Аутентификация</Typography>
-                <Typography level="body-sm">
-                  Пока нет профиля?{" "}
-                  <Link href="/sign-up" level="title-sm">
-                    Зарегистрируйся!
-                  </Link>
-                </Typography>
-              </Stack>
-
-              <Button
-                variant="soft"
-                color="neutral"
-                fullWidth
-                startDecorator={<GoogleIcon />}
-              >
-                Continue with Google
-              </Button>
+            <Stack gap={1}>
+              <Typography level="h3">Вход</Typography>
+              <Typography level="body-sm">
+                Пока нет профиля?{" "}
+                <Link href="/sign-up" level="title-sm">
+                  Зарегистрируйся!
+                </Link>
+              </Typography>
             </Stack>
-            <Divider
-              sx={(theme) => ({
-                [theme.getColorSchemeSelector("light")]: {
-                  color: { xs: "#FFF", md: "text.tertiary" },
-                  "--Divider-lineColor": {
-                    xs: "#FFF",
-                    md: "var(--joy-palette-divider)",
-                  },
-                },
-              })}
-            >
-              или
-            </Divider>
-            <Stack gap={4}>
+            <Stack gap={3}>
               <form noValidate onSubmit={handleSubmit(signInSubmit)}>
                 <FormControl sx={{ py: 2 }} required error={!!errors.email}>
                   <FormLabel>Email</FormLabel>
