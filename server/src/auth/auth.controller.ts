@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Req, Res, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UsePipes,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -63,7 +71,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Обновить токены доступа' })
   @ApiResponse({ status: 200 })
   @Public()
-  @Post('refresh')
+  @Get('refresh')
   async refresh(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,

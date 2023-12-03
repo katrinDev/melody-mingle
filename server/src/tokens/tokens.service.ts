@@ -70,22 +70,26 @@ export class TokensService {
   }
 
   async refresh(refreshToken: string) {
-    const payload = await this.verifyRefreshToken(refreshToken);
+    try {
+      const payload = await this.verifyRefreshToken(refreshToken);
 
-    const tokenFromDb = await this.tokenRepository.findOne({
-      where: { refreshToken },
-    });
+      const tokenFromDb = await this.tokenRepository.findOne({
+        where: { refreshToken },
+      });
 
-    if (!payload || !tokenFromDb || payload.sub !== tokenFromDb.userId) {
+      if (!payload || !tokenFromDb || payload.id !== tokenFromDb.userId) {
+        throw new UnauthorizedException();
+      }
+
+      const user = await this.usersService.findById(payload.id);
+      //to generate appropriate tokens, after month some properties can change
+
+      const tokens = await this.generateTokens(user);
+
+      await this.saveRefreshToken(user.id, tokens.refreshToken);
+      return tokens;
+    } catch (e) {
       throw new UnauthorizedException();
     }
-
-    const user = await this.usersService.findById(payload.sub);
-    //to generate appropriate tokens, after month some properties can change
-
-    const tokens = await this.generateTokens(user);
-
-    await this.saveRefreshToken(user.id, tokens.refreshToken);
-    return tokens;
   }
 }
