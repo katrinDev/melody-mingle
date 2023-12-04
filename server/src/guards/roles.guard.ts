@@ -38,7 +38,7 @@ export class RolesGuard implements CanActivate {
       const payload = await this.tokenService.verifyAccessToken(accessToken);
       req.user = payload;
 
-      return payload.roles.some((role) => requiredRoles.includes(role.value));
+      return payload.roles.some((role) => requiredRoles.includes(role));
     } catch (err) {
       throw new UnauthorizedException('User is not authorized');
     }

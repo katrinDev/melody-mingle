@@ -13,7 +13,7 @@ export class ValidationPipe implements PipeTransform<any> {
     if (errors.length) {
       let messages = errors.map(
         (err) =>
-          `${err.property} - ${Object.values(err.constraints).join('. ')}`,
+          `${err.property} - ${Object.values(err.constraints).join(', ')}`,
       );
       throw new ValidationException(messages);
     }

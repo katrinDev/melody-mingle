@@ -1,10 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, DataType, HasOne, Model, Table } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  ForeignKey,
+  Model,
+  Table,
+} from 'sequelize-typescript';
 import { User } from 'src/users/users.model';
 
 interface MusicianCreationAttrs {
   name: string;
   mainRole: string;
+  userId: number;
+  city: string;
+  experience: number;
+  languages: string[];
 }
 
 @Table({ tableName: 'musicians' })
@@ -51,16 +61,6 @@ export class Musician extends Model<Musician, MusicianCreationAttrs> {
   city: string;
 
   @ApiProperty({
-    example: ['English', 'Belarusian', 'Russian'],
-    description: 'Языки, которыми владеет музыкант',
-  })
-  @Column({
-    type: DataType.ARRAY(DataType.STRING),
-    allowNull: false,
-  })
-  languages: string[];
-
-  @ApiProperty({
     type: 'number',
     format: 'float',
     example: 5.0,
@@ -71,15 +71,30 @@ export class Musician extends Model<Musician, MusicianCreationAttrs> {
   experience: number;
 
   @ApiProperty({
-    example: ['jazz', 'rock', 'indie'],
-    description: 'Жанры музыки',
+    example: ['English', 'Belarusian', 'Russian'],
+    description: 'Языки, которыми владеет музыкант',
   })
   @Column({
     type: DataType.ARRAY(DataType.STRING),
     allowNull: false,
   })
+  languages: string[];
+
+  @ApiProperty({
+    example: ['jazz', 'rock', 'indie'],
+    description: 'Жанры музыки',
+  })
+  @Column({
+    type: DataType.ARRAY(DataType.STRING),
+    allowNull: true,
+  })
   genres: string[];
 
-  @HasOne(() => User)
-  user: User;
+  @ForeignKey(() => User)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+    unique: true,
+  })
+  userId: number;
 }
