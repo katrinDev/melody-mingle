@@ -6,7 +6,9 @@ import {
   DataType,
   HasOne,
   BelongsToMany,
+  BelongsTo,
 } from 'sequelize-typescript';
+import { Musician } from 'src/musicians/musicians.model';
 import { Role } from 'src/roles/roles.model';
 import { UserRoles } from 'src/roles/user-roles.model';
 import { Token } from 'src/tokens/tokens.model';
@@ -18,7 +20,12 @@ interface UserCreationAttrs {
 
 @Table({ tableName: 'users' })
 export class User extends Model<User, UserCreationAttrs> {
-  @ApiProperty({ example: '1', description: 'Уникальный идентификатор' })
+  @ApiProperty({
+    type: 'integer',
+    format: 'int64',
+    example: 1,
+    description: 'Уникальный идентификатор',
+  })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -47,4 +54,7 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @BelongsToMany(() => Role, () => UserRoles)
   roles: Role[];
+
+  @BelongsTo(() => Musician)
+  musician: Musician;
 }
