@@ -25,14 +25,14 @@ import { Context } from "../../main";
 import { AuthRequest } from "../../models/request/AuthRequest";
 import { useNavigate } from "react-router-dom";
 
-function ColorSchemeToggle({ onClick, ...props }: IconButtonProps) {
+export function ColorSchemeToggle({ onClick, ...props }: IconButtonProps) {
   const { mode, setMode } = useColorScheme();
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => {
     setMounted(true);
   }, []);
   if (!mounted) {
-    return <IconButton size="sm" variant="outlined" color="neutral" disabled />;
+    return <IconButton size="md" variant="outlined" color="neutral" disabled />;
   }
   return (
     <IconButton
@@ -49,6 +49,14 @@ function ColorSchemeToggle({ onClick, ...props }: IconButtonProps) {
           setMode("light");
         }
         onClick?.(event);
+      }}
+      sx={{
+        position: "fixed",
+        zIndex: 999,
+        top: "2rem",
+        right: "2rem",
+        borderRadius: "50%",
+        boxShadow: "sm",
       }}
     >
       {mode === "light" ? <DarkModeRoundedIcon /> : <LightModeRoundedIcon />}
@@ -125,6 +133,7 @@ export default function SignIn() {
             component="header"
             sx={{
               py: 3,
+              px: 2,
               display: "flex",
               alignItems: "left",
               justifyContent: "space-between",
@@ -133,6 +142,7 @@ export default function SignIn() {
             <Box
               sx={{
                 gap: 2,
+                mt: "0.5rem",
                 display: "flex",
                 alignItems: "center",
               }}

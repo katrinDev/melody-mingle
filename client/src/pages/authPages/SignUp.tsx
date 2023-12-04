@@ -19,7 +19,7 @@ import imageLight from "/src/assets/musicians1.jpg";
 import imageDark from "/src/assets/musicians2.jpg";
 import { useContext } from "react";
 import { FormHelperText } from "@mui/joy";
-import { InfoOutlined, Watch } from "@mui/icons-material";
+import { InfoOutlined } from "@mui/icons-material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Context } from "../../main";
 import { useNavigate } from "react-router-dom";

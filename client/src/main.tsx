@@ -1,9 +1,9 @@
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import UserStore from "./store/UserStore.ts";
+import UserStore from "./stores/UserStore.ts";
 import { createContext } from "react";
-import SnackbarPropsStore from "./store/SnackbarPropsStore.ts";
+import SnackbarPropsStore from "./stores/SnackbarPropsStore.ts";
 
 interface State {
   userStore: UserStore;

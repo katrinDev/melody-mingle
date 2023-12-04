@@ -9,19 +9,13 @@ import ReportIcon from "@mui/icons-material/Report";
 import { IconButton } from "@mui/joy";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import AppRouter from "./router/AppRouter";
-import { IUser } from "./models/IUser";
-import { jwtDecode } from "jwt-decode";
 
 const App: React.FC = observer(() => {
   const { userStore, snackbarStore } = useContext(Context);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("token");
-    if (accessToken) {
-      userStore.setAuth(true);
-
-      const userData: IUser = jwtDecode(accessToken);
-      userStore.setUser(userData);
+    if (localStorage.getItem("accessToken")) {
+      userStore.refresh(snackbarStore);
     }
   }, []);
 
