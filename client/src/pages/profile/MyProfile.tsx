@@ -148,8 +148,8 @@ export default function MyProfile() {
                 sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
               >
                 <img
-                  src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                  srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
+                  src="https://melody-mingle-bucket.s3.eu-central-1.amazonaws.com/avatars/file-a05d8a37-52c8-412b-8bf8-18cedf41db99.jpg?auto=format&fit=crop&w=286"
+                  srcSet="https://melody-mingle-bucket.s3.eu-central-1.amazonaws.com/avatars/file-a05d8a37-52c8-412b-8bf8-18cedf41db99.jpg?auto=format&fit=crop&w=286 2x"
                   loading="lazy"
                   alt=""
                 />

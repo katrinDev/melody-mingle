@@ -5,7 +5,6 @@ import {
   Get,
   Param,
   Post,
-  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import { MusiciansService } from './musicians.service';

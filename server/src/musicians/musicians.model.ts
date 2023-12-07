@@ -1,11 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  BelongsTo,
   Column,
   DataType,
   ForeignKey,
+  HasOne,
   Model,
   Table,
 } from 'sequelize-typescript';
+import { ProfileInfo } from 'src/profiles-info/profiles-info.model';
 import { User } from 'src/users/users.model';
 
 interface MusicianCreationAttrs {
@@ -97,4 +100,10 @@ export class Musician extends Model<Musician, MusicianCreationAttrs> {
     unique: true,
   })
   userId: number;
+
+  @BelongsTo(() => User)
+  user: User;
+
+  @HasOne(() => ProfileInfo)
+  musician: ProfileInfo;
 }

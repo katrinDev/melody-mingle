@@ -75,9 +75,13 @@ export class UsersService {
     return this.userRepository.findByPk(id, {
       include: [
         {
-          model: this.roleRepository,
-          as: 'roles',
-          through: { attributes: [] }, // This will skip the attributes of the join table
+          model: Role,
+          attributes: ['value'],
+          through: { attributes: [] },
+        },
+        {
+          model: Musician,
+          attributes: ['name', 'id'],
         },
       ],
     });

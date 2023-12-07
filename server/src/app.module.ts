@@ -6,11 +6,13 @@ import { AuthModule } from './auth/auth.module';
 import { RolesModule } from './roles/roles.module';
 import { TokensModule } from './tokens/tokens.module';
 import { MusiciansModule } from './musicians/musicians.module';
+import { ProfilesInfoModule } from './profiles-info/profiles-info.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: `config/.${process.env.NODE_ENV}.env`,
+      isGlobal: true,
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
@@ -27,6 +29,7 @@ import { MusiciansModule } from './musicians/musicians.module';
     RolesModule,
     TokensModule,
     MusiciansModule,
+    ProfilesInfoModule,
   ],
 })
 export class AppModule {}
