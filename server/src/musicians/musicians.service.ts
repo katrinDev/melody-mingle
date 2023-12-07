@@ -19,6 +19,10 @@ export class MusiciansService {
     return this.musicianRepository.findOne({ where: { userId } });
   }
 
+  async findById(id: number): Promise<Musician> {
+    return this.musicianRepository.findByPk(id);
+  }
+
   async createMusician(musicianDto: CreateMusicianDto): Promise<Musician> {
     const { userId } = musicianDto;
     const user = await this.usersService.findById(userId);

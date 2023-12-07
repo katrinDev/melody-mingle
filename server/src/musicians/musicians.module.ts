@@ -9,11 +9,7 @@ import { ProfilesInfoModule } from 'src/profiles-info/profiles-info.module';
 @Module({
   controllers: [MusiciansController],
   providers: [MusiciansService],
-  imports: [
-    SequelizeModule.forFeature([Musician]),
-    UsersModule,
-    ProfilesInfoModule,
-  ],
+  imports: [SequelizeModule.forFeature([Musician]), UsersModule],
   exports: [MusiciansService],
 })
 export class MusiciansModule {}

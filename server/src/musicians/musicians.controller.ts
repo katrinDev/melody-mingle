@@ -41,4 +41,11 @@ export class MusiciansController {
   async deleteMusician(@Param('id') id: number) {
     return this.musiciansService.deleteMusician(id);
   }
+
+  @ApiOperation({ summary: 'Получение 1 музыканта' })
+  @ApiResponse({ status: 200, type: Musician })
+  @Get(':id')
+  async findOne(@Param('id') id: number) {
+    return this.musiciansService.findById(id);
+  }
 }

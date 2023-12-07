@@ -11,7 +11,7 @@ import { Musician } from 'src/musicians/musicians.model';
 interface ProfileInfoCreationAttrs {
   musicianId: number;
   avatarKey: string;
-  description: string;
+  bio: string;
 }
 
 @Table({ tableName: 'profiles_info' })
@@ -33,7 +33,7 @@ export class ProfileInfo extends Model<ProfileInfo, ProfileInfoCreationAttrs> {
   @Column({
     type: DataType.TEXT,
   })
-  description: string;
+  bio: string;
 
   @ForeignKey(() => Musician)
   @Column({
