@@ -17,7 +17,9 @@ interface MusicianCreationAttrs {
   userId: number;
   city: string;
   experience: number;
+  subRoles: string[];
   languages: string[];
+  genres: string[];
 }
 
 @Table({ tableName: 'musicians' })
@@ -55,6 +57,16 @@ export class Musician extends Model<Musician, MusicianCreationAttrs> {
     allowNull: false,
   })
   mainRole: string;
+
+  @ApiProperty({
+    example: 'Автор текстов песен, аранжировщик',
+    description: 'Дополнительные навыки',
+  })
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  subRoles: string[];
 
   @ApiProperty({ example: 'Minsk', description: 'Город проживания' })
   @Column({

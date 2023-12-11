@@ -25,6 +25,13 @@ export class MusiciansController {
     return this.musiciansService.findAll();
   }
 
+  @ApiOperation({ summary: 'Получение 1 музыканта по ID пользователя' })
+  @ApiResponse({ status: 200, type: Musician })
+  @Get('/user/:id')
+  async findByUserId(@Param('id') id: number) {
+    return this.musiciansService.findByUserId(id);
+  }
+
   @ApiOperation({ summary: 'Создание музыканта' })
   @ApiResponse({ status: 200, type: Musician })
   @UsePipes(ValidationPipe)

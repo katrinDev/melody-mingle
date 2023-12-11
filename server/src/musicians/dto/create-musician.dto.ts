@@ -47,6 +47,14 @@ export class CreateMusicianDto {
 
   @IsArray()
   @IsString({ each: true })
+  readonly subRoles: string[];
+
+  @IsArray()
+  @IsString({ each: true })
+  readonly genres: string[];
+
+  @IsArray()
+  @IsString({ each: true })
   @IsNotEmpty({ message: 'Must not be empty' })
   readonly languages: string[];
 

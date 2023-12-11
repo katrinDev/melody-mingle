@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Musician } from './musicians.model';
 import { CreateMusicianDto } from './dto/create-musician.dto';
@@ -16,11 +20,22 @@ export class MusiciansService {
   }
 
   async findByUserId(userId: number): Promise<Musician> {
-    return this.musicianRepository.findOne({ where: { userId } });
+    const musician = await this.musicianRepository.findOne({
+      where: { userId },
+    });
+
+    if (!musician) {
+      throw new NotFoundException('Музыкант не был найден');
+    }
+    return musician;
   }
 
   async findById(id: number): Promise<Musician> {
-    return this.musicianRepository.findByPk(id);
+    const musician = await this.musicianRepository.findByPk(id);
+    if (!musician) {
+      throw new NotFoundException('Музыкант не был найден');
+    }
+    return musician;
   }
 
   async createMusician(musicianDto: CreateMusicianDto): Promise<Musician> {
@@ -28,14 +43,14 @@ export class MusiciansService {
     const user = await this.usersService.findById(userId);
 
     if (!user) {
-      throw new BadRequestException('Incorrect user ID');
+      throw new BadRequestException('Некорректный ID пользователя');
     }
 
     const existingMusician = await this.findByUserId(userId);
 
     if (existingMusician) {
       throw new BadRequestException(
-        'Musician info for this user have been already added',
+        'Данные музыканта уже были добавлены для этого пользователя',
       );
     }
 
@@ -47,7 +62,7 @@ export class MusiciansService {
   async deleteMusician(id: number): Promise<Musician> {
     const musician = await this.musicianRepository.findOne({ where: { id } });
     if (!musician) {
-      throw new BadRequestException('There is no musician with such id');
+      throw new BadRequestException('Пользователя с данным ID не найдено');
     }
     await musician.destroy();
 
