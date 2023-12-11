@@ -5,22 +5,41 @@ import { useContext } from "react";
 import { Context } from "../main";
 import About from "../pages/about/About";
 import { observer } from "mobx-react-lite";
-import BasicProfileLayout from "../pages/layouts/BasicProfileLayout";
+import BasicLayout from "../pages/layouts/BasicLayout";
+import MyProfile from "../pages/profile/MyProfile";
+import EditProfile from "../pages/profile/EditProfile";
+import { ABOUT, EDIT_PROFILE, PROFILE, SIGN_IN, SIGN_UP } from "./paths";
 
 const AppRouter: React.FC = observer(() => {
   const { userStore } = useContext(Context);
 
   return userStore.isAuth ? (
     <Routes>
-      <Route path="/about" element={<About />} />
-      <Route path="/my-profile" element={<BasicProfileLayout />} />
-      <Route path="*" element={<Navigate to="/about" />} />
+      <Route path={ABOUT} element={<About />} />
+
+      <Route
+        path={EDIT_PROFILE}
+        element={
+          <BasicLayout>
+            <EditProfile />
+          </BasicLayout>
+        }
+      />
+      <Route
+        path={PROFILE}
+        element={
+          <BasicLayout>
+            <MyProfile />
+          </BasicLayout>
+        }
+      />
+      <Route path="*" element={<Navigate to={PROFILE} />} />
     </Routes>
   ) : (
     <Routes>
-      <Route path="/sign-in" element={<SignIn />} />
-      <Route path="/sign-up" element={<SignUp />} />
-      <Route path="*" element={<Navigate to="/sign-in" />} />
+      <Route path={SIGN_IN} element={<SignIn />} />
+      <Route path={SIGN_UP} element={<SignUp />} />
+      <Route path="*" element={<Navigate to={SIGN_IN} />} />
     </Routes>
   );
 });

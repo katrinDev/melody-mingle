@@ -63,7 +63,7 @@ export default function HeadlineAbout() {
         </AvatarGroup>
         <Typography textColor="text.secondary">
           Присоединяйся к комьюнити более <b>10K</b> <br />
-          музыкантов и продюссеров.
+          музыкантов.
         </Typography>
       </Box>
       <Typography

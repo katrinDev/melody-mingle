@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
@@ -17,6 +18,7 @@ import TabList from "@mui/joy/TabList";
 import Tab, { tabClasses } from "@mui/joy/Tab";
 import Breadcrumbs from "@mui/joy/Breadcrumbs";
 import Link from "@mui/joy/Link";
+import { Link as RouterLink } from "react-router-dom";
 import Card from "@mui/joy/Card";
 import CardActions from "@mui/joy/CardActions";
 import CardOverflow from "@mui/joy/CardOverflow";
@@ -32,8 +34,17 @@ import CountrySelector from "../../components/CountrySelector";
 import TextEditorToolbar from "../../components/toolbars/TextEditorToolbar";
 import DropZone from "../../components/uploads/DropZone";
 import FileUpload from "../../components/uploads/FileUpload";
+import { useContext } from "react";
+import { Context } from "../../main";
+import { ABOUT } from "../../router/paths";
+import { Chip } from "@mui/joy";
+import ProfileListBox from "../../components/boxex/ProfileListBox";
 
-export default function MyProfile() {
+function MyProfile() {
+  const { musicianStore, userStore, snackbarStore } = useContext(Context);
+
+  const experience = musicianStore.musician.experience;
+  const yearsName = experience === 1 ? "год" : experience < 5 ? "года" : "лет";
   return (
     <Box sx={{ flex: 1, width: "100%" }}>
       <Box
@@ -54,323 +65,119 @@ export default function MyProfile() {
             <Link
               underline="none"
               color="neutral"
-              href="#some-link"
+              component={RouterLink}
+              to={ABOUT}
               aria-label="Home"
             >
               <HomeRoundedIcon />
             </Link>
-            <Link
-              underline="hover"
-              color="neutral"
-              href="#some-link"
-              fontSize={12}
-              fontWeight={500}
-            >
-              Users
-            </Link>
             <Typography color="primary" fontWeight={500} fontSize={12}>
-              My profile
+              Профиль
             </Typography>
           </Breadcrumbs>
-          <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
-            My profile
-          </Typography>
         </Box>
-        <Tabs
-          defaultValue={0}
-          sx={{
-            bgcolor: "transparent",
-          }}
-        >
-          <TabList
-            tabFlex={1}
-            size="sm"
-            sx={{
-              pl: { xs: 0, md: 4 },
-              justifyContent: "left",
-              [`&& .${tabClasses.root}`]: {
-                fontWeight: "600",
-                flex: "initial",
-                color: "text.tertiary",
-                [`&.${tabClasses.selected}`]: {
-                  bgcolor: "transparent",
-                  color: "text.primary",
-                  "&::after": {
-                    height: "2px",
-                    bgcolor: "primary.500",
-                  },
-                },
-              },
-            }}
-          >
-            <Tab sx={{ borderRadius: "6px 6px 0 0" }} indicatorInset value={0}>
-              Settings
-            </Tab>
-            <Tab sx={{ borderRadius: "6px 6px 0 0" }} indicatorInset value={1}>
-              Team
-            </Tab>
-            <Tab sx={{ borderRadius: "6px 6px 0 0" }} indicatorInset value={2}>
-              Plan
-            </Tab>
-            <Tab sx={{ borderRadius: "6px 6px 0 0" }} indicatorInset value={3}>
-              Billing
-            </Tab>
-          </TabList>
-        </Tabs>
       </Box>
       <Stack
-        spacing={4}
+        spacing={2}
         sx={{
           display: "flex",
           maxWidth: "800px",
           mx: "auto",
-          px: { xs: 2, md: 6 },
+          px: { xs: 2, md: 3 },
           py: { xs: 2, md: 3 },
         }}
       >
-        <Card>
-          <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Personal info</Typography>
-            <Typography level="body-sm">
-              Customize how your profile information will apper to the networks.
-            </Typography>
-          </Box>
-          <Divider />
-          <Stack
-            direction="row"
-            spacing={3}
-            sx={{ display: { xs: "none", md: "flex" }, my: 1 }}
+        <Stack direction="row" spacing={3} sx={{ display: "flex", mb: 0.5 }}>
+          <AspectRatio
+            ratio="1"
+            maxHeight={400}
+            sx={{ flex: 1, minWidth: 250, borderRadius: "2%" }}
           >
-            <Stack direction="column" spacing={1}>
-              <AspectRatio
-                ratio="1"
-                maxHeight={200}
-                sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
-              >
-                <img
-                  src="https://melody-mingle-bucket.s3.eu-central-1.amazonaws.com/avatars/file-a05d8a37-52c8-412b-8bf8-18cedf41db99.jpg?auto=format&fit=crop&w=286"
-                  srcSet="https://melody-mingle-bucket.s3.eu-central-1.amazonaws.com/avatars/file-a05d8a37-52c8-412b-8bf8-18cedf41db99.jpg?auto=format&fit=crop&w=286 2x"
-                  loading="lazy"
-                  alt=""
-                />
-              </AspectRatio>
-              <IconButton
-                aria-label="upload new picture"
-                size="sm"
-                variant="outlined"
-                color="neutral"
+            <img
+              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
+              srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
+              loading="lazy"
+              alt=""
+            />
+          </AspectRatio>
+          <Stack spacing={3} sx={{ flexGrow: 1 }}>
+            <div>
+              <Typography level="h2" component="h1" sx={{ mt: 1 }}>
+                {musicianStore.musician.name}
+              </Typography>
+              <Typography>
+                {musicianStore.musician.mainRole} - {experience} {yearsName}{" "}
+                опыта
+              </Typography>
+            </div>
+
+            <Stack direction="row" spacing={6}>
+              <Box
                 sx={{
-                  bgcolor: "background.body",
-                  position: "absolute",
-                  zIndex: 2,
-                  borderRadius: "50%",
-                  left: 100,
-                  top: 170,
-                  boxShadow: "sm",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
                 }}
               >
-                <EditRoundedIcon />
-              </IconButton>
-            </Stack>
-            <Stack spacing={2} sx={{ flexGrow: 1 }}>
-              <Stack spacing={1}>
-                <FormLabel>Name</FormLabel>
-                <FormControl
-                  sx={{
-                    display: { sm: "flex-column", md: "flex-row" },
-                    gap: 2,
-                  }}
-                >
-                  <Input size="sm" placeholder="First name" />
-                  <Input
-                    size="sm"
-                    placeholder="Last name"
-                    sx={{ flexGrow: 1 }}
-                  />
-                </FormControl>
-              </Stack>
-              <Stack direction="row" spacing={2}>
-                <FormControl>
-                  <FormLabel>Role</FormLabel>
-                  <Input size="sm" defaultValue="UI Developer" />
-                </FormControl>
-                <FormControl sx={{ flexGrow: 1 }}>
-                  <FormLabel>Email</FormLabel>
-                  <Input
-                    size="sm"
-                    type="email"
-                    startDecorator={<EmailRoundedIcon />}
-                    placeholder="email"
-                    defaultValue="siriwatk@test.com"
-                    sx={{ flexGrow: 1 }}
-                  />
-                </FormControl>
-              </Stack>
-              <div>
-                <CountrySelector />
-              </div>
-              <div>
-                <FormControl sx={{ display: { sm: "contents" } }}>
-                  <FormLabel>Timezone</FormLabel>
-                  <Select
-                    size="sm"
-                    startDecorator={<AccessTimeFilledRoundedIcon />}
-                    defaultValue="1"
-                  >
-                    <Option value="1">
-                      Indochina Time (Bangkok){" "}
-                      <Typography textColor="text.tertiary" ml={0.5}>
-                        — GMT+07:00
-                      </Typography>
-                    </Option>
-                    <Option value="2">
-                      Indochina Time (Ho Chi Minh City){" "}
-                      <Typography textColor="text.tertiary" ml={0.5}>
-                        — GMT+07:00
-                      </Typography>
-                    </Option>
-                  </Select>
-                </FormControl>
-              </div>
-            </Stack>
-          </Stack>
-          <Stack
-            direction="column"
-            spacing={2}
-            sx={{ display: { xs: "flex", md: "none" }, my: 1 }}
-          >
-            <Stack direction="row" spacing={2}>
-              <Stack direction="column" spacing={1}>
-                <AspectRatio
-                  ratio="1"
-                  maxHeight={108}
-                  sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
-                >
-                  <img
-                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                    srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                    loading="lazy"
-                    alt=""
-                  />
-                </AspectRatio>
-                <IconButton
-                  aria-label="upload new picture"
-                  size="sm"
+                <Typography level="title-sm" sx={{ mb: 1.5 }}>
+                  Город
+                </Typography>
+                <Chip
                   variant="outlined"
                   color="neutral"
-                  sx={{
-                    bgcolor: "background.body",
-                    position: "absolute",
-                    zIndex: 2,
-                    borderRadius: "50%",
-                    left: 85,
-                    top: 180,
-                    boxShadow: "sm",
-                  }}
-                >
-                  <EditRoundedIcon />
-                </IconButton>
-              </Stack>
-              <Stack spacing={1} sx={{ flexGrow: 1 }}>
-                <FormLabel>Name</FormLabel>
-                <FormControl
-                  sx={{
-                    display: {
-                      sm: "flex-column",
-                      md: "flex-row",
-                    },
-                    gap: 2,
-                  }}
-                >
-                  <Input size="sm" placeholder="First name" />
-                  <Input size="sm" placeholder="Last name" />
-                </FormControl>
-              </Stack>
-            </Stack>
-            <FormControl>
-              <FormLabel>Role</FormLabel>
-              <Input size="sm" defaultValue="UI Developer" />
-            </FormControl>
-            <FormControl sx={{ flexGrow: 1 }}>
-              <FormLabel>Email</FormLabel>
-              <Input
-                size="sm"
-                type="email"
-                startDecorator={<EmailRoundedIcon />}
-                placeholder="email"
-                defaultValue="siriwatk@test.com"
-                sx={{ flexGrow: 1 }}
-              />
-            </FormControl>
-            <div>
-              <CountrySelector />
-            </div>
-            <div>
-              <FormControl sx={{ display: { sm: "contents" } }}>
-                <FormLabel>Timezone</FormLabel>
-                <Select
                   size="sm"
-                  startDecorator={<AccessTimeFilledRoundedIcon />}
-                  defaultValue="1"
+                  sx={{ px: "10px", py: "3px", "--Chip-radius": "4px" }}
                 >
-                  <Option value="1">
-                    Indochina Time (Bangkok){" "}
-                    <Typography textColor="text.tertiary" ml={0.5}>
-                      — GMT+07:00
-                    </Typography>
-                  </Option>
-                  <Option value="2">
-                    Indochina Time (Ho Chi Minh City){" "}
-                    <Typography textColor="text.tertiary" ml={0.5}>
-                      — GMT+07:00
-                    </Typography>
-                  </Option>
-                </Select>
-              </FormControl>
-            </div>
+                  <Typography level="body-sm" color="primary">
+                    {musicianStore.musician.city}
+                  </Typography>
+                </Chip>
+              </Box>
+
+              {musicianStore.musician.subRoles && (
+                <ProfileListBox
+                  title="Дополнительные навыки"
+                  list={musicianStore.musician.subRoles}
+                  color="primary"
+                />
+              )}
+            </Stack>
+
+            <Stack direction="row" spacing={6}>
+              {musicianStore.musician.languages && (
+                <ProfileListBox
+                  title="Языки"
+                  color="neutral"
+                  list={musicianStore.musician.languages}
+                />
+              )}
+
+              {musicianStore.musician.genres && (
+                <ProfileListBox
+                  title="Жанры"
+                  color="neutral"
+                  list={musicianStore.musician.genres}
+                />
+              )}
+            </Stack>
           </Stack>
-          <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
-            <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
-                Cancel
-              </Button>
-              <Button size="sm" variant="solid">
-                Save
-              </Button>
-            </CardActions>
-          </CardOverflow>
-        </Card>
-        <Card>
-          <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Bio</Typography>
-            <Typography level="body-sm">
-              Write a short introduction to be displayed on your profile
-            </Typography>
-          </Box>
-          <Divider />
-          <Stack spacing={2} sx={{ my: 1 }}>
-            <TextEditorToolbar />
-            <Textarea
-              size="sm"
-              minRows={4}
-              sx={{ mt: 1.5 }}
-              defaultValue="I'm a software developer based in Bangkok, Thailand. My goal is to solve UI problems with neat CSS without using too much JavaScript."
-            />
-            <FormHelperText sx={{ mt: 0.75, fontSize: "xs" }}>
-              275 characters left
-            </FormHelperText>
-          </Stack>
-          <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
-            <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
-                Cancel
-              </Button>
-              <Button size="sm" variant="solid">
-                Save
-              </Button>
-            </CardActions>
-          </CardOverflow>
-        </Card>
+        </Stack>
+        <Divider />
+
+        <Box sx={{ mb: 1 }}>
+          <Typography level="title-md">Био</Typography>
+        </Box>
+        <Stack spacing={2} sx={{ my: 1 }}>
+          <Textarea
+            size="sm"
+            minRows={4}
+            sx={{ mt: 1.5 }}
+            defaultValue="I'm a software developer based in Bangkok, Thailand. My goal is to solve UI problems with neat CSS without using too much JavaScript."
+          />
+          <FormHelperText sx={{ mt: 0.75, fontSize: "xs" }}>
+            275 characters left
+          </FormHelperText>
+        </Stack>
         <Card>
           <Box sx={{ mb: 1 }}>
             <Typography level="title-md">Portfolio projects</Typography>
@@ -394,18 +201,10 @@ export default function MyProfile() {
               progress={40}
             />
           </Stack>
-          <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
-            <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
-                Cancel
-              </Button>
-              <Button size="sm" variant="solid">
-                Save
-              </Button>
-            </CardActions>
-          </CardOverflow>
         </Card>
       </Stack>
     </Box>
   );
 }
+
+export default observer(MyProfile);

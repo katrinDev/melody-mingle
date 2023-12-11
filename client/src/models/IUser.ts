@@ -1,7 +1,7 @@
 import { RolesEnum } from "./RolesEnum";
 
 export interface IUser {
-  id: string | undefined;
+  id: number;
   email: string;
   roles: RolesEnum[];
 }

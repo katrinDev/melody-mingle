@@ -3,9 +3,8 @@ import CssBaseline from "@mui/joy/CssBaseline";
 import Box from "@mui/joy/Box";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Header from "../profile/Header";
-import MyProfile from "../profile/MyProfile";
 
-export default function BasicProfileLayout() {
+export default function BasicLayout({ children }: React.PropsWithChildren) {
   return (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
@@ -27,7 +26,7 @@ export default function BasicProfileLayout() {
             overflow: "auto",
           }}
         >
-          <MyProfile />
+          {children}
         </Box>
       </Box>
     </CssVarsProvider>
