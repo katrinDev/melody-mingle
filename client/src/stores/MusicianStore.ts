@@ -21,7 +21,7 @@ export default class MusicianStore {
     this.isNew = value;
   }
 
-  async getMusicianData(
+  async fetchMusicianData(
     userStore: UserStore,
     snackbarStore: SnackbarPropsStore
   ) {

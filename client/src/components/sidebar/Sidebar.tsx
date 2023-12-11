@@ -63,14 +63,18 @@ function Toggler({
 }
 
 const Sidebar: React.FC = observer(() => {
-  const { musicianStore, userStore, snackbarStore } = useContext(Context);
+  const { musicianStore, userStore, snackbarStore, profileStore } =
+    useContext(Context);
+
+  const { avatarUrl } = profileStore.profileInfo;
 
   const onLogoutClick = async () => {
     await userStore.logout(snackbarStore);
   };
 
   useEffect(() => {
-    musicianStore.getMusicianData(userStore, snackbarStore);
+    musicianStore.fetchMusicianData(userStore, snackbarStore);
+    profileStore.fetchProfileData(snackbarStore);
   }, []);
 
   return (
@@ -214,7 +218,6 @@ const Sidebar: React.FC = observer(() => {
           </ListItem>
           <ListItem nested>
             <Toggler
-              defaultExpanded
               renderToggle={({ open, setOpen }) => (
                 <ListItemButton onClick={() => setOpen(!open)}>
                   <SettingsRoundedIcon />
@@ -229,7 +232,7 @@ const Sidebar: React.FC = observer(() => {
             >
               <List sx={{ gap: 0.5 }}>
                 <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton component={Link} to={EDIT_PROFILE} selected>
+                  <ListItemButton component={Link} to={EDIT_PROFILE}>
                     Изменить профиль
                   </ListItemButton>
                 </ListItem>
@@ -240,11 +243,7 @@ const Sidebar: React.FC = observer(() => {
       </Box>
       <Divider />
       <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-        <Avatar
-          variant="outlined"
-          size="md"
-          src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-        />
+        {avatarUrl && <Avatar variant="outlined" size="lg" src={avatarUrl} />}
         <Box sx={{ minWidth: 0, flex: 1 }}>
           <Typography level="title-md">
             {musicianStore.musician.name}

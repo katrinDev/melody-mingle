@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   FileTypeValidator,
+  Get,
   MaxFileSizeValidator,
   ParseFilePipe,
   Post,
@@ -20,6 +22,11 @@ import { UpdateBioDto } from './dto/update-bio.dto';
 @Controller('profiles-info')
 export class ProfilesInfoController {
   constructor(private readonly profileInfoService: ProfilesInfoService) {}
+
+  @Get()
+  async getProfileInfo(@Req() request: RequestWithUser) {
+    return this.profileInfoService.getProfileInfo(request.user.musicianId);
+  }
 
   @Post('bio')
   async updateBio(
@@ -43,17 +50,22 @@ export class ProfilesInfoController {
         ],
       }),
     )
-    file: Express.Multer.File,
+    avatar: Express.Multer.File,
 
     @Req() request: RequestWithUser,
   ) {
     const newFileName =
-      file.fieldname + '-' + uuidv4() + extname(file.originalname);
+      avatar.fieldname + '-' + uuidv4() + extname(avatar.originalname);
 
     return await this.profileInfoService.uploadAvatar(
       newFileName,
-      file.buffer,
+      avatar.buffer,
       request.user.musicianId,
     );
+  }
+
+  @Delete('avatar')
+  async deleteAvatar(@Req() request: RequestWithUser) {
+    return this.profileInfoService.deleteAvatar(request.user.musicianId);
   }
 }

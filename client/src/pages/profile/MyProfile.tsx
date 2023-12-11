@@ -1,37 +1,19 @@
 import { observer } from "mobx-react-lite";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
-import Button from "@mui/joy/Button";
 import Divider from "@mui/joy/Divider";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import FormHelperText from "@mui/joy/FormHelperText";
-import Input from "@mui/joy/Input";
-import IconButton from "@mui/joy/IconButton";
-import Textarea from "@mui/joy/Textarea";
 import Stack from "@mui/joy/Stack";
-import Select from "@mui/joy/Select";
-import Option from "@mui/joy/Option";
 import Typography from "@mui/joy/Typography";
-import Tabs from "@mui/joy/Tabs";
-import TabList from "@mui/joy/TabList";
-import Tab, { tabClasses } from "@mui/joy/Tab";
 import Breadcrumbs from "@mui/joy/Breadcrumbs";
 import Link from "@mui/joy/Link";
 import { Link as RouterLink } from "react-router-dom";
 import Card from "@mui/joy/Card";
-import CardActions from "@mui/joy/CardActions";
-import CardOverflow from "@mui/joy/CardOverflow";
+import ImageIcon from "@mui/icons-material/Image";
 
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
-import AccessTimeFilledRoundedIcon from "@mui/icons-material/AccessTimeFilledRounded";
 import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
 import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import CountrySelector from "../../components/CountrySelector";
-import TextEditorToolbar from "../../components/toolbars/TextEditorToolbar";
 import DropZone from "../../components/uploads/DropZone";
 import FileUpload from "../../components/uploads/FileUpload";
 import { useContext } from "react";
@@ -41,10 +23,13 @@ import { Chip } from "@mui/joy";
 import ProfileListBox from "../../components/boxex/ProfileListBox";
 
 function MyProfile() {
-  const { musicianStore, userStore, snackbarStore } = useContext(Context);
+  const { musicianStore, profileStore } = useContext(Context);
 
   const experience = musicianStore.musician.experience;
   const yearsName = experience === 1 ? "год" : experience < 5 ? "года" : "лет";
+
+  const { avatarUrl, bio } = profileStore.profileInfo;
+
   return (
     <Box sx={{ flex: 1, width: "100%" }}>
       <Box
@@ -78,7 +63,7 @@ function MyProfile() {
         </Box>
       </Box>
       <Stack
-        spacing={2}
+        spacing={3}
         sx={{
           display: "flex",
           maxWidth: "800px",
@@ -90,15 +75,21 @@ function MyProfile() {
         <Stack direction="row" spacing={3} sx={{ display: "flex", mb: 0.5 }}>
           <AspectRatio
             ratio="1"
-            maxHeight={400}
+            maxHeight={500}
             sx={{ flex: 1, minWidth: 250, borderRadius: "2%" }}
           >
-            <img
-              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-              srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-              loading="lazy"
-              alt=""
-            />
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                srcSet={`${avatarUrl}&dpr=2 2x`}
+                loading="lazy"
+                alt=""
+              />
+            ) : (
+              <div>
+                <ImageIcon sx={{ fontSize: "3rem", opacity: 0.2 }} />
+              </div>
+            )}
           </AspectRatio>
           <Stack spacing={3} sx={{ flexGrow: 1 }}>
             <div>
@@ -164,26 +155,28 @@ function MyProfile() {
         </Stack>
         <Divider />
 
-        <Box sx={{ mb: 1 }}>
-          <Typography level="title-md">Био</Typography>
-        </Box>
-        <Stack spacing={2} sx={{ my: 1 }}>
-          <Textarea
-            size="sm"
-            minRows={4}
-            sx={{ mt: 1.5 }}
-            defaultValue="I'm a software developer based in Bangkok, Thailand. My goal is to solve UI problems with neat CSS without using too much JavaScript."
-          />
-          <FormHelperText sx={{ mt: 0.75, fontSize: "xs" }}>
-            275 characters left
-          </FormHelperText>
-        </Stack>
-        <Card>
+        {bio && (
+          <Stack spacing={2} sx={{ my: 1 }}>
+            <Box sx={{ mb: 1 }}>
+              <Typography level="title-md">Био</Typography>
+            </Box>
+            <Card>
+              <Typography
+                sx={{
+                  textAlign: "justify",
+                  textIndent: "1.5em",
+                  padding: "1em",
+                }}
+              >
+                {profileStore.profileInfo.bio}
+              </Typography>
+            </Card>
+          </Stack>
+        )}
+        <Card sx={{ mt: 2 }}>
           <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Portfolio projects</Typography>
-            <Typography level="body-sm">
-              Share a few snippets of your work.
-            </Typography>
+            <Typography level="title-md">Проекты</Typography>
+            <Typography level="body-sm">вдохновляйся и создавай</Typography>
           </Box>
           <Divider />
           <Stack spacing={2} sx={{ my: 1 }}>
