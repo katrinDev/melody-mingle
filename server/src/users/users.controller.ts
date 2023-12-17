@@ -20,17 +20,24 @@ import { AddRoleDto } from './dto/add-role.dto';
 import { Public } from 'src/guards/decorators/public.decorator';
 
 @ApiTags('Пользователи')
+@Roles('ADMIN')
+@UseGuards(RolesGuard)
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @ApiOperation({ summary: 'Просмотр всех пользователей' })
   @ApiResponse({ status: 200, type: [User] })
-  @Roles('ADMIN')
-  @UseGuards(RolesGuard)
   @Get()
   async findAll(): Promise<User[]> {
     return this.usersService.findAll();
+  }
+
+  @ApiOperation({ summary: 'Получение 1 пользователя' })
+  @ApiResponse({ status: 200, type: User })
+  @Get(':id')
+  async findOne(@Param('id') id: number) {
+    return this.usersService.findById(id);
   }
 
   @ApiOperation({ summary: 'Создание пользователя' })
@@ -41,12 +48,15 @@ export class UsersController {
     return this.usersService.createUser(userDto);
   }
 
-  @Public()
+  @ApiOperation({ summary: 'Удаление пользователя' })
+  @ApiResponse({ status: 200, type: User })
   @Delete(':id')
   async deleteUser(@Param('id') id: number) {
     return this.usersService.deleteUser(id);
   }
 
+  @ApiOperation({ summary: 'Добавление роли пользователю' })
+  @ApiResponse({ status: 200, type: AddRoleDto })
   @UsePipes(ValidationPipe)
   @Post('/role')
   async addRole(@Body() addRoleDto: AddRoleDto) {

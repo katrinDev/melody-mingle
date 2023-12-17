@@ -4,7 +4,7 @@ import {
   HttpStatus,
   Inject,
   Injectable,
-  UnauthorizedException,
+  NotFoundException,
   forwardRef,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -15,6 +15,7 @@ import * as bcrypt from 'bcrypt';
 import { AddRoleDto } from './dto/add-role.dto';
 import { TokensService } from 'src/tokens/tokens.service';
 import { Role } from 'src/roles/roles.model';
+import { Musician } from 'src/musicians/musicians.model';
 
 @Injectable()
 export class UsersService {
@@ -42,7 +43,19 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    return this.userRepository.findAll({ include: { all: true } });
+    return this.userRepository.findAll({
+      include: [
+        {
+          model: Role,
+          attributes: ['value'],
+          through: { attributes: [] },
+        },
+        {
+          model: Musician,
+          attributes: ['name'],
+        },
+      ],
+    });
   }
 
   async findByEmail(email: string): Promise<User> {
@@ -62,9 +75,13 @@ export class UsersService {
     return this.userRepository.findByPk(id, {
       include: [
         {
-          model: this.roleRepository,
-          as: 'roles',
-          through: { attributes: [] }, // This will skip the attributes of the join table
+          model: Role,
+          attributes: ['value'],
+          through: { attributes: [] },
+        },
+        {
+          model: Musician,
+          attributes: ['name', 'id'],
         },
       ],
     });
@@ -95,11 +112,12 @@ export class UsersService {
         //adds a new instance to the usersRole table
         await user.$add('role', role);
       }
-
-      await this.tokensService.refresh(user.refreshToken.refreshToken);
+      if (user.refreshToken) {
+        await this.tokensService.refresh(user.refreshToken.refreshToken);
+      }
       return addRoleDto;
     }
 
-    throw new HttpException("User or role weren't find", HttpStatus.NOT_FOUND);
+    throw new HttpException("User or role weren't found", HttpStatus.NOT_FOUND);
   }
 }
