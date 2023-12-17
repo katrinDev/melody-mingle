@@ -25,7 +25,7 @@ import LibraryMusicRoundedIcon from "@mui/icons-material/LibraryMusicRounded";
 
 import { closeSidebar } from "./utils";
 import ColorSchemeProfileToggle from "../../pages/layouts/ColorSchemeProfileToggle";
-import { ABOUT, EDIT_PROFILE, PROFILE } from "../../router/paths";
+import { ABOUT, EDIT_PROFILE, PROFILE, REQUESTS } from "../../router/paths";
 import { Context } from "../../main";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
@@ -186,7 +186,9 @@ const Sidebar: React.FC = observer(() => {
             >
               <List sx={{ gap: 0.5 }}>
                 <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton>Актуальные заявки</ListItemButton>
+                  <ListItemButton component={Link} to={REQUESTS}>
+                    Актуальные заявки
+                  </ListItemButton>
 
                   <Chip size="sm" color="primary" variant="solid">
                     4

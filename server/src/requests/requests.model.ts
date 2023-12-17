@@ -1,4 +1,3 @@
-import { DateOnlyDataType } from 'sequelize';
 import {
   Table,
   Model,
@@ -17,7 +16,7 @@ interface RequestCreationAttrs {
   mainRoles: string[];
   genres: string[];
   location: string;
-  expirationDate: DateOnlyDataType;
+  expirationDate: Date;
 }
 
 @Table({ tableName: 'requests' })
@@ -64,7 +63,7 @@ export class Request extends Model<Request, RequestCreationAttrs> {
     type: DataType.DATEONLY,
     allowNull: false,
   })
-  expirationDate: DateOnlyDataType;
+  expirationDate: Date;
 
   @ForeignKey(() => Musician)
   @Column({

@@ -16,7 +16,7 @@ export class CreateMusicianDto {
     description: 'Псевдоним или настоящее полное имя',
   })
   @IsString({ message: 'Must be a string' })
-  @Length(2, 15, { message: 'Name length - from $constraint1 to $constraint2' })
+  @Length(2, 40, { message: 'Name length - from $constraint1 to $constraint2' })
   @IsNotEmpty({ message: 'Must not be empty' })
   readonly name: string;
 

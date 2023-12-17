@@ -2,7 +2,7 @@ import { CssVarsProvider } from "@mui/joy/styles";
 import CssBaseline from "@mui/joy/CssBaseline";
 import Box from "@mui/joy/Box";
 import Sidebar from "../../components/sidebar/Sidebar";
-import Header from "../profile/Header";
+import Header from "./Header";
 
 export default function BasicLayout({ children }: React.PropsWithChildren) {
   return (
@@ -15,13 +15,13 @@ export default function BasicLayout({ children }: React.PropsWithChildren) {
           component="main"
           className="MainContent"
           sx={{
-            pt: { xs: "calc(12px + var(--Header-height))", md: 3 },
-            pb: { xs: 2, sm: 2, md: 3 },
+            pt: { xs: "calc(12px + var(--Header-height))" },
+            pb: 2,
             flex: 1,
             display: "flex",
             flexDirection: "column",
             minWidth: 0,
-            height: "100dvh",
+            minHeight: "100dvh",
             gap: 1,
             overflow: "auto",
           }}

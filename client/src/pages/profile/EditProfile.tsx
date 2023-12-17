@@ -28,7 +28,7 @@ import AccessTimeFilledRoundedIcon from "@mui/icons-material/AccessTimeFilledRou
 import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
 import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import CountrySelector from "../../components/CountrySelector";
+import CountrySelector from "../../components/selectors/CountrySelector";
 import TextEditorToolbar from "../../components/toolbars/TextEditorToolbar";
 import DropZone from "../../components/uploads/DropZone";
 import FileUpload from "../../components/uploads/FileUpload";

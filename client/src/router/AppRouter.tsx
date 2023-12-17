@@ -8,7 +8,15 @@ import { observer } from "mobx-react-lite";
 import BasicLayout from "../pages/layouts/BasicLayout";
 import MyProfile from "../pages/profile/MyProfile";
 import EditProfile from "../pages/profile/EditProfile";
-import { ABOUT, EDIT_PROFILE, PROFILE, SIGN_IN, SIGN_UP } from "./paths";
+import {
+  ABOUT,
+  EDIT_PROFILE,
+  PROFILE,
+  REQUESTS,
+  SIGN_IN,
+  SIGN_UP,
+} from "./paths";
+import RequestsDashboard from "../pages/requestsPage/RequestsDashboard";
 
 const AppRouter: React.FC = observer(() => {
   const { userStore } = useContext(Context);
@@ -33,7 +41,16 @@ const AppRouter: React.FC = observer(() => {
           </BasicLayout>
         }
       />
-      <Route path="*" element={<Navigate to={PROFILE} />} />
+
+      <Route
+        path={REQUESTS}
+        element={
+          <BasicLayout>
+            <RequestsDashboard />
+          </BasicLayout>
+        }
+      />
+      <Route path="*" element={<Navigate to={REQUESTS} />} />
     </Routes>
   ) : (
     <Routes>
