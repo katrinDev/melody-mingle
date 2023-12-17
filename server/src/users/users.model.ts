@@ -8,6 +8,7 @@ import {
   BelongsToMany,
   BelongsTo,
 } from 'sequelize-typescript';
+import { BannedUser } from 'src/banned-users/banned-users.model';
 import { Musician } from 'src/musicians/musicians.model';
 import { Role } from 'src/roles/roles.model';
 import { UserRoles } from 'src/roles/user-roles.model';
@@ -57,4 +58,7 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @HasOne(() => Musician)
   musician: Musician;
+
+  @HasOne(() => BannedUser)
+  bannedUser: BannedUser;
 }

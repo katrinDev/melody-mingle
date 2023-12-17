@@ -4,11 +4,14 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   HasOne,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { ProfileInfo } from 'src/profiles-info/profiles-info.model';
+import { Project } from 'src/projects/projects.model';
+import { Request } from 'src/requests/requests.model';
 import { User } from 'src/users/users.model';
 
 interface MusicianCreationAttrs {
@@ -117,5 +120,11 @@ export class Musician extends Model<Musician, MusicianCreationAttrs> {
   user: User;
 
   @HasOne(() => ProfileInfo)
-  musician: ProfileInfo;
+  profileInfo: ProfileInfo;
+
+  @HasMany(() => Project)
+  projects: Project[];
+
+  @HasMany(() => Request)
+  requests: Request[];
 }

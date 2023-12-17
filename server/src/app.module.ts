@@ -9,6 +9,8 @@ import { MusiciansModule } from './musicians/musicians.module';
 import { ProfilesInfoModule } from './profiles-info/profiles-info.module';
 import { AwsModule } from './aws/aws.module';
 import { ProjectsModule } from './projects/projects.module';
+import { RequestsModule } from './requests/requests.module';
+import { BannedUsersModule } from './banned-users/banned-users.module';
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { ProjectsModule } from './projects/projects.module';
     ProfilesInfoModule,
     AwsModule,
     ProjectsModule,
+    RequestsModule,
+    BannedUsersModule,
   ],
 })
 export class AppModule {}

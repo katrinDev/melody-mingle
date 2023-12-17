@@ -1,0 +1,44 @@
+@startuml Example
+class UsersModule {
+}
+
+class UsersController{
+    -usersService: UsersService
+
++ findAll()
+    + findOne(@Param('id) id: number)
+    + createUser(@Body() userDto: CreateUserDto)
+    + addRole(@Body() addRoleDto: AddRoleDto) 
+    + deleteUser(@Param('id') id: number)
+}
+
+class UsersService{
+    -userRepository: typeof User,
+    -roleRepository: typeof Role,
+    -rolesService: RolesService,
+    -tokensService: TokensService,
+
+
+  +createUser(userDto: CreateUserDto): Promise<User> 
+  +findAll(): Promise<User[]> 
+  +deleteUser(id: number): Promise<User> 
+  +addRole(addRoleDto: AddRoleDto)
+  +findById(id: number)
+}
+
+
+ class User extends Model {
+    +id: number,
+    + email:string,
+    + password: string,
+    + refreshToken: Token,
+    + roles: Role[],
+    + musician: Musician,
+}
+
+UsersController <.. UsersModule
+UsersService <.. UsersModule
+UsersService <.. UsersController
+User <.. UsersService
+
+@enduml

@@ -14,7 +14,6 @@ import { AwsService } from 'src/aws/aws.service';
 export class ProfilesInfoService {
   constructor(
     @InjectModel(ProfileInfo) private profileInfoRepository: typeof ProfileInfo,
-    private readonly configService: ConfigService,
     private musiciansService: MusiciansService,
     private awsService: AwsService,
   ) {}
