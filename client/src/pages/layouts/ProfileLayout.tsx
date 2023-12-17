@@ -1,1 +1,1 @@
-export default function ProfileLayout({ children }: React.PropsWithChildren) {}
+export default function ProfileLayout({}: React.PropsWithChildren) {}

@@ -12,15 +12,12 @@ import ImageIcon from "@mui/icons-material/Image";
 
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
-import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
-import DropZone from "../../components/uploads/DropZone";
-import FileUpload from "../../components/uploads/FileUpload";
 import { useContext } from "react";
 import { Context } from "../../main";
 import { ABOUT } from "../../router/paths";
 import { Chip } from "@mui/joy";
 import ProfileListBox from "../../components/boxex/ProfileListBox";
+import AudioCard from "../../components/cards/AudioCard";
 
 function MyProfile() {
   const { musicianStore, profileStore } = useContext(Context);
@@ -175,24 +172,11 @@ function MyProfile() {
         )}
         <Card sx={{ mt: 2 }}>
           <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Проекты</Typography>
-            <Typography level="body-sm">вдохновляйся и создавай</Typography>
+            <Typography level="title-md">Творческие проекты</Typography>
           </Box>
           <Divider />
           <Stack spacing={2} sx={{ my: 1 }}>
-            <DropZone />
-            <FileUpload
-              icon={<InsertDriveFileRoundedIcon />}
-              fileName="Tech design requirements.pdf"
-              fileSize="200 kB"
-              progress={100}
-            />
-            <FileUpload
-              icon={<VideocamRoundedIcon />}
-              fileName="Dashboard prototype recording.mp4"
-              fileSize="16 MB"
-              progress={40}
-            />
+            <AudioCard />
           </Stack>
         </Card>
       </Stack>

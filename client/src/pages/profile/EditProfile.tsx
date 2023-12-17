@@ -38,7 +38,7 @@ import { ABOUT } from "../../router/paths";
 import { observer } from "mobx-react-lite";
 
 function EditProfile() {
-  const { musicianStore, userStore, snackbarStore } = useContext(Context);
+  const { musicianStore } = useContext(Context);
 
   return (
     <Box sx={{ flex: 1, width: "100%" }}>

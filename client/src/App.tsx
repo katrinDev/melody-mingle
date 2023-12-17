@@ -23,7 +23,7 @@ const App: React.FC = observer(() => {
     event: Event | SyntheticEvent<any, Event> | null,
     reason: SnackbarCloseReason
   ) => {
-    if (reason === "clickaway") {
+    if (reason === "clickaway" && event) {
       return;
     }
 
