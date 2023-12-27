@@ -16,19 +16,24 @@ import { useContext } from "react";
 import { Context } from "../../main";
 import { ABOUT } from "../../router/paths";
 import { Chip } from "@mui/joy";
-import ProfileListBox from "../../components/boxex/ProfileListBox";
-import AudioCard from "../../components/cards/AudioCard";
+import ProfileListBox from "../../components/profile/ProfileListBox";
+import AudioCard from "../../components/project/AudioCard";
+
+export function expStringCalculater(experience: number) {
+  const yearsName = experience === 1 ? "год" : experience < 5 ? "года" : "лет";
+  return yearsName;
+}
 
 function MyProfile() {
   const { musicianStore, profileStore } = useContext(Context);
 
   const experience = musicianStore.musician.experience;
-  const yearsName = experience === 1 ? "год" : experience < 5 ? "года" : "лет";
+  const yearsName = expStringCalculater(experience);
 
   const { avatarUrl, bio } = profileStore.profileInfo;
 
   return (
-    <Box sx={{ flex: 1, width: "100%" }}>
+    <Box sx={{ flex: 1, width: "100%", pt: "20px" }}>
       <Box
         sx={{
           position: "sticky",

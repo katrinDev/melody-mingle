@@ -8,7 +8,7 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
-import { User } from 'src/users/users.model';
+import { User } from '../users/users.model';
 
 interface BannedUserCreationAttrs {
   userId: number;

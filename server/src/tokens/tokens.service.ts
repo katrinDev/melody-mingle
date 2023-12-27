@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Token } from './tokens.model';
-import { User } from 'src/users/users.model';
+import { User } from '../users/users.model';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class TokensService {

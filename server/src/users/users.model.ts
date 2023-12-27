@@ -6,13 +6,12 @@ import {
   DataType,
   HasOne,
   BelongsToMany,
-  BelongsTo,
 } from 'sequelize-typescript';
-import { BannedUser } from 'src/banned-users/banned-users.model';
-import { Musician } from 'src/musicians/musicians.model';
-import { Role } from 'src/roles/roles.model';
-import { UserRoles } from 'src/roles/user-roles.model';
-import { Token } from 'src/tokens/tokens.model';
+import { BannedUser } from '../banned-users/banned-users.model';
+import { Musician } from '../musicians/musicians.model';
+import { Role } from '../roles/roles.model';
+import { UserRoles } from '../roles/user-roles.model';
+import { Token } from '../tokens/tokens.model';
 
 interface UserCreationAttrs {
   email: string;

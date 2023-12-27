@@ -69,3 +69,19 @@ const App: React.FC = observer(() => {
 });
 
 export default App;
+
+// import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
+
+// function App() {
+//   const position = { lat: 61.2176, lng: -149.8997 };
+//   const API_KEY = "AIzaSyAoeEjDC2Mllzp2YqvuEJaXumtbyBtq25c";
+//   return (
+//     <APIProvider apiKey={API_KEY}>
+//       <Map center={position} zoom={10}>
+//         <Marker position={position} />
+//       </Map>
+//     </APIProvider>
+//   );
+// }
+
+// export default App;

@@ -5,18 +5,20 @@ import { useContext } from "react";
 import { Context } from "../main";
 import About from "../pages/about/About";
 import { observer } from "mobx-react-lite";
-import BasicLayout from "../pages/layouts/BasicLayout";
+import BasicLayout from "../components/mainLayout/BasicLayout";
 import MyProfile from "../pages/profile/MyProfile";
 import EditProfile from "../pages/profile/EditProfile";
 import {
   ABOUT,
   EDIT_PROFILE,
+  MUSICIANS,
   PROFILE,
-  REQUESTS,
+  OFFERS,
   SIGN_IN,
   SIGN_UP,
 } from "./paths";
-import RequestsDashboard from "../pages/requestsPage/RequestsDashboard";
+import OffersDashboard from "../pages/offersPage/OffersDashboard";
+import MusiciansDashboard from "../pages/musiciansList/MusiciansDashboard";
 
 const AppRouter: React.FC = observer(() => {
   const { userStore } = useContext(Context);
@@ -43,14 +45,23 @@ const AppRouter: React.FC = observer(() => {
       />
 
       <Route
-        path={REQUESTS}
+        path={OFFERS}
         element={
           <BasicLayout>
-            <RequestsDashboard />
+            <OffersDashboard />
           </BasicLayout>
         }
       />
-      <Route path="*" element={<Navigate to={REQUESTS} />} />
+
+      <Route
+        path={MUSICIANS}
+        element={
+          <BasicLayout>
+            <MusiciansDashboard />
+          </BasicLayout>
+        }
+      />
+      <Route path="*" element={<Navigate to={MUSICIANS} />} />
     </Routes>
   ) : (
     <Routes>

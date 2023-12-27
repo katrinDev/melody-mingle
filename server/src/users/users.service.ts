@@ -4,24 +4,22 @@ import {
   HttpStatus,
   Inject,
   Injectable,
-  NotFoundException,
   forwardRef,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './users.model';
 import { CreateUserDto } from './dto/create-user.dto';
-import { RolesService } from 'src/roles/roles.service';
+import { RolesService } from '../roles/roles.service';
 import * as bcrypt from 'bcrypt';
 import { AddRoleDto } from './dto/add-role.dto';
-import { TokensService } from 'src/tokens/tokens.service';
-import { Role } from 'src/roles/roles.model';
-import { Musician } from 'src/musicians/musicians.model';
+import { TokensService } from '../tokens/tokens.service';
+import { Role } from '../roles/roles.model';
+import { Musician } from '../musicians/musicians.model';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User) private userRepository: typeof User,
-    @InjectModel(Role) private roleRepository: typeof Role,
     private rolesService: RolesService,
     @Inject(forwardRef(() => TokensService))
     private tokensService: TokensService,

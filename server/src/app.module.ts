@@ -9,7 +9,7 @@ import { MusiciansModule } from './musicians/musicians.module';
 import { ProfilesInfoModule } from './profiles-info/profiles-info.module';
 import { AwsModule } from './aws/aws.module';
 import { ProjectsModule } from './projects/projects.module';
-import { RequestsModule } from './requests/requests.module';
+import { OffersModule } from './offers/offers.module';
 import { BannedUsersModule } from './banned-users/banned-users.module';
 
 @Module({
@@ -36,7 +36,7 @@ import { BannedUsersModule } from './banned-users/banned-users.module';
     ProfilesInfoModule,
     AwsModule,
     ProjectsModule,
-    RequestsModule,
+    OffersModule,
     BannedUsersModule,
   ],
 })

@@ -28,14 +28,14 @@ import AccessTimeFilledRoundedIcon from "@mui/icons-material/AccessTimeFilledRou
 import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
 import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import CountrySelector from "../../components/selectors/CountrySelector";
-import TextEditorToolbar from "../../components/toolbars/TextEditorToolbar";
-import DropZone from "../../components/uploads/DropZone";
-import FileUpload from "../../components/uploads/FileUpload";
+import CountrySelector from "../../components/profile/CountrySelector";
 import { useContext } from "react";
-import { Context } from "../../main";
-import { ABOUT } from "../../router/paths";
 import { observer } from "mobx-react-lite";
+import TextEditorToolbar from "../../components/profile/editProfile/TextEditorToolbar";
+import { Context } from "../../main";
+import DropZone from "../../components/profile/editProfile/DropZone";
+import FileUpload from "../../components/profile/editProfile/FileUpload";
+import { ABOUT } from "../../router/paths";
 
 function EditProfile() {
   const { musicianStore } = useContext(Context);

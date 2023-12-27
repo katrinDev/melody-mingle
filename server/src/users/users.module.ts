@@ -3,16 +3,15 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './users.model';
-import { RolesModule } from 'src/roles/roles.module';
-import { TokensModule } from 'src/tokens/tokens.module';
-import { Role } from 'src/roles/roles.model';
+import { RolesModule } from '../roles/roles.module';
+import { TokensModule } from '../tokens/tokens.module';
 
 @Module({
   controllers: [UsersController],
   providers: [UsersService],
   imports: [
     //creates a dynamic provider for the User model that has its own injection token
-    SequelizeModule.forFeature([User, Role]),
+    SequelizeModule.forFeature([User]),
     RolesModule,
     forwardRef(() => TokensModule),
   ],

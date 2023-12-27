@@ -3,8 +3,7 @@ import { TokensService } from './tokens.service';
 import { JwtModule } from '@nestjs/jwt';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Token } from './tokens.model';
-import { UsersModule } from 'src/users/users.module';
-import { User } from 'src/users/users.model';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   providers: [TokensService],

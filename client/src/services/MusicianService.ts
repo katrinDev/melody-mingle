@@ -8,4 +8,8 @@ export default class MusicianService {
   ): Promise<AxiosResponse<IMusician>> {
     return $api.get<IMusician>(`musicians/user/${userId}`);
   }
+
+  static async getAllMusicians(): Promise<AxiosResponse<IMusician[]>> {
+    return $api.get<IMusician[]>("musicians");
+  }
 }

@@ -9,6 +9,9 @@ import avatar3 from "../../assets/flea.jpg";
 import avatar2 from "../../assets/taylor_momsen.jpg";
 import avatar1 from "../../assets/chester_2.jpg";
 import { Link } from "react-router-dom";
+import { PROFILE, OFFERS } from "../../router/paths";
+import AspectRatio from "@mui/joy/AspectRatio";
+import concertImage from "../../assets/about_concert.jpg";
 
 export default function HeadlineAbout() {
   return (
@@ -35,10 +38,12 @@ export default function HeadlineAbout() {
           "& > *": { flex: "auto" },
         }}
       >
-        <Button size="lg" variant="outlined" color="neutral">
-          Сотрудничать
-        </Button>
-        <Link to="/my-profile">
+        <Link to={OFFERS}>
+          <Button size="lg" variant="outlined" color="neutral">
+            Сотрудничать
+          </Button>
+        </Link>
+        <Link to={PROFILE}>
           <Button size="lg" endDecorator={<ArrowForward fontSize="large" />}>
             Мой профиль
           </Button>
@@ -79,6 +84,27 @@ export default function HeadlineAbout() {
           <i>Unleash the power to do more</i>
         </b>
       </Typography>
+
+      <AspectRatio
+        ratio={600 / 520}
+        variant="solid"
+        maxHeight={300}
+        sx={(theme) => ({
+          minWidth: 300,
+          alignSelf: "stretch",
+          [theme.breakpoints.up(834)]: {
+            alignSelf: "initial",
+            flexGrow: 1,
+            "--AspectRatio-maxHeight": "520px",
+            "--AspectRatio-minHeight": "400px",
+          },
+          borderRadius: "sm",
+          bgcolor: "background.level2",
+          flexBasis: "50%",
+        })}
+      >
+        <img src={concertImage} alt="Concert image" />
+      </AspectRatio>
     </TwoSidedLayout>
   );
 }

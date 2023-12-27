@@ -8,10 +8,10 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { CreateUserDto } from '../users/dto/create-user.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { ValidationPipe } from 'src/pipes/validation.pipe';
+import { ValidationPipe } from '../pipes/validation.pipe';
 import { Public } from '../guards/decorators/public.decorator';
 
 @Controller('auth')

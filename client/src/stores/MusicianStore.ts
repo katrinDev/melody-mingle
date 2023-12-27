@@ -8,6 +8,7 @@ import SnackbarPropsStore from "./SnackbarPropsStore";
 export default class MusicianStore {
   musician = {} as IMusician;
   isNew = false;
+  allMusicians = [] as IMusician[];
 
   constructor() {
     makeAutoObservable(this);
@@ -21,6 +22,22 @@ export default class MusicianStore {
     this.isNew = value;
   }
 
+  setAllMusicians(musicians: IMusician[]) {
+    this.allMusicians = musicians;
+  }
+
+  async fetchAllMusicians(snackbarStore: SnackbarPropsStore) {
+    try {
+      const { data } = await MusicianService.getAllMusicians();
+      this.setAllMusicians(data);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const serverMessage = error.response?.data.message;
+
+        snackbarStore.changeAll(true, "danger", `${serverMessage}`);
+      }
+    }
+  }
   async fetchMusicianData(
     userStore: UserStore,
     snackbarStore: SnackbarPropsStore
