@@ -2,6 +2,8 @@ import * as React from "react";
 import Box from "@mui/joy/Box";
 import Container from "@mui/joy/Container";
 import { typographyClasses } from "@mui/joy/Typography";
+import AspectRatio from "@mui/joy/AspectRatio";
+import concertImage from "../../assets/about_concert.jpg";
 
 export default function TwoSidedLayout({
   children,
@@ -47,6 +49,26 @@ export default function TwoSidedLayout({
       >
         {children}
       </Box>
+      <AspectRatio
+        ratio={600 / 520}
+        variant="solid"
+        maxHeight={300}
+        sx={(theme) => ({
+          minWidth: 300,
+          alignSelf: "stretch",
+          [theme.breakpoints.up(834)]: {
+            alignSelf: "initial",
+            flexGrow: 1,
+            "--AspectRatio-maxHeight": "520px",
+            "--AspectRatio-minHeight": "400px",
+          },
+          borderRadius: "sm",
+          bgcolor: "background.level2",
+          flexBasis: "50%",
+        })}
+      >
+        <img src={concertImage} alt="Concert image" />
+      </AspectRatio>
     </Container>
   );
 }

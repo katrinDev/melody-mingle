@@ -120,7 +120,7 @@ export default function ChartsAbout() {
     colorField: "role",
     radius: 0.8,
     style: {
-      height: 307,
+      height: 500,
     },
     legend: true,
   };
@@ -132,7 +132,7 @@ export default function ChartsAbout() {
     colorField: "genre",
     radius: 0.8,
     style: {
-      height: 307,
+      height: 500,
     },
     legend: true,
   };
@@ -145,7 +145,7 @@ export default function ChartsAbout() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        py: 10,
+        pt: 20,
         gap: 4,
         [theme.breakpoints.up(834)]: {
           flexDirection: "row",
@@ -202,7 +202,7 @@ export default function ChartsAbout() {
         level="title-lg"
         sx={{
           position: "absolute",
-          top: "2rem",
+          top: "6rem",
           left: "50%",
           transform: "translateX(-50%)",
         }}

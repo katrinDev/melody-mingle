@@ -12,7 +12,7 @@ import ImageIcon from "@mui/icons-material/Image";
 
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Context } from "../../main";
 import { ABOUT } from "../../router/paths";
 import { Chip } from "@mui/joy";
@@ -24,13 +24,19 @@ export function expStringCalculater(experience: number) {
   return yearsName;
 }
 
-function MyProfile() {
-  const { musicianStore, profileStore } = useContext(Context);
+function Profile() {
+  const { musicianStore, profileStore, projectsStore, snackbarStore } =
+    useContext(Context);
 
   const experience = musicianStore.musician.experience;
   const yearsName = expStringCalculater(experience);
 
   const { avatarUrl, bio } = profileStore.profileInfo;
+  let projects = projectsStore.projects;
+
+  useEffect(() => {
+    projectsStore.fetchProjects(musicianStore.musician.id, snackbarStore);
+  }, []);
 
   return (
     <Box sx={{ flex: 1, width: "100%", pt: "20px" }}>
@@ -181,7 +187,10 @@ function MyProfile() {
           </Box>
           <Divider />
           <Stack spacing={2} sx={{ my: 1 }}>
-            <AudioCard />
+            {projects &&
+              projects.map((project) => (
+                <AudioCard project={project} key={project.id} />
+              ))}
           </Stack>
         </Card>
       </Stack>
@@ -189,4 +198,4 @@ function MyProfile() {
   );
 }
 
-export default observer(MyProfile);
+export default observer(Profile);

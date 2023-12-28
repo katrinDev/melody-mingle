@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Req,
   UsePipes,
 } from '@nestjs/common';
 import { GetMusicianResponse, MusiciansService } from './musicians.service';
@@ -12,6 +13,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Musician } from './musicians.model';
 import { ValidationPipe } from '../pipes/validation.pipe';
 import { CreateMusicianDto } from './dto/create-musician.dto';
+import RequestWithUser from 'src/auth/IRequestWithUser';
 
 @ApiTags('Музыканты')
 @Controller('musicians')
@@ -27,9 +29,9 @@ export class MusiciansController {
 
   @ApiOperation({ summary: 'Получение 1 музыканта по ID пользователя' })
   @ApiResponse({ status: 200, type: Musician })
-  @Get('/user/:id')
-  async findByUserId(@Param('id') id: number) {
-    return this.musiciansService.findByUserId(id);
+  @Get('/user')
+  async findByUserId(@Req() request: RequestWithUser) {
+    return this.musiciansService.findByUserId(request.user.id);
   }
 
   @ApiOperation({ summary: 'Создание музыканта' })

@@ -6,7 +6,7 @@ import { Context } from "../main";
 import About from "../pages/about/About";
 import { observer } from "mobx-react-lite";
 import BasicLayout from "../components/mainLayout/BasicLayout";
-import MyProfile from "../pages/profile/MyProfile";
+import Profile from "../pages/profile/Profile";
 import EditProfile from "../pages/profile/EditProfile";
 import {
   ABOUT,
@@ -39,7 +39,7 @@ const AppRouter: React.FC = observer(() => {
         path={PROFILE}
         element={
           <BasicLayout>
-            <MyProfile />
+            <Profile />
           </BasicLayout>
         }
       />

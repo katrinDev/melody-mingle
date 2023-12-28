@@ -38,14 +38,9 @@ export default class MusicianStore {
       }
     }
   }
-  async fetchMusicianData(
-    userStore: UserStore,
-    snackbarStore: SnackbarPropsStore
-  ) {
+  async fetchMusicianData(snackbarStore: SnackbarPropsStore) {
     try {
-      const { data } = await MusicianService.getMusicianByUserId(
-        userStore.user.id
-      );
+      const { data } = await MusicianService.getMusicianByUserId();
       this.setMusician(data);
     } catch (error) {
       if (error instanceof AxiosError) {

@@ -79,7 +79,7 @@ const Sidebar: React.FC = observer(() => {
   };
 
   useEffect(() => {
-    musicianStore.fetchMusicianData(userStore, snackbarStore);
+    musicianStore.fetchMusicianData(snackbarStore);
     profileStore.fetchProfileData(snackbarStore);
   }, []);
 

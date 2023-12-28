@@ -4,7 +4,6 @@ import { MusiciansService } from './musicians.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Musician } from './musicians.model';
 import { UsersModule } from 'src/users/users.module';
-import { ProfilesInfoModule } from 'src/profiles-info/profiles-info.module';
 import { AwsModule } from 'src/aws/aws.module';
 
 @Module({

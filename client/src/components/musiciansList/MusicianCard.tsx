@@ -11,7 +11,7 @@ import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded";
 import { IMusician } from "../../models/IMusician";
 import { useState } from "react";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
-import { expStringCalculater } from "../../pages/profile/MyProfile";
+import { expStringCalculater } from "../../pages/profile/Profile";
 import { observer } from "mobx-react-lite";
 import PianoRoundedIcon from "@mui/icons-material/PianoRounded";
 import { TheaterComedyRounded } from "@mui/icons-material";

@@ -67,6 +67,9 @@ export class MusiciansService {
   async findByUserId(userId: number): Promise<Musician> {
     const musician = await this.musicianRepository.findOne({
       where: { userId },
+      attributes: {
+        exclude: ['createdAt', 'updatedAt'],
+      },
     });
 
     if (!musician) {

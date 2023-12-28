@@ -7,8 +7,8 @@ export interface IMusician {
   languages: string[];
   genres: string[];
   subRoles: string[] | null;
-  user: {
+  user?: {
     email: string;
   };
-  avatarUrl: string;
+  avatarUrl?: string;
 }

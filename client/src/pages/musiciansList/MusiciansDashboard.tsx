@@ -40,7 +40,10 @@ function MusiciansDashboard() {
             borderColor: "divider",
           }}
         >
-          <HeaderSection />
+          <HeaderSection
+            title="Музыканты"
+            subTitle="Расширь свои творческие возможности"
+          />
 
           <Search />
         </Stack>

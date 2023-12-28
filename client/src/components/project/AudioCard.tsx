@@ -10,8 +10,9 @@ import {
 import { useRef } from "react";
 import PlayCircleFilledRoundedIcon from "@mui/icons-material/PlayCircleFilledRounded";
 import PauseCircleFilledRoundedIcon from "@mui/icons-material/PauseCircleFilledRounded";
+import { IProject } from "../../models/IProject";
 
-export default function AudioCard() {
+export default function AudioCard({ project }: { project: IProject }) {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const handlePlay = () => {
@@ -36,13 +37,10 @@ export default function AudioCard() {
           alignItems="center"
         >
           <Stack direction="column" minWidth="200px">
-            <Typography level="title-md">Just give me a reason</Typography>
-            <Typography level="body-sm">Pink</Typography>
+            <Typography level="title-md">{project.projectName}</Typography>
+            <Typography level="body-sm">{project.performer}</Typography>
           </Stack>
-          <audio
-            ref={audioRef}
-            src="https://melody-mingle-bucket.s3.eu-central-1.amazonaws.com/project-b507960e-58bf-4796-9ac5-2752c1366167.mp3"
-          />
+          <audio ref={audioRef} src={project.projectUrl} />
           <ButtonGroup>
             <IconButton color="primary" size="md" onClick={handlePlay}>
               <PlayCircleFilledRoundedIcon />
@@ -59,7 +57,7 @@ export default function AudioCard() {
                 padding: "1em",
               }}
             >
-              В этой композии я выступаю ведущим вокалистом и соавтором{" "}
+              {project.description}
             </Typography>
           </Box>
         </Stack>
