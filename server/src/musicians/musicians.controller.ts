@@ -7,10 +7,10 @@ import {
   Post,
   UsePipes,
 } from '@nestjs/common';
-import { MusiciansService } from './musicians.service';
+import { GetMusicianResponse, MusiciansService } from './musicians.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Musician } from './musicians.model';
-import { ValidationPipe } from 'src/pipes/validation.pipe';
+import { ValidationPipe } from '../pipes/validation.pipe';
 import { CreateMusicianDto } from './dto/create-musician.dto';
 
 @ApiTags('Музыканты')
@@ -21,7 +21,7 @@ export class MusiciansController {
   @ApiOperation({ summary: 'Просмотр всех музыкантов' })
   @ApiResponse({ status: 200, type: [Musician] })
   @Get()
-  async findAll(): Promise<Musician[]> {
+  async findAll(): Promise<GetMusicianResponse[]> {
     return this.musiciansService.findAll();
   }
 

@@ -6,17 +6,62 @@ import {
 import { InjectModel } from '@nestjs/sequelize';
 import { Musician } from './musicians.model';
 import { CreateMusicianDto } from './dto/create-musician.dto';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../users/users.service';
+import { User } from '../users/users.model';
+import { ProfileInfo } from '../profiles-info/profiles-info.model';
+import { AwsService } from '../aws/aws.service';
+
+export interface GetMusicianResponse {
+  id: number;
+  name: string;
+  mainRole: string;
+  city: string;
+  experience: number;
+  languages: string[];
+  genres: string[];
+  subRoles: string[] | null;
+  user: {
+    email: string;
+  };
+  avatarUrl: string;
+}
 
 @Injectable()
 export class MusiciansService {
   constructor(
     @InjectModel(Musician) private musicianRepository: typeof Musician,
     private usersService: UsersService,
+    private awsService: AwsService,
   ) {}
 
-  async findAll(): Promise<Musician[]> {
-    return this.musicianRepository.findAll();
+  async findAll(): Promise<GetMusicianResponse[]> {
+    const musicians = await this.musicianRepository.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ['email'],
+        },
+        {
+          model: ProfileInfo,
+          attributes: ['avatarKey'],
+        },
+      ],
+    });
+
+    const musiciansWithUrl = musicians.map((musician) => {
+      let musicianPlain = musician.get({ plain: true });
+      let avatarUrl = this.awsService.createFileUrl(
+        musicianPlain.profileInfo.avatarKey,
+      );
+
+      delete musicianPlain.profileInfo.avatarKey;
+      return {
+        ...musicianPlain,
+        avatarUrl,
+      };
+    });
+
+    return musiciansWithUrl;
   }
 
   async findByUserId(userId: number): Promise<Musician> {
