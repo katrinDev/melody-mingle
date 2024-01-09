@@ -20,13 +20,22 @@ import RequestWithUser from 'src/auth/IRequestWithUser';
 export class MusiciansController {
   constructor(private musiciansService: MusiciansService) {}
 
+  @ApiOperation({
+    summary: 'Просмотр всех музыкантов кроме текущего пользователя',
+  })
+  @ApiResponse({ status: 200, type: [Musician] })
+  @Get('/others')
+  async findAllTheOthers(
+    @Req() request: RequestWithUser,
+  ): Promise<GetMusicianResponse[]> {
+    return this.musiciansService.findAllTheOthers(request.user.musicianId);
+  }
+
   @ApiOperation({ summary: 'Просмотр всех музыкантов' })
   @ApiResponse({ status: 200, type: [Musician] })
   @Get()
-  async findAll(
-    @Req() request: RequestWithUser,
-  ): Promise<GetMusicianResponse[]> {
-    return this.musiciansService.findAll(request.user.musicianId);
+  async findAll() {
+    return this.musiciansService.findAll();
   }
 
   @ApiOperation({ summary: 'Получение 1 музыканта по ID пользователя' })

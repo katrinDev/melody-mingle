@@ -11,6 +11,10 @@ export default class MusicianService {
     return $api.get<IMusician>(`musicians/${id}`);
   }
 
+  static async getAllOtherMusicians(): Promise<AxiosResponse<IMusician[]>> {
+    return $api.get<IMusician[]>("musicians/others");
+  }
+
   static async getAllMusicians(): Promise<AxiosResponse<IMusician[]>> {
     return $api.get<IMusician[]>("musicians");
   }

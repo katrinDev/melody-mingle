@@ -35,7 +35,11 @@ export class MusiciansService {
     private awsService: AwsService,
   ) {}
 
-  async findAll(musicianId: number): Promise<GetMusicianResponse[]> {
+  async findAll() {
+    return this.musicianRepository.findAll();
+  }
+
+  async findAllTheOthers(musicianId: number): Promise<GetMusicianResponse[]> {
     const musicians = await this.musicianRepository.findAll({
       where: {
         id: {

@@ -169,7 +169,7 @@ const Sidebar: React.FC = observer(() => {
           }}
         >
           <ListItem>
-            <ListItemButton component="a" href={ABOUT}>
+            <ListItemButton component={Link} to={ABOUT}>
               <HomeRoundedIcon />
               <ListItemContent>
                 <Typography level="title-sm">Главная</Typography>

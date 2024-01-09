@@ -27,7 +27,7 @@ export default class MusicianStore {
 
   async fetchAllMusicians(snackbarStore: SnackbarPropsStore) {
     try {
-      const { data } = await MusicianService.getAllMusicians();
+      const { data } = await MusicianService.getAllOtherMusicians();
       this.setAllMusicians(data);
     } catch (error) {
       if (error instanceof AxiosError) {
