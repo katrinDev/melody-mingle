@@ -15,7 +15,6 @@ export default function BasicLayout({ children }: React.PropsWithChildren) {
           component="main"
           className="MainContent"
           sx={{
-            pb: 2,
             flex: 1,
             display: "flex",
             flexDirection: "column",

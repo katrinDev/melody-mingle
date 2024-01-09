@@ -6,4 +6,10 @@ export default class ProfileInfoService {
   static async getProfileData(): Promise<AxiosResponse<IProfileInfo>> {
     return $api.get<IProfileInfo>(`profiles-info`);
   }
+
+  static async getProfileDataByMusicianId(
+    musicianId: number
+  ): Promise<AxiosResponse<IProfileInfo>> {
+    return $api.get<IProfileInfo>(`profiles-info/${musicianId}`);
+  }
 }

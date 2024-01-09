@@ -6,19 +6,20 @@ import { Context } from "../main";
 import About from "../pages/about/About";
 import { observer } from "mobx-react-lite";
 import BasicLayout from "../components/mainLayout/BasicLayout";
-import Profile from "../pages/profile/Profile";
 import EditProfile from "../pages/profile/EditProfile";
 import {
   ABOUT,
   EDIT_PROFILE,
   MUSICIANS,
-  PROFILE,
+  MUSICIAN_PROFILE,
+  MY_PROFILE,
   OFFERS,
   SIGN_IN,
   SIGN_UP,
 } from "./paths";
 import OffersDashboard from "../pages/offersPage/OffersDashboard";
 import MusiciansDashboard from "../pages/musiciansList/MusiciansDashboard";
+import Profile from "../pages/profile/Profile";
 
 const AppRouter: React.FC = observer(() => {
   const { userStore } = useContext(Context);
@@ -36,14 +37,22 @@ const AppRouter: React.FC = observer(() => {
         }
       />
       <Route
-        path={PROFILE}
+        path={MY_PROFILE}
         element={
           <BasicLayout>
-            <Profile />
+            <Profile key={MY_PROFILE} />
           </BasicLayout>
         }
       />
 
+      <Route
+        path={MUSICIAN_PROFILE}
+        element={
+          <BasicLayout>
+            <Profile key={MUSICIAN_PROFILE} />
+          </BasicLayout>
+        }
+      />
       <Route
         path={OFFERS}
         element={

@@ -1,6 +1,5 @@
 import { makeAutoObservable } from "mobx";
 import { IMusician } from "../models/IMusician";
-import UserStore from "./UserStore";
 import MusicianService from "../services/MusicianService";
 import { AxiosError } from "axios";
 import SnackbarPropsStore from "./SnackbarPropsStore";
@@ -38,7 +37,8 @@ export default class MusicianStore {
       }
     }
   }
-  async fetchMusicianData(snackbarStore: SnackbarPropsStore) {
+
+  async fetchMusicianByUser(snackbarStore: SnackbarPropsStore) {
     try {
       const { data } = await MusicianService.getMusicianByUserId();
       this.setMusician(data);
@@ -53,5 +53,25 @@ export default class MusicianStore {
         }
       }
     }
+  }
+
+  searchMusicians(searchTerm: string) {
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    const results = this.allMusicians.filter((musician) => {
+      let { id, avatarUrl, ...searchObj } = musician;
+      searchObj = Object.assign({}, searchObj, {
+        email: musician.user?.email,
+      });
+
+      const musicianValues = new Set(
+        Object.values(searchObj)
+          .map((value) => value?.toString().toLowerCase())
+          .flatMap((value) => value?.split(" "))
+      );
+
+      return musicianValues.has(lowerCaseSearchTerm);
+    });
+
+    this.setAllMusicians(results);
   }
 }

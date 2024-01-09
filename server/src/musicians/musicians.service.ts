@@ -10,6 +10,7 @@ import { UsersService } from '../users/users.service';
 import { User } from '../users/users.model';
 import { ProfileInfo } from '../profiles-info/profiles-info.model';
 import { AwsService } from '../aws/aws.service';
+import { Op } from 'sequelize';
 
 export interface GetMusicianResponse {
   id: number;
@@ -34,8 +35,13 @@ export class MusiciansService {
     private awsService: AwsService,
   ) {}
 
-  async findAll(): Promise<GetMusicianResponse[]> {
+  async findAll(musicianId: number): Promise<GetMusicianResponse[]> {
     const musicians = await this.musicianRepository.findAll({
+      where: {
+        id: {
+          [Op.ne]: musicianId,
+        },
+      },
       include: [
         {
           model: User,
@@ -79,7 +85,10 @@ export class MusiciansService {
   }
 
   async findById(id: number): Promise<Musician> {
-    const musician = await this.musicianRepository.findByPk(id);
+    const musician = await this.musicianRepository.findByPk(id, {
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    });
+
     if (!musician) {
       throw new NotFoundException('Музыкант не был найден');
     }

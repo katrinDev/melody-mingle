@@ -23,8 +23,10 @@ export class MusiciansController {
   @ApiOperation({ summary: 'Просмотр всех музыкантов' })
   @ApiResponse({ status: 200, type: [Musician] })
   @Get()
-  async findAll(): Promise<GetMusicianResponse[]> {
-    return this.musiciansService.findAll();
+  async findAll(
+    @Req() request: RequestWithUser,
+  ): Promise<GetMusicianResponse[]> {
+    return this.musiciansService.findAll(request.user.musicianId);
   }
 
   @ApiOperation({ summary: 'Получение 1 музыканта по ID пользователя' })

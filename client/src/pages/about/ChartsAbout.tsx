@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { IMusician } from "../../models/IMusician";
 import MusicianService from "../../services/MusicianService";
-import { IOffer } from "../../models/IOffer";
-import moment from "moment";
-import { Line } from "@ant-design/plots";
 import { Pie } from "@ant-design/plots";
 import Box from "@mui/joy/Box";
 import Container from "@mui/joy/Container";
@@ -20,15 +17,9 @@ interface RolesCount {
   amount: number;
 }
 
-interface RequestsCount {
-  date: string;
-  requestsAmount: number;
-}
-
 export default function ChartsAbout() {
   const [pieChartData, setPieChartData] = useState<GenresCount[]>([]);
   const [pieChartRoles, setPieChartRoles] = useState<RolesCount[]>([]);
-  const [lineChartData, setLineChartData] = useState<RequestsCount[]>([]);
 
   function calculateGenresCount(musicians: IMusician[]) {
     const genreCounts = musicians.reduce<Record<string, number>>(
@@ -66,26 +57,6 @@ export default function ChartsAbout() {
     }));
   }
 
-  function caculateRequestsCount(requests: IOffer[]) {
-    const requestsCountObj = requests.reduce<Record<string, number>>(
-      (acc, request) => {
-        const date = moment(request.createdAt).format("DD-MM-YYYY");
-
-        console.log(date);
-        acc[date] = (acc[date] || 0) + 1;
-
-        return acc;
-      },
-      {}
-    );
-
-    console.log(Object.entries(requestsCountObj));
-    return Object.entries(requestsCountObj).map(([date, requestsAmount]) => ({
-      date,
-      requestsAmount,
-    }));
-  }
-
   useEffect(() => {
     async function fetchData() {
       const { data } = await MusicianService.getAllMusicians();
@@ -95,23 +66,6 @@ export default function ChartsAbout() {
     }
     fetchData().catch(console.error);
   }, []);
-
-  const config = {
-    lineChartData,
-    padding: "auto",
-    xField: "date",
-    yField: "requestsAmount",
-    style: {
-      height: 500,
-    },
-    xAxis: {
-      tickCount: 5,
-    },
-    slider: {
-      start: 0,
-      end: 1,
-    },
-  };
 
   const pieChartConfig2 = {
     appendPadding: 0,

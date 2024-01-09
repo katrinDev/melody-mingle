@@ -5,6 +5,7 @@ import {
   FileTypeValidator,
   Get,
   MaxFileSizeValidator,
+  Param,
   ParseFilePipe,
   Post,
   Req,
@@ -62,6 +63,11 @@ export class ProfilesInfoController {
       avatar.buffer,
       request.user.musicianId,
     );
+  }
+
+  @Get(':musicianId')
+  async findOneByMusicianId(@Param('musicianId') musicianId: number) {
+    return this.profileInfoService.getProfileInfo(musicianId);
   }
 
   @Delete('avatar')

@@ -146,4 +146,8 @@ export class OffersService {
 
     return offer;
   }
+
+  async getOffersCount(): Promise<number> {
+    return this.offerRepository.count();
+  }
 }

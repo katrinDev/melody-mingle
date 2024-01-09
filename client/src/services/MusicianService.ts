@@ -7,6 +7,10 @@ export default class MusicianService {
     return $api.get<IMusician>(`musicians/user`);
   }
 
+  static async getMusicianById(id: number): Promise<AxiosResponse<IMusician>> {
+    return $api.get<IMusician>(`musicians/${id}`);
+  }
+
   static async getAllMusicians(): Promise<AxiosResponse<IMusician[]>> {
     return $api.get<IMusician[]>("musicians");
   }

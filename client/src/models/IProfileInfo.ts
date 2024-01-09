@@ -1,4 +1,4 @@
-export default interface ProfileInfo {
+export default interface IProfileInfo {
   bio: string | null;
   avatarUrl: string | null;
 }

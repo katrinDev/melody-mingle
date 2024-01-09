@@ -52,4 +52,9 @@ export class OffersController {
   async findAll(): Promise<GetOfferResponse[]> {
     return this.offersService.findAll();
   }
+
+  @Get('/count')
+  async getOffersCount(): Promise<number> {
+    return this.offersService.getOffersCount();
+  }
 }

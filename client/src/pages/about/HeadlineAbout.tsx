@@ -9,7 +9,7 @@ import avatar3 from "../../assets/flea.jpg";
 import avatar2 from "../../assets/taylor_momsen.jpg";
 import avatar1 from "../../assets/chester_2.jpg";
 import { Link } from "react-router-dom";
-import { PROFILE, OFFERS } from "../../router/paths";
+import { MY_PROFILE, OFFERS } from "../../router/paths";
 
 export default function HeadlineAbout() {
   return (
@@ -41,7 +41,7 @@ export default function HeadlineAbout() {
             Сотрудничать
           </Button>
         </Link>
-        <Link to={PROFILE}>
+        <Link to={MY_PROFILE}>
           <Button size="lg" endDecorator={<ArrowForward fontSize="large" />}>
             Мой профиль
           </Button>

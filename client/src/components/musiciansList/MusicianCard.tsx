@@ -3,7 +3,6 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import CardOverflow from "@mui/joy/CardOverflow";
 import IconButton from "@mui/joy/IconButton";
-import Link from "@mui/joy/Link";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
@@ -17,8 +16,12 @@ import PianoRoundedIcon from "@mui/icons-material/PianoRounded";
 import { TheaterComedyRounded } from "@mui/icons-material";
 import LanguageRoundedIcon from "@mui/icons-material/LanguageRounded";
 
+import Link from "@mui/joy/Link";
+import { Link as RouterLink } from "react-router-dom";
+
 function MusicianCard(props: IMusician) {
   const {
+    id,
     mainRole,
     languages,
     city,
@@ -65,7 +68,7 @@ function MusicianCard(props: IMusician) {
             "--AspectRatio-maxHeight": { xs: "160px", sm: "9999px" },
           }}
         >
-          <img alt="" src={avatarUrl} />
+          <img alt="Аватар музыканта" src={avatarUrl} />
           <Stack
             alignItems="center"
             direction="row"
@@ -99,10 +102,10 @@ function MusicianCard(props: IMusician) {
             <Typography level="body-sm">{mainRole}</Typography>
             <Typography level="title-md">
               <Link
-                overlay
                 underline="none"
-                href="#interactive-card"
-                sx={{ color: "text.primary" }}
+                color="primary"
+                component={RouterLink}
+                to={`/musicians/${id}`}
               >
                 {name}
               </Link>
@@ -169,9 +172,11 @@ function MusicianCard(props: IMusician) {
           sx={{ mt: "auto" }}
           justifyContent="space-between"
         >
-          <Typography level="body-xs" startDecorator={<EmailRoundedIcon />}>
-            {user.email}
-          </Typography>
+          {user?.email && (
+            <Typography level="body-xs" startDecorator={<EmailRoundedIcon />}>
+              {user?.email}
+            </Typography>
+          )}
           <Typography level="title-lg" sx={{ flexGrow: 1, textAlign: "right" }}>
             <Typography level="body-md">{`${experience} ${yearsName} опыта`}</Typography>
           </Typography>

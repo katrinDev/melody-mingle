@@ -23,14 +23,14 @@ import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import LibraryMusicRoundedIcon from "@mui/icons-material/LibraryMusicRounded";
 
-import { closeSidebar } from "./utils";
+import { closeSidebar } from "./toggleSidebar";
 import ColorSchemeProfileToggle from "../mainLayout/ColorSchemeProfileToggle";
 import {
   ABOUT,
   EDIT_PROFILE,
   MUSICIANS,
-  PROFILE,
   OFFERS,
+  MY_PROFILE,
 } from "../../router/paths";
 import { Context } from "../../main";
 import { observer } from "mobx-react-lite";
@@ -69,7 +69,7 @@ function Toggler({
 }
 
 const Sidebar: React.FC = observer(() => {
-  const { musicianStore, userStore, snackbarStore, profileStore } =
+  const { musicianStore, userStore, snackbarStore, profileStore, offersStore } =
     useContext(Context);
 
   const { avatarUrl } = profileStore.profileInfo;
@@ -79,8 +79,9 @@ const Sidebar: React.FC = observer(() => {
   };
 
   useEffect(() => {
-    musicianStore.fetchMusicianData(snackbarStore);
+    musicianStore.fetchMusicianByUser(snackbarStore);
     profileStore.fetchProfileData(snackbarStore);
+    offersStore.fetchOffersCount(snackbarStore);
   }, []);
 
   return (
@@ -197,7 +198,7 @@ const Sidebar: React.FC = observer(() => {
                   </ListItemButton>
 
                   <Chip size="sm" color="primary" variant="solid">
-                    4
+                    {offersStore.offersCount}
                   </Chip>
                 </ListItem>
                 <ListItem>
@@ -210,7 +211,7 @@ const Sidebar: React.FC = observer(() => {
           </ListItem>
 
           <ListItem>
-            <ListItemButton component={Link} to={PROFILE}>
+            <ListItemButton component={Link} to={MY_PROFILE}>
               <GroupRoundedIcon />
               <ListItemContent>
                 <Typography level="title-sm">Профиль</Typography>
@@ -219,7 +220,7 @@ const Sidebar: React.FC = observer(() => {
           </ListItem>
 
           <ListItem>
-            <ListItemButton role="menuitem" component={Link} to={PROFILE}>
+            <ListItemButton role="menuitem" component={Link} to={MY_PROFILE}>
               <ShoppingCartRoundedIcon />
               <ListItemContent>
                 <Typography level="title-sm">Личные заявки</Typography>
