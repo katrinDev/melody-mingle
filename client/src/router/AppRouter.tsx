@@ -70,7 +70,7 @@ const AppRouter: React.FC = observer(() => {
           </BasicLayout>
         }
       />
-      <Route path="*" element={<Navigate to={MUSICIANS} />} />
+      <Route path="*" element={<Navigate to={EDIT_PROFILE} />} />
     </Routes>
   ) : (
     <Routes>

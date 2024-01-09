@@ -1,5 +1,6 @@
 import { CssVarsProvider } from "@mui/joy/styles";
 import CssBaseline from "@mui/joy/CssBaseline";
+import TranslateRoundedIcon from "@mui/icons-material/TranslateRounded";
 import Box from "@mui/joy/Box";
 import Stack from "@mui/joy/Stack";
 
@@ -11,7 +12,7 @@ import { useContext, useEffect, useState } from "react";
 import { Context } from "../../main";
 import { observer } from "mobx-react-lite";
 import OfferCard from "../../components/offer/OfferCard";
-import { Typography } from "@mui/joy";
+import { Typography, Select, Option } from "@mui/joy";
 
 const ITEMS_PER_PAGE = 3;
 
@@ -58,6 +59,7 @@ function OffersDashboard() {
   return (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
+
       <Box
         component="main"
         sx={{

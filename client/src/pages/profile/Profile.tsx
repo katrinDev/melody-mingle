@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
 import Divider from "@mui/joy/Divider";

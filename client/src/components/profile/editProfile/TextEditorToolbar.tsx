@@ -1,6 +1,4 @@
 import Box, { BoxProps } from "@mui/joy/Box";
-import Select from "@mui/joy/Select";
-import Option from "@mui/joy/Option";
 import IconButton from "@mui/joy/IconButton";
 
 import FormatBoldRoundedIcon from "@mui/icons-material/FormatBoldRounded";
@@ -22,12 +20,6 @@ export default function EditorToolbar(props: BoxProps) {
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
     >
-      <Select size="sm" defaultValue="1" sx={{ minWidth: 160 }}>
-        <Option value="1">Normal text</Option>
-        <Option value="2" sx={{ fontFamily: "code" }}>
-          Code text
-        </Option>
-      </Select>
       <IconButton size="sm" variant="plain" color="neutral">
         <FormatBoldRoundedIcon />
       </IconButton>
