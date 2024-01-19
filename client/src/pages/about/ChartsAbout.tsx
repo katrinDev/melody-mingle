@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IMusician } from "../../models/IMusician";
+import { IMusician } from "../../models/musician/IMusician";
 import MusicianService from "../../services/MusicianService";
 import { Pie } from "@ant-design/plots";
 import Box from "@mui/joy/Box";
@@ -161,7 +161,7 @@ export default function ChartsAbout() {
           transform: "translateX(-50%)",
         }}
       >
-        <b>Check our most popular genres and roles </b>
+        <b>Cамые популярные жанры и роли среди музыкантов платформы</b>
       </Typography>
     </Container>
   );

@@ -86,7 +86,7 @@ export default function OfferCard(props: IOffer) {
                 startDecorator={<WorkspacePremiumRoundedIcon />}
                 size="md"
               >
-                Expires soon
+                Скоро истекает 
               </Chip>
             )}
             <IconButton

@@ -20,7 +20,7 @@ import { Chip } from "@mui/joy";
 import ProfileListBox from "../../components/profile/ProfileListBox";
 import AudioCard from "../../components/project/AudioCard";
 import { useParams } from "react-router-dom";
-import { IMusician } from "../../models/IMusician";
+import { IMusician } from "../../models/musician/IMusician";
 import MusicianService from "../../services/MusicianService";
 import { AxiosError } from "axios";
 import ProfileInfoService from "../../services/ProfileInfoService";
@@ -48,24 +48,6 @@ function Profile() {
   const [loadingMusician, setLoadingMusician] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        setLoadingProjects(true);
-        const { data } = await ProjectsService.getProjectsByMusician(
-          numberMusicianId || musicianStore.musician.id
-        );
-
-        setProjects(data);
-        setLoadingProjects(false);
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          const serverMessage = error.response?.data.message;
-
-          snackbarStore.changeAll(true, "danger", `${serverMessage}`);
-        }
-      }
-    };
-
     const fetchMusicianAndProfileData = async () => {
       try {
         setLoadingMusician(true);
@@ -92,8 +74,41 @@ function Profile() {
     if (id) {
       fetchMusicianAndProfileData();
     }
-    fetchProjects();
   }, []);
+
+  useEffect(() => {
+    if (!id) {
+      setMusician(musicianStore.musician);
+    }
+    const fetchProjects = async () => {
+      try {
+        setLoadingProjects(true);
+
+        const { data } = await ProjectsService.getProjectsByMusician(
+          numberMusicianId || musicianStore.musician.id
+        );
+
+        setProjects(data);
+        setLoadingProjects(false);
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          const serverMessage = error.response?.data.message;
+
+          snackbarStore.changeAll(true, "danger", `${serverMessage}`);
+        }
+      }
+    };
+
+    if (numberMusicianId || musicianStore.musician.id) {
+      fetchProjects();
+    }
+  }, [musicianStore.musician]);
+
+  useEffect(() => {
+    if (!id) {
+      setProfileData(profileStore.profileInfo);
+    }
+  }, [profileStore.profileInfo]);
 
   const experience = musician.experience;
   const yearsName = expStringCalculater(experience);
@@ -177,7 +192,7 @@ function Profile() {
             </AspectRatio>
             <Stack spacing={3} sx={{ flexGrow: 1 }}>
               <div>
-                <Typography level="h2" component="h1" sx={{ mt: 1 }}>
+                <Typography level="h2" component="h1">
                   {musician.name}
                 </Typography>
                 <Typography>

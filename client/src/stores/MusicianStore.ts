@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { IMusician } from "../models/IMusician";
+import { IMusician } from "../models/musician/IMusician";
 import MusicianService from "../services/MusicianService";
 import { AxiosError } from "axios";
 import SnackbarPropsStore from "./SnackbarPropsStore";
@@ -15,6 +15,22 @@ export default class MusicianStore {
 
   setMusician(musician: IMusician) {
     this.musician = musician;
+  }
+
+  addSubRole(subRole: string) {
+    if (this.musician.subRoles !== null) {
+      this.musician.subRoles?.push(subRole);
+    } else {
+      this.musician.subRoles = [subRole];
+    }
+  }
+
+  removeSubRole(subRole: string) {
+    if (this.musician.subRoles?.length) {
+      this.musician.subRoles = this.musician.subRoles.filter(
+        (item) => item !== subRole
+      );
+    }
   }
 
   setIsNew(value: boolean) {
@@ -51,6 +67,28 @@ export default class MusicianStore {
 
           snackbarStore.changeAll(true, "danger", `${serverMessage}`);
         }
+      }
+    }
+  }
+
+  async updateMusician(
+    newMusician: IMusician,
+    snackbarStore: SnackbarPropsStore
+  ) {
+    try {
+      const { data } = await MusicianService.updateMusician(newMusician);
+      this.setMusician(data);
+
+      snackbarStore.changeAll(
+        true,
+        "success",
+        "Данные пользователя успешно изменены"
+      );
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const serverMessage = error.response?.data.message;
+
+        snackbarStore.changeAll(true, "danger", `${serverMessage}`);
       }
     }
   }

@@ -19,7 +19,6 @@ export class FileUploadErrorFilter implements ExceptionFilter {
     if (status === HttpStatus.UNPROCESSABLE_ENTITY) {
       fs.unlink(request.file?.path, (err) => {
         if (err) {
-          console.error(err);
           return err;
         }
       });

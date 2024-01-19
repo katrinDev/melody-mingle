@@ -1,9 +1,4 @@
-import {
-  HttpCode,
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { S3 } from 'aws-sdk';
 
@@ -36,7 +31,6 @@ export class AwsService {
 
       return uploadResult;
     } catch (error) {
-      console.log(error);
       throw new HttpException(
         'Не удалось загрузить файл',
         HttpStatus.FORBIDDEN,

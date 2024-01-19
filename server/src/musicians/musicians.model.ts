@@ -61,16 +61,16 @@ export class Musician extends Model<Musician, MusicianCreationAttrs> {
   mainRole: string;
 
   @ApiProperty({
-    example: 'Автор текстов песен, аранжировщик',
+    example: ['Автор текстов песен', 'Аранжировщик'],
     description: 'Дополнительные навыки',
   })
   @Column({
-    type: DataType.STRING,
+    type: DataType.ARRAY(DataType.STRING),
     allowNull: true,
   })
   subRoles: string[];
 
-  @ApiProperty({ example: 'Minsk', description: 'Город проживания' })
+  @ApiProperty({ example: 'Минск', description: 'Город проживания' })
   @Column({
     type: DataType.STRING,
     allowNull: false,

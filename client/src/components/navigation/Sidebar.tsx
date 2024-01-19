@@ -22,7 +22,8 @@ import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import LibraryMusicRoundedIcon from "@mui/icons-material/LibraryMusicRounded";
-
+import PianoRoundedIcon from '@mui/icons-material/PianoRounded';
+import LyricsRoundedIcon from '@mui/icons-material/LyricsRounded';
 import { closeSidebar } from "./toggleSidebar";
 import ColorSchemeProfileToggle from "../mainLayout/ColorSchemeProfileToggle";
 import {
@@ -177,6 +178,15 @@ const Sidebar: React.FC = observer(() => {
             </ListItemButton>
           </ListItem>
 
+          <ListItem>
+            <ListItemButton component={Link} to={MY_PROFILE}>
+              <GroupRoundedIcon />
+              <ListItemContent>
+                <Typography level="title-sm">Профиль</Typography>
+              </ListItemContent>
+            </ListItemButton>
+          </ListItem>
+
           <ListItem nested>
             <Toggler
               renderToggle={({ open, setOpen }) => (
@@ -209,16 +219,29 @@ const Sidebar: React.FC = observer(() => {
               </List>
             </Toggler>
           </ListItem>
-
+         
           <ListItem>
             <ListItemButton component={Link} to={MY_PROFILE}>
-              <GroupRoundedIcon />
+              <LyricsRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Профиль</Typography>
+                <Typography level="title-sm">Чаты</Typography>
               </ListItemContent>
+
+               <Chip size="sm" color="primary" variant="solid">
+                  3
+                </Chip>
             </ListItemButton>
           </ListItem>
 
+          <ListItem>
+            <ListItemButton component={Link} to={MY_PROFILE}>
+              <PianoRoundedIcon />
+              <ListItemContent>
+                <Typography level="title-sm">Творчество</Typography>
+              </ListItemContent>
+            </ListItemButton>
+          </ListItem>
+          
           <ListItem>
             <ListItemButton role="menuitem" component={Link} to={MY_PROFILE}>
               <ShoppingCartRoundedIcon />

@@ -14,6 +14,10 @@ function MapWindow({ address }: IMapProps) {
   return (
     <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
       <Geocoding address={address} />
+      <script
+    async
+    src={`https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&callback=Function.prototype`}
+  ></script>
     </APIProvider>
   );
 }

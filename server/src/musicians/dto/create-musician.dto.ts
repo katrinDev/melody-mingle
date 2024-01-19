@@ -45,14 +45,26 @@ export class CreateMusicianDto {
   @IsNotEmpty({ message: 'Must not be empty' })
   readonly experience: number;
 
+  @ApiProperty({
+    example: ['Автор текстов песен', 'Аранжировщик'],
+    description: 'Дополнительные навыки',
+  })
   @IsArray()
   @IsString({ each: true })
   readonly subRoles: string[];
 
+  @ApiProperty({
+    example: ['pop', 'jazz'],
+    description: 'Жанры, в которых работает музыкант',
+  })
   @IsArray()
   @IsString({ each: true })
   readonly genres: string[];
 
+  @ApiProperty({
+    example: ['Русский', 'Англиский'],
+    description: 'Языки, которыми владеет музыкант',
+  })
   @IsArray()
   @IsString({ each: true })
   @IsNotEmpty({ message: 'Must not be empty' })
@@ -60,7 +72,7 @@ export class CreateMusicianDto {
 
   @ApiProperty({
     example: 1,
-    description: 'Внешний ключ пользователВнешний ключ пользователя',
+    description: 'Внешний ключ пользователя',
   })
   @IsInt({ message: 'Must be an integer' })
   @IsNotEmpty({ message: 'Must not be empty' })

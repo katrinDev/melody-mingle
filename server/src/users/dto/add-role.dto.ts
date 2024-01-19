@@ -4,7 +4,7 @@ import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 export class AddRoleDto {
   @ApiProperty({
     example: 1,
-    description: 'Внешний ключ пользователВнешний ключ пользователя',
+    description: 'Внешний ключ пользователя',
   })
   @IsInt({ message: 'Must be an integer' })
   @IsNotEmpty({ message: 'Must not be empty' })

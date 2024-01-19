@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Req,
   UsePipes,
@@ -14,6 +15,8 @@ import { Musician } from './musicians.model';
 import { ValidationPipe } from '../pipes/validation.pipe';
 import { CreateMusicianDto } from './dto/create-musician.dto';
 import RequestWithUser from 'src/auth/IRequestWithUser';
+import { UpdateMusicianDto } from './dto/update-musician.dto';
+import { Public } from 'src/guards/decorators/public.decorator';
 
 @ApiTags('Музыканты')
 @Controller('musicians')
@@ -40,7 +43,7 @@ export class MusiciansController {
 
   @ApiOperation({ summary: 'Получение 1 музыканта по ID пользователя' })
   @ApiResponse({ status: 200, type: Musician })
-  @Get('/user')
+  @Get('/by-user')
   async findByUserId(@Req() request: RequestWithUser) {
     return this.musiciansService.findByUserId(request.user.id);
   }
@@ -67,5 +70,18 @@ export class MusiciansController {
   @Get(':id')
   async findOne(@Param('id') id: number) {
     return this.musiciansService.findById(id);
+  }
+
+  @ApiOperation({ summary: 'Обновление данных музыканта' })
+  @ApiResponse({ status: 200, type: Musician })
+  @Patch()
+  async updateMusician(
+    @Req() request: RequestWithUser,
+    @Body() updateMusicianDto: UpdateMusicianDto,
+  ) {
+    return this.musiciansService.updateMusician(
+      request.user.musicianId,
+      updateMusicianDto,
+    );
   }
 }

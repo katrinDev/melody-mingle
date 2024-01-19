@@ -2,11 +2,11 @@ export interface IMusician {
   id: number;
   name: string;
   mainRole: string;
+  subRoles: string[] | null;
   city: string;
   experience: number;
   languages: string[];
   genres: string[];
-  subRoles: string[] | null;
   user?: {
     email: string;
   };

@@ -25,7 +25,7 @@ export default function HeadlineAbout() {
         We help musicians implementing their biggest ideas
       </Typography>
       <Typography fontSize="lg" textColor="text.secondary" lineHeight="lg">
-        Create magical sounds and inspire without limits
+        Создавай уникальные проекты и вдохновляй без границ 
       </Typography>
       <Box
         sx={{
@@ -79,7 +79,7 @@ export default function HeadlineAbout() {
       >
         <b>
           {" "}
-          <i>Unleash the power to do more</i>
+          <i>Раскрой силу творить по-новому</i>
         </b>
       </Typography>
     </TwoSidedLayout>
