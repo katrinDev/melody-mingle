@@ -57,7 +57,7 @@ export class ProfilesInfoController {
   ) {
     const newFileName =
       avatar.fieldname + '-' + uuidv4() + extname(avatar.originalname);
-
+    console.log(JSON.stringify(avatar));
     return await this.profileInfoService.uploadAvatar(
       newFileName,
       avatar.buffer,

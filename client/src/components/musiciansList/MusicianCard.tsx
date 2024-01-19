@@ -7,7 +7,7 @@ import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded";
-import { IMusician } from "../../models/IMusician";
+import { IMusician } from "../../models/musician/IMusician";
 import { useState } from "react";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import { expStringCalculater } from "../../pages/profile/Profile";

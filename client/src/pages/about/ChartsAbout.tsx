@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IMusician } from "../../models/IMusician";
+import { IMusician } from "../../models/musician/IMusician";
 import MusicianService from "../../services/MusicianService";
 import { Pie } from "@ant-design/plots";
 import Box from "@mui/joy/Box";

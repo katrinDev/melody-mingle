@@ -8,7 +8,6 @@ import Button from "@mui/joy/Button";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel, { formLabelClasses } from "@mui/joy/FormLabel";
 import IconButton, { IconButtonProps } from "@mui/joy/IconButton";
-import Link from "@mui/joy/Link";
 import Input from "@mui/joy/Input";
 import Typography from "@mui/joy/Typography";
 import Stack from "@mui/joy/Stack";
@@ -18,12 +17,13 @@ import LibraryMusicRoundedIcon from "@mui/icons-material/LibraryMusicRounded";
 import imageLight from "/src/assets/musicians1.jpg";
 import imageDark from "/src/assets/musicians2.jpg";
 import { useContext } from "react";
-import { FormHelperText } from "@mui/joy";
+import { FormHelperText, Link } from "@mui/joy";
 import { InfoOutlined } from "@mui/icons-material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Context } from "../../main";
 import { AuthRequest } from "../../models/request/AuthRequest";
-import { useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { SIGN_UP } from "../../router/paths";
 
 export function ColorSchemeToggle({ onClick, ...props }: IconButtonProps) {
   const { mode, setMode } = useColorScheme();
@@ -177,7 +177,7 @@ export default function SignIn() {
               <Typography level="h3">Вход</Typography>
               <Typography level="body-sm">
                 Пока нет профиля?{" "}
-                <Link href="/sign-up" level="title-sm">
+                <Link component={RouterLink} to={SIGN_UP} level="title-sm">
                   Зарегистрируйся!
                 </Link>
               </Typography>

@@ -22,7 +22,8 @@ import { FormHelperText } from "@mui/joy";
 import { InfoOutlined } from "@mui/icons-material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Context } from "../../main";
-import { useNavigate } from "react-router-dom";
+import { SIGN_IN } from "../../router/paths";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 interface RegisterForm {
   email: string;
@@ -172,7 +173,7 @@ export default function SignUp() {
               <Typography level="h3">Регистрация</Typography>
               <Typography level="body-sm">
                 Есть профиль?{" "}
-                <Link href="/sign-in" level="title-sm">
+                <Link component={RouterLink} to={SIGN_IN} level="title-sm">
                   Заходи!
                 </Link>
               </Typography>

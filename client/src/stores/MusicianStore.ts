@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { IMusician } from "../models/IMusician";
+import { IMusician } from "../models/musician/IMusician";
 import MusicianService from "../services/MusicianService";
 import { AxiosError } from "axios";
 import SnackbarPropsStore from "./SnackbarPropsStore";
@@ -51,6 +51,43 @@ export default class MusicianStore {
 
           snackbarStore.changeAll(true, "danger", `${serverMessage}`);
         }
+      }
+    }
+  }
+
+  private diffMusicianObj(newMusician: IMusician) {
+    let diff: Record<string, unknown> = {};
+    Object.keys(newMusician).forEach((key) => {
+      if (
+        this.musician.hasOwnProperty(key) &&
+        JSON.stringify(this.musician[key as keyof IMusician]) !==
+          JSON.stringify(newMusician[key as keyof IMusician])
+      ) {
+        diff[key] = newMusician[key as keyof IMusician];
+      }
+    });
+    return diff;
+  }
+
+  async updateMusician(
+    newMusician: IMusician,
+    snackbarStore: SnackbarPropsStore
+  ) {
+    try {
+      const updateMusicianDto = this.diffMusicianObj(newMusician);
+      const { data } = await MusicianService.updateMusician(updateMusicianDto);
+      this.setMusician(data);
+
+      snackbarStore.changeAll(
+        true,
+        "success",
+        "Данные пользователя успешно изменены"
+      );
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const serverMessage = error.response?.data.message;
+
+        snackbarStore.changeAll(true, "danger", `${serverMessage}`);
       }
     }
   }

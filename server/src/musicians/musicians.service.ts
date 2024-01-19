@@ -11,6 +11,7 @@ import { User } from '../users/users.model';
 import { ProfileInfo } from '../profiles-info/profiles-info.model';
 import { AwsService } from '../aws/aws.service';
 import { Op } from 'sequelize';
+import { UpdateMusicianDto } from './dto/update-musician.dto';
 
 export interface GetMusicianResponse {
   id: number;
@@ -128,5 +129,11 @@ export class MusiciansService {
     await musician.destroy();
 
     return musician;
+  }
+
+  async updateMusician(id: number, updateMusicianDto: UpdateMusicianDto) {
+    const musician = await this.findById(id);
+
+    return musician.update(updateMusicianDto);
   }
 }
