@@ -71,7 +71,7 @@ function Toggler({
 }
 
 const Sidebar: React.FC = observer(() => {
-  const { musicianStore, userStore, snackbarStore, profileStore, offersStore } =
+  const { musicianStore, userStore, snackbarStore, profileStore, offersStore, chatsStore} =
     useContext(Context);
 
   const { avatarUrl } = profileStore.profileInfo;
@@ -229,7 +229,7 @@ const Sidebar: React.FC = observer(() => {
               </ListItemContent>
 
                <Chip size="sm" color="primary" variant="solid">
-                  3
+                  {chatsStore.chats.length} 
                 </Chip>
             </ListItemButton>
           </ListItem>

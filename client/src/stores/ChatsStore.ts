@@ -1,14 +1,14 @@
-import { AxiosError } from 'axios';
+import { AxiosError, all } from 'axios';
 import Pusher from 'pusher-js';
 import { makeAutoObservable } from 'mobx';
-import { IChat } from '../models/chat/IChat';
+import { IChat, IChatUser, SmartChat } from '../models/chat/IChat';
 import SnackbarPropsStore from './SnackbarPropsStore';
 import ChatsService from '../services/ChatsService';
-import { MessageDto } from '../models/chat/IMessage';
+import { IMessage, MessageDto } from '../models/chat/IMessage';
 
     
 export default class ChatsStore {
-  chats = [] as IChat[];
+  chats = [] as SmartChat[];
   channels = [] as string[];
   private pusher: Pusher;
 
@@ -17,24 +17,33 @@ export default class ChatsStore {
       cluster: 'eu',
     });
 
-    makeAutoObservable(this);
+    Pusher.log = (message) => console.log(message);
+
+    makeAutoObservable(this, {}, {deep: true} );
   }
 
-  private setAllChats(value: IChat[]) {
-    this.chats = value;
+  private setAllChats(allInfoChats: IChat[], myId: number) {
+    const smartChats = allInfoChats.map(chat => {
+      const sender: IChatUser = chat.users.find(user => user.userId !== myId)!;
+
+      return {id: chat.id, messages: chat.messages, sender};
+    })
+    
+    this.chats = smartChats;
   }
 
   private setChannels(channels: string[]) {
     this.channels = channels;
   }
 
-  async fetchAllChatsForUser(snackbarStore: SnackbarPropsStore) {
+  async fetchAllChatsForUser(snackbarStore: SnackbarPropsStore, myId: number) {
     try {
       const {data} = await ChatsService.getAllChatsForUser();
-      this.setAllChats(data);
+      this.setAllChats(data, myId);
 
       const userIDs = data.map(chat => chat.users.map(user => user.userId));
-      const channelsNames = userIDs.map(idsArr => idsArr.reduce((name, userId) => name += `-${userId}`, 'chat'));
+      const channelsNames = userIDs.map(idsArr => idsArr.sort((a, b) => a - b)
+      .reduce((name, userId) => name += `-${userId}`, 'chat'));
 
       this.subscribeToChannels(channelsNames);
       this.setChannels(channelsNames);
@@ -47,14 +56,19 @@ export default class ChatsStore {
    }
   }
 
+  updateChat(chatId: number, message: IMessage) {
+    const chatToUpdate = this.chats.find(chat => chat.id === chatId);
+
+    chatToUpdate?.messages.unshift(message);
+  }
+
   private subscribeToChannels(channels: string[]) {
     channels.map(channel => {
       const subscribedChannel = this.pusher.subscribe(channel);
-      subscribedChannel.bind('messages', (data: MessageDto) => {
+      subscribedChannel.bind('message', (data: MessageDto) => {
+        console.log(JSON.stringify(data, null, 4));
         let {chatId, ...message} = data;
-        const chatForMessage = this.chats.find(chat => chat.id === chatId);
-
-        chatForMessage?.messages.push(message);
+        this.updateChat(chatId, message);
       })
     });
   }
@@ -71,37 +85,4 @@ export default class ChatsStore {
       }
    }
   }
-
-  // handleTextChange(e) {
-  //   if (e.keyCode === 13) {
-  //     const payload = {
-  //       username: this.state.username,
-  //       message: this.state.text
-  //     };
-  //     axios.post('http://localhost:5000/message', payload);
-  //   } else {
-  //     this.setState({ text: e.target.value });
-  //   }
 }
-
-
-    // render() {
-    //     return (
-    //       <div className="App">
-    //         <header className="App-header">
-    //           <img src={logo} className="App-logo" alt="logo" />
-    //           <h1 className="App-title">Welcome to React-Pusher Chat</h1>
-    //         </header>
-    //         <section>
-    //           <ChatList chats={this.state.chats} />
-    //           <ChatBox
-    //             text={this.state.text}
-    //             username={this.state.username}
-    //             handleTextChange={this.handleTextChange}
-    //           />
-    //         </section>
-    //       </div>
-    //     );
-    //   }
-     
-    // }

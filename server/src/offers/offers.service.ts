@@ -74,7 +74,7 @@ export class OffersService {
 
       const offer = await this.findById(newOffer.id);
 
-      let offerPlain = offer.get({ plain: true });
+      const offerPlain = offer.get({ plain: true });
 
       return {
         ...offerPlain,
@@ -107,8 +107,8 @@ export class OffersService {
     });
 
     const offersWithUrl = offers.map((offer) => {
-      let offerPlain = offer.get({ plain: true });
-      let photoUrl = this.awsService.createFileUrl(offerPlain.photoKey);
+      const offerPlain = offer.get({ plain: true });
+      const photoUrl = this.awsService.createFileUrl(offerPlain.photoKey);
       delete offerPlain.photoKey;
       return {
         ...offerPlain,

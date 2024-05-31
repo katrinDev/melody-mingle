@@ -6,9 +6,16 @@ export interface IChat {
   messages: IMessage[];
 }
 
-type IChatUser = {
-  userId: number;
+export type IChatUser = {
   name: string;
+  userId: number;
   mainRole: string;
   avatarUrl: string;
+  online?: boolean;
+}
+
+export type SmartChat = {
+  id: number;
+  sender: IChatUser;
+  messages: IMessage[];
 }

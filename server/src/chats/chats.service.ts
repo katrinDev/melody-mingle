@@ -80,6 +80,7 @@ export class ChatsService {
       createdAt: message.createdAt,
     };
 
+    console.log(chatName, JSON.stringify(data));
     await this.pusher.trigger(chatName, 'message', data);
 
     return data;
@@ -87,7 +88,8 @@ export class ChatsService {
 
   private generateChatName(users: User[]) {
     let chatName = 'chat';
-    users.forEach((user) => (chatName += `-${user.id}`));
+    const ids = users.map((user) => user.id);
+    ids.sort((a, b) => a - b).forEach((id) => (chatName += `-${id}`));
 
     return chatName;
   }
