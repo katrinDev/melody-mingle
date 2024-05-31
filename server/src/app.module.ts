@@ -11,6 +11,8 @@ import { AwsModule } from './aws/aws.module';
 import { ProjectsModule } from './projects/projects.module';
 import { OffersModule } from './offers/offers.module';
 import { BannedUsersModule } from './banned-users/banned-users.module';
+import { ChatsModule } from './chats/chats.module';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { BannedUsersModule } from './banned-users/banned-users.module';
     ProjectsModule,
     OffersModule,
     BannedUsersModule,
+    ChatsModule,
+    MessagesModule,
   ],
 })
 export class AppModule {}

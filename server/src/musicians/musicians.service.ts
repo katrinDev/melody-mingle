@@ -12,6 +12,7 @@ import { ProfileInfo } from '../profiles-info/profiles-info.model';
 import { AwsService } from '../aws/aws.service';
 import { Op } from 'sequelize';
 import { UpdateMusicianDto } from './dto/update-musician.dto';
+import { ChatsUserInfo } from 'src/chats/chats.service';
 
 export interface GetMusicianResponse {
   id: number;
@@ -63,9 +64,13 @@ export class MusiciansService {
       ],
     });
 
+    return this.getMusiciansWithUrl(musicians);
+  }
+
+  private getMusiciansWithUrl(musicians: Musician[]) {
     const musiciansWithUrl = musicians.map((musician) => {
-      let musicianPlain = musician.get({ plain: true });
-      let avatarUrl = this.awsService.createFileUrl(
+      const musicianPlain = musician.get({ plain: true });
+      const avatarUrl = this.awsService.createFileUrl(
         musicianPlain.profileInfo.avatarKey,
       );
 
@@ -91,6 +96,32 @@ export class MusiciansService {
       throw new NotFoundException('Музыкант не был найден');
     }
     return musician;
+  }
+
+  async findChatsFormat(usersId: number[]): Promise<ChatsUserInfo[]> {
+    const musicians = await this.musicianRepository.findAll({
+      where: { userId: { [Op.in]: usersId } },
+      attributes: {
+        exclude: [
+          'createdAt',
+          'updatedAt',
+          'languages',
+          'genres',
+          'subRoles',
+          'city',
+          'id',
+          'experience',
+        ],
+      },
+      include: [
+        {
+          model: ProfileInfo,
+          attributes: ['avatarKey'],
+        },
+      ],
+    });
+
+    return this.getMusiciansWithUrl(musicians);
   }
 
   async findById(id: number): Promise<Musician> {

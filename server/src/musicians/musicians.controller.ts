@@ -16,7 +16,6 @@ import { ValidationPipe } from '../pipes/validation.pipe';
 import { CreateMusicianDto } from './dto/create-musician.dto';
 import RequestWithUser from 'src/auth/IRequestWithUser';
 import { UpdateMusicianDto } from './dto/update-musician.dto';
-import { Public } from 'src/guards/decorators/public.decorator';
 
 @ApiTags('Музыканты')
 @Controller('musicians')

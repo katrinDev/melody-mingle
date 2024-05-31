@@ -70,7 +70,7 @@ export class UsersService {
   }
 
   async findById(id: number) {
-    return this.userRepository.findByPk(id, {
+    const user = await this.userRepository.findByPk(id, {
       include: [
         {
           model: Role,
@@ -83,6 +83,12 @@ export class UsersService {
         },
       ],
     });
+
+    if (!user) {
+      throw new BadRequestException('There is no user with such id');
+    }
+
+    return user;
   }
 
   async deleteUser(id: number): Promise<User> {

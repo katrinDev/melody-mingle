@@ -12,6 +12,8 @@ import { Musician } from '../musicians/musicians.model';
 import { Role } from '../roles/roles.model';
 import { UserRoles } from '../roles/user-roles.model';
 import { Token } from '../tokens/tokens.model';
+import { Chat } from 'src/chats/chats.model';
+import { UserChats } from 'src/chats/user-chats.model';
 
 interface UserCreationAttrs {
   email: string;
@@ -60,4 +62,7 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @HasOne(() => BannedUser)
   bannedUser: BannedUser;
+
+  @BelongsToMany(() => Chat, () => UserChats)
+  chats: Chat[];
 }
