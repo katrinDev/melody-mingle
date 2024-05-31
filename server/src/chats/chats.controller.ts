@@ -24,7 +24,7 @@ export class ChatsController {
   }
 
   @Post(':id/messages')
-  async messages(
+  async addMessageToChat(
     @Body() addMessageDto: AddMessageDto,
     @Param('id') id: number,
   ) {

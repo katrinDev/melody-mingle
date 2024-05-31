@@ -32,6 +32,7 @@ import {
   MUSICIANS,
   OFFERS,
   MY_PROFILE,
+  CHATS,
 } from "../../router/paths";
 import { Context } from "../../main";
 import { observer } from "mobx-react-lite";
@@ -221,7 +222,7 @@ const Sidebar: React.FC = observer(() => {
           </ListItem>
          
           <ListItem>
-            <ListItemButton component={Link} to={MY_PROFILE}>
+            <ListItemButton component={Link} to={CHATS}>
               <LyricsRoundedIcon />
               <ListItemContent>
                 <Typography level="title-sm">Чаты</Typography>

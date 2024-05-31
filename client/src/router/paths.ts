@@ -6,6 +6,7 @@ const SIGN_UP = "/sign-up";
 const OFFERS = "/offers";
 const MUSICIANS = "/musicians";
 const MUSICIAN_PROFILE = "/musicians/:id";
+const CHATS = "/chats";
 
 export {
   ABOUT,
@@ -16,4 +17,5 @@ export {
   SIGN_UP,
   OFFERS,
   MUSICIANS,
+  CHATS
 };

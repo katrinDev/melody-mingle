@@ -7,6 +7,7 @@ import About from "../pages/about/About";
 import { observer } from "mobx-react-lite";
 import BasicLayout from "../components/mainLayout/BasicLayout";
 import EditProfile from "../pages/profile/EditProfile";
+import MyMessages from '../pages/messages/MyMessages';
 import {
   ABOUT,
   EDIT_PROFILE,
@@ -15,6 +16,7 @@ import {
   MY_PROFILE,
   OFFERS,
   SIGN_IN,
+  CHATS,
   SIGN_UP,
 } from "./paths";
 import OffersDashboard from "../pages/offersPage/OffersDashboard";
@@ -70,6 +72,16 @@ const AppRouter: React.FC = observer(() => {
           </BasicLayout>
         }
       />
+
+      <Route
+        path={CHATS}
+        element={
+          <BasicLayout>
+            <MyMessages />
+          </BasicLayout>
+        }
+      />
+
       <Route path="*" element={<Navigate to={MY_PROFILE} />} />
     </Routes>
   ) : (

@@ -75,9 +75,9 @@ export class ChatsService {
 
     const data = {
       content,
-      sender: senderId,
-      chat: chat.id,
-      timestamp: message.createdAt,
+      senderId: senderId,
+      chatId: chat.id,
+      createdAt: message.createdAt,
     };
 
     await this.pusher.trigger(chatName, 'message', data);
