@@ -136,4 +136,15 @@ export class ChatsService {
     );
     return resultChats;
   }
+
+  async getChatsCount(userId: number): Promise<number> {
+    return this.chatsRepository.count({
+      include: [
+        {
+          model: User,
+          where: { id: userId },
+        },
+      ],
+    });
+  }
 }

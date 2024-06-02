@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   FileTypeValidator,
   Get,
   MaxFileSizeValidator,
@@ -29,7 +28,7 @@ export class OffersController {
       new ParseFilePipe({
         validators: [
           new FileTypeValidator({ fileType: 'image/jpeg' }),
-          new MaxFileSizeValidator({ maxSize: 4500 * 1000 }),
+          new MaxFileSizeValidator({ maxSize: 3000 * 1000 }),
         ],
       }),
     )
@@ -37,6 +36,7 @@ export class OffersController {
     @Body() createOfferDto: CreateOfferDto,
     @Req() request: RequestWithUser,
   ): Promise<GetOfferResponse> {
+    console.log(JSON.stringify(request.user, null, 2));
     const newFileName =
       photo.fieldname + '-' + uuidv4() + extname(photo.originalname);
 
@@ -46,6 +46,12 @@ export class OffersController {
       photo.buffer,
       request.user.musicianId,
     );
+  }
+
+  @Get('/musician')
+  async findByMusician(@Req() request: RequestWithUser) {
+    console.log(request.user.musicianId);
+    return this.offersService.findByMusicianId(request.user.musicianId);
   }
 
   @Get()

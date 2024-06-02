@@ -19,7 +19,6 @@ function MyMessages() {
         setLoadingChats(true);
         await chatsStore.fetchAllChatsForUser(snackbarStore, userStore.user?.id);
 
-        console.log(JSON.stringify(chatsStore.chats));
         setSelectedChat(chatsStore.chats[0]);
         setLoadingChats(false);
       } catch(error) {

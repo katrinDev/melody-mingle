@@ -79,6 +79,7 @@ function MusiciansDashboard() {
           <HeaderSection
             title="Музыканты"
             subTitle="Расширь свои творческие возможности"
+            my={false}
           />
 
           <Search

@@ -43,7 +43,7 @@ export class AuthGuard implements CanActivate {
       request.user = { ...payload, musicianId: userEntity.musician?.id };
       return true;
     } catch (e) {
-      throw new UnauthorizedException('User is not authorized');
+      throw new UnauthorizedException('Пользователь не авторизован');
     }
   }
 

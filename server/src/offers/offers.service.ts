@@ -45,7 +45,7 @@ export class OffersService {
     const musician = await this.musiciansService.findById(musicianId);
 
     if (!musician) {
-      throw new NotFoundException("Musician wasn't found");
+      throw new NotFoundException('Музыкант не был найден');
     }
   }
 
@@ -58,7 +58,7 @@ export class OffersService {
     try {
       await this.checkMusician(musicianId);
 
-      const date = moment(offerDto.expirationDate, 'DD.MM.YYYY').toDate();
+      const date = JSON.parse(offerDto.expirationDate);
 
       const uploadResult = await this.awsService.uploadPublicFile(
         data,
@@ -67,6 +67,8 @@ export class OffersService {
 
       const newOffer = await this.offerRepository.create({
         ...offerDto,
+        genres: JSON.parse(offerDto.genres),
+        mainRoles: JSON.parse(offerDto.mainRoles),
         expirationDate: date,
         photoKey: uploadResult.Key,
         musicianId,
@@ -81,9 +83,8 @@ export class OffersService {
         photoUrl: uploadResult.Location,
       };
     } catch (error) {
-      console.log(error);
       throw new HttpException(
-        'Unsuccessfull offer creation',
+        'Создание предложения не удалось',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
@@ -106,7 +107,11 @@ export class OffersService {
       },
     });
 
-    const offersWithUrl = offers.map((offer) => {
+    return this.offersWithUrl(offers);
+  }
+
+  private offersWithUrl(offers: Offer[]) {
+    return offers.map((offer) => {
       const offerPlain = offer.get({ plain: true });
       const photoUrl = this.awsService.createFileUrl(offerPlain.photoKey);
       delete offerPlain.photoKey;
@@ -115,8 +120,31 @@ export class OffersService {
         photoUrl,
       };
     });
+  }
 
-    return offersWithUrl;
+  async findByMusicianId(id: number): Promise<GetOfferResponse[]> {
+    await this.musiciansService.findById(id);
+
+    const offers = await this.offerRepository.findAll({
+      where: {
+        musicianId: id,
+      },
+      attributes: {
+        exclude: ['updatedAt', 'musicianId'],
+      },
+      include: {
+        model: Musician,
+        attributes: ['name'],
+        include: [
+          {
+            model: User,
+            attributes: ['email'],
+          },
+        ],
+      },
+    });
+
+    return this.offersWithUrl(offers);
   }
 
   async findById(id: number): Promise<Offer> {
@@ -139,9 +167,8 @@ export class OffersService {
   async deleteOffer(id: number): Promise<Offer> {
     const offer = await this.offerRepository.findByPk(id);
     if (!offer) {
-      throw new BadRequestException('There is no offer with such id');
+      throw new BadRequestException('Предложение с таким id не найдено');
     }
-
     await offer.destroy();
 
     return offer;

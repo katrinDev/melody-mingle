@@ -14,8 +14,6 @@ export type IChatUser = {
   online?: boolean;
 }
 
-export type SmartChat = {
-  id: number;
+export type SmartChat = Omit<IChat, 'users'> & {
   sender: IChatUser;
-  messages: IMessage[];
 }

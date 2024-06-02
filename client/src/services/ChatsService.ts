@@ -11,4 +11,8 @@ export default class ChatsService {
   static async addMessageToChat(chatId: number, message: IMessage): Promise<AxiosResponse<MessageDto>> {
     return $api.post<MessageDto>(`chats/${chatId}/messages`, message);
   }
+
+  static async getChatsCount(): Promise<AxiosResponse<number>> {
+    return $api.get<number>(`chats/count`);
+  }
 }

@@ -14,7 +14,6 @@ import FormLabel from "@mui/joy/FormLabel";
 import FormHelperText from "@mui/joy/FormHelperText";
 import Input from "@mui/joy/Input";
 import IconButton from "@mui/joy/IconButton";
-import Textarea from "@mui/joy/Textarea";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
 import Tabs from "@mui/joy/Tabs";
@@ -24,21 +23,18 @@ import Card from "@mui/joy/Card";
 import CardActions from "@mui/joy/CardActions";
 import CardOverflow from "@mui/joy/CardOverflow";
 
-import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
-import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import TextEditorToolbar from "../../components/profile/editProfile/TextEditorToolbar";
 import { Context } from "../../main";
-import DropZone from "../../components/profile/editProfile/DropZone";
-import FileUpload from "../../components/profile/editProfile/FileUpload";
 import { Select, TabPanel, Option } from "@mui/joy";
-import EditProfileListBox from "../../components/profile/editProfile/EditProfileListBox";
 import { InfoOutlined } from "@mui/icons-material";
 import { IMusician } from "../../models/musician/IMusician";
+import EditProjects from "./EditProjects";
+import BioEdit from "./BioEdit";
+import EditStringArrayListBox from "../../components/profile/editProfile/EditStringArrayListBox";
 
-function EditProfile() {
+function EditProfilePage() {
   const {
     register,
     reset,
@@ -227,6 +223,7 @@ function EditProfile() {
                         />
                       </IconButton>
                     </Stack>
+
                     <Stack spacing={3} sx={{ flexGrow: 1 }}>
                       <Stack direction="row" spacing={2}>
                         <FormControl
@@ -340,7 +337,7 @@ function EditProfile() {
                         <FormControl sx={{ display: { sm: "contents" } }}>
                           <FormLabel>Дополнительные навыки</FormLabel>
                           {musician.subRoles && (
-                            <EditProfileListBox list={musician.subRoles} />
+                            <EditStringArrayListBox list={musician.subRoles} />
                           )}
                           <Input
                             size="sm"
@@ -365,7 +362,7 @@ function EditProfile() {
                         <FormControl sx={{ display: { sm: "contents" } }}>
                           <FormLabel>Жанры</FormLabel>
                           {musician.genres && (
-                            <EditProfileListBox list={musician.genres} />
+                            <EditStringArrayListBox list={musician.genres} />
                           )}
                           <Input
                             size="sm"
@@ -387,7 +384,7 @@ function EditProfile() {
                         <FormControl sx={{ display: { sm: "contents" } }}>
                           <FormLabel>Языки</FormLabel>
                           {musician.languages && (
-                            <EditProfileListBox list={musician.languages} />
+                            <EditStringArrayListBox list={musician.languages} />
                           )}
                           <Select
                             size="sm"
@@ -408,7 +405,7 @@ function EditProfile() {
                     }}
                   >
                     <CardActions sx={{ alignSelf: "flex-end" }}>
-                      <Button size="sm" variant="outlined" color="neutral">
+                      <Button size="sm" variant="outlined" color="neutral" type="button" onClick={() => reset()}>
                         Отменить
                       </Button>
                       <Button type="submit" size="sm" variant="solid">
@@ -418,94 +415,20 @@ function EditProfile() {
                   </CardOverflow>
                 </form>
               </Card>
-              <Card>
-                <Box sx={{ mb: 1 }}>
-                  <Typography level="title-md">Био</Typography>
-                  <Typography level="body-sm">
-                    Краткое описание твоего опыта и целей сотрудничества
-                  </Typography>
-                </Box>
-                <Divider />
-                <Stack spacing={2} sx={{ my: 1 }}>
-                  <TextEditorToolbar />
-                  <Textarea
-                    size="sm"
-                    minRows={4}
-                    defaultValue={
-                      profileData.bio ? profileData.bio : "Добавь описание"
-                    }
-                  />
-                  <FormHelperText sx={{ mt: 0.75, fontSize: "xs" }}>
-                    275 characters left
-                  </FormHelperText>
-                </Stack>
-                <CardOverflow
-                  sx={{ borderTop: "1px solid", borderColor: "divider" }}
-                >
-                  <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-                    <Button size="sm" variant="outlined" color="neutral">
-                      Отменить
-                    </Button>
-                    <Button size="sm" variant="solid">
-                      Сохранить
-                    </Button>
-                  </CardActions>
-                </CardOverflow>
-              </Card>
+              
+              <BioEdit/>
             </Stack>
           </TabPanel>
 
           <TabPanel value={1}>
-            <Card
-              sx={{
-                display: "flex",
-                maxWidth: "800px",
-                mx: "auto",
-                my: { xs: 2, md: 3 },
-              }}
-            >
-              <Box sx={{ mb: 1 }}>
-                <Typography level="title-md">Portfolio projects</Typography>
-                <Typography level="body-sm">
-                  Share a few snippets of your work.
-                </Typography>
-              </Box>
-              <Divider />
-              <Stack spacing={2} sx={{ my: 1 }}>
-                <DropZone />
-                <FileUpload
-                  icon={<InsertDriveFileRoundedIcon />}
-                  fileName="Tech design requirements.pdf"
-                  fileSize="200 kB"
-                  progress={100}
-                />
-                <FileUpload
-                  icon={<VideocamRoundedIcon />}
-                  fileName="Dashboard prototype recording.mp4"
-                  fileSize="16 MB"
-                  progress={40}
-                />
-              </Stack>
-              <CardOverflow
-                sx={{ borderTop: "1px solid", borderColor: "divider" }}
-              >
-                <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-                  <Button size="sm" variant="outlined" color="neutral">
-                    Отменить
-                  </Button>
-                  <Button size="sm" variant="solid">
-                    Сохранить
-                  </Button>
-                </CardActions>
-              </CardOverflow>
-            </Card>
+            <EditProjects/>
           </TabPanel>
         </Tabs>
       </Box>
     </Box>
   ) : (
     <>Loading...</>
-  );
+	);
 }
 
-export default observer(EditProfile);
+export default observer(EditProfilePage);

@@ -20,15 +20,13 @@ export class CreateOfferDto {
   @IsNotEmpty({ message: 'Must not be empty' })
   readonly body: string;
 
-  @IsArray()
-  @IsString({ each: true })
+  @IsString({ message: 'Must be a string' })
   @IsNotEmpty({ message: 'Must not be empty' })
-  readonly genres: string[];
+  readonly genres: string;
 
-  @IsArray()
-  @IsString({ each: true })
+  @IsString({ message: 'Must be a string' })
   @IsNotEmpty({ message: 'Must not be empty' })
-  readonly mainRoles: string[];
+  readonly mainRoles: string;
 
   @IsString({ message: 'Must be a string' })
   @Length(2, 50, {
@@ -37,7 +35,9 @@ export class CreateOfferDto {
   @IsNotEmpty({ message: 'Must not be empty' })
   readonly location: string;
 
-  @IsDate({ message: 'Must be a date' })
   @IsNotEmpty({ message: 'Must not be empty' })
-  readonly expirationDate: Date;
+  @IsString({ message: 'Must be a string' })
+  // @IsDate({ message: 'Must be a date' })
+  @IsNotEmpty({ message: 'Must not be empty' })
+  readonly expirationDate: string;
 }

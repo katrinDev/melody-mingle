@@ -7,8 +7,8 @@ import { Dispatch, SetStateAction } from "react";
 import { observer } from "mobx-react-lite";
 
 type SearchProps = {
-  handleSearch: Function;
-  resetSearch: Function;
+  handleSearch: (term: string) => void;
+  resetSearch: () => void;
   searchTerm: string;
   setSearchTerm: Dispatch<SetStateAction<string>>;
 };

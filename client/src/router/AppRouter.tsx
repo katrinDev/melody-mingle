@@ -6,7 +6,7 @@ import { Context } from "../main";
 import About from "../pages/about/About";
 import { observer } from "mobx-react-lite";
 import BasicLayout from "../components/mainLayout/BasicLayout";
-import EditProfile from "../pages/profile/EditProfile";
+import EditProfilePage from "../pages/profile/EditProfilePage";
 import MyMessages from '../pages/messages/MyMessages';
 import {
   ABOUT,
@@ -18,6 +18,7 @@ import {
   SIGN_IN,
   CHATS,
   SIGN_UP,
+  MY_OFFERS,
 } from "./paths";
 import OffersDashboard from "../pages/offersPage/OffersDashboard";
 import MusiciansDashboard from "../pages/musiciansList/MusiciansDashboard";
@@ -34,7 +35,7 @@ const AppRouter: React.FC = observer(() => {
         path={EDIT_PROFILE}
         element={
           <BasicLayout>
-            <EditProfile />
+            <EditProfilePage />
           </BasicLayout>
         }
       />
@@ -59,7 +60,16 @@ const AppRouter: React.FC = observer(() => {
         path={OFFERS}
         element={
           <BasicLayout>
-            <OffersDashboard />
+            <OffersDashboard my={false} title={"Предложения о сотрудничестве"} key={OFFERS}/>
+          </BasicLayout>
+        }
+      />
+
+      <Route
+        path={MY_OFFERS}
+        element={
+          <BasicLayout>
+            <OffersDashboard my={true} title={"Мои предложения"} key={MY_OFFERS}/>
           </BasicLayout>
         }
       />

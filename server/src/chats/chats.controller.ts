@@ -13,6 +13,11 @@ export class ChatsController {
     return this.chatsService.getChatsForUser(request.user.id);
   }
 
+  @Get('/count')
+  async getChatsCount(@Req() request: RequestWithUser) {
+    return this.chatsService.getChatsCount(request.user.id);
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: number) {
     return this.chatsService.findById(id);

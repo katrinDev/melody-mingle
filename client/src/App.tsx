@@ -1,34 +1,35 @@
-import { observer } from "mobx-react-lite";
-import { BrowserRouter } from "react-router-dom";
-import "./App.css";
-import { Context } from "./main";
-import Snackbar, { SnackbarCloseReason } from "@mui/joy/Snackbar";
-import { SyntheticEvent, useContext, useEffect } from "react";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import ReportIcon from "@mui/icons-material/Report";
-import { IconButton } from "@mui/joy";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import AppRouter from "./router/AppRouter";
+import { observer } from 'mobx-react-lite'
+import { BrowserRouter } from 'react-router-dom'
+import './App.css'
+import { Context } from './main'
+import Snackbar, { type SnackbarCloseReason } from '@mui/joy/Snackbar'
+import { type SyntheticEvent, useContext, useEffect } from 'react'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import ReportIcon from '@mui/icons-material/Report'
+import { IconButton } from '@mui/joy'
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
+import AppRouter from './router/AppRouter'
+import React from 'react'
 
 const App: React.FC = observer(() => {
-  const { userStore, snackbarStore } = useContext(Context);
+  const { userStore, snackbarStore } = useContext(Context)
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
-      userStore.refresh(snackbarStore);
+    if (localStorage.getItem('accessToken')) {
+      userStore.refresh(snackbarStore)
     }
-  }, []);
+  }, [])
 
   const handleClose = (
     event: Event | SyntheticEvent<Event> | null,
     reason: SnackbarCloseReason
   ) => {
-    if (reason === "clickaway" && event) {
-      return;
+    if (reason === 'clickaway' && event) {
+      return
     }
 
-    snackbarStore.isOpen = false;
-  };
+    snackbarStore.isOpen = false
+  }
 
   return (
     <>
@@ -43,11 +44,13 @@ const App: React.FC = observer(() => {
         autoHideDuration={3000}
         onClose={handleClose}
         startDecorator={
-          snackbarStore.color === "success" ? (
+          snackbarStore.color === 'success'
+            ? (
             <CheckCircleIcon />
-          ) : (
+              )
+            : (
             <ReportIcon />
-          )
+              )
         }
         endDecorator={
           <IconButton
@@ -55,7 +58,7 @@ const App: React.FC = observer(() => {
             size="sm"
             color={snackbarStore.color}
             onClick={() => {
-              snackbarStore.isOpen = false;
+              snackbarStore.isOpen = false
             }}
           >
             <CloseRoundedIcon />
@@ -65,7 +68,7 @@ const App: React.FC = observer(() => {
         {snackbarStore.text}
       </Snackbar>
     </>
-  );
-});
+  )
+})
 
-export default App;
+export default App

@@ -10,6 +10,7 @@ import { IMessage, MessageDto } from '../models/chat/IMessage';
 export default class ChatsStore {
   chats = [] as SmartChat[];
   channels = [] as string[];
+  chatsCount = 0;
   private pusher: Pusher;
 
   constructor() {
@@ -20,6 +21,10 @@ export default class ChatsStore {
     Pusher.log = (message) => console.log(message);
 
     makeAutoObservable(this, {}, {deep: true} );
+  }
+
+  private setChatsCount(count: number) {
+    this.chatsCount = count;
   }
 
   private setAllChats(allInfoChats: IChat[], myId: number) {
@@ -76,7 +81,7 @@ export default class ChatsStore {
   async addMessage(messageDto: MessageDto, snackbarStore: SnackbarPropsStore) {
     try{ 
       const {chatId, ...message} = messageDto;
-      const {data} = await ChatsService.addMessageToChat(chatId, message);
+      await ChatsService.addMessageToChat(chatId, message);
     } catch(error) {
       if (error instanceof AxiosError) {
         const serverMessage = error.response?.data.message;
@@ -84,5 +89,19 @@ export default class ChatsStore {
         snackbarStore.changeAll(true, "danger", `${serverMessage}`);
       }
    }
+  }
+
+  async fetchChatsCount(snackbarStore: SnackbarPropsStore) {
+    try {
+      const { data } = await ChatsService.getChatsCount();
+
+      this.setChatsCount(data);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const serverMessage = error.response?.data.message;
+
+        snackbarStore.changeAll(true, "danger", `${serverMessage}`);
+      }
+    }
   }
 }
