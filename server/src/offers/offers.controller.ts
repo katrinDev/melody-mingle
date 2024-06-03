@@ -36,7 +36,6 @@ export class OffersController {
     @Body() createOfferDto: CreateOfferDto,
     @Req() request: RequestWithUser,
   ): Promise<GetOfferResponse> {
-    console.log(JSON.stringify(request.user, null, 2));
     const newFileName =
       photo.fieldname + '-' + uuidv4() + extname(photo.originalname);
 

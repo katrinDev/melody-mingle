@@ -43,7 +43,7 @@ export class ChatsService {
       ],
     });
     if (!chat) {
-      throw new BadRequestException('There is no chat with such id');
+      throw new BadRequestException('Чата с таким id нет');
     }
     return chat;
   }
@@ -80,7 +80,6 @@ export class ChatsService {
       createdAt: message.createdAt,
     };
 
-    console.log(chatName, JSON.stringify(data));
     await this.pusher.trigger(chatName, 'message', data);
 
     return data;

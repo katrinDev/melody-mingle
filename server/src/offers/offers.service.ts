@@ -13,13 +13,11 @@ import { CreateOfferDto } from './dto/create-offer.dto';
 import { MusiciansService } from '../musicians/musicians.service';
 import { AwsService } from '../aws/aws.service';
 
-import * as moment from 'moment';
-
 export interface GetOfferResponse {
   id: number;
   headline: string;
   body: string;
-  mainRoles?: string[];
+  mainRoles: string[];
   genres: string[];
   location: string;
   expirationDate: Date;

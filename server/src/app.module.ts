@@ -13,6 +13,8 @@ import { OffersModule } from './offers/offers.module';
 import { BannedUsersModule } from './banned-users/banned-users.module';
 import { ChatsModule } from './chats/chats.module';
 import { MessagesModule } from './messages/messages.module';
+import { JointProjectsModule } from './joint-projects/joint-projects.module';
+import { SongChunksModule } from './song-chunks/song-chunks.module';
 
 @Module({
   imports: [
@@ -42,6 +44,8 @@ import { MessagesModule } from './messages/messages.module';
     BannedUsersModule,
     ChatsModule,
     MessagesModule,
+    JointProjectsModule,
+    SongChunksModule,
   ],
 })
 export class AppModule {}

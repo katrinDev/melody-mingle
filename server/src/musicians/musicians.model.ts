@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   BelongsTo,
+  BelongsToMany,
   Column,
   DataType,
   ForeignKey,
@@ -12,6 +13,8 @@ import {
 import { ProfileInfo } from '../profiles-info/profiles-info.model';
 import { Project } from '../projects/projects.model';
 import { User } from '../users/users.model';
+import { JointProject } from 'src/joint-projects/joint-projects.model';
+import { MusicianJoints } from 'src/joint-projects/musician-joints.model';
 
 interface MusicianCreationAttrs {
   name: string;
@@ -123,4 +126,7 @@ export class Musician extends Model<Musician, MusicianCreationAttrs> {
 
   @HasMany(() => Project)
   projects: Project[];
+
+  @BelongsToMany(() => JointProject, () => MusicianJoints)
+  jointProjects: JointProject[];
 }

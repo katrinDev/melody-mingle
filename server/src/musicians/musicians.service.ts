@@ -13,6 +13,7 @@ import { AwsService } from '../aws/aws.service';
 import { Op } from 'sequelize';
 import { UpdateMusicianDto } from './dto/update-musician.dto';
 import { ChatsUserInfo } from 'src/chats/chats.service';
+import { JointsMusicianInfo } from 'src/joint-projects/joint-projects.service';
 
 export interface GetMusicianResponse {
   id: number;
@@ -117,6 +118,38 @@ export class MusiciansService {
         {
           model: ProfileInfo,
           attributes: ['avatarKey'],
+        },
+      ],
+    });
+
+    return this.getMusiciansWithUrl(musicians);
+  }
+
+  async getJointProjectsFormat(
+    musiciansId: number[],
+  ): Promise<JointsMusicianInfo[]> {
+    const musicians = await this.musicianRepository.findAll({
+      where: { id: { [Op.in]: musiciansId } },
+      attributes: {
+        exclude: [
+          'subRoles',
+          'city',
+          'experience',
+          'languages',
+          'genres',
+          'userId',
+          'createdAt',
+          'updatedAt',
+        ],
+      },
+      include: [
+        {
+          model: ProfileInfo,
+          attributes: ['avatarKey'],
+        },
+        {
+          model: User,
+          attributes: ['email'],
         },
       ],
     });

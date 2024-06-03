@@ -1,11 +1,4 @@
-import {
-  IsArray,
-  IsDate,
-  IsNotEmpty,
-  IsString,
-  Length,
-  MaxLength,
-} from 'class-validator';
+import { IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class AddProjectDto {
   @IsString({ message: 'Must be a string' })

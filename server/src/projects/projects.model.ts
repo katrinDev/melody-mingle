@@ -54,7 +54,6 @@ export class Project extends Model<Project, ProjectCreationAttrs> {
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
-    unique: true,
   })
   musicianId: number;
 

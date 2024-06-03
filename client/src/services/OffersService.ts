@@ -1,7 +1,6 @@
 import { AxiosResponse } from 'axios';
 import $api from '../http/axiosSetUp';
 import { CreateOfferDto, IOffer } from '../models/IOffer';
-import { keys } from 'mobx';
 
 export default class OffersService {
 	static async getAllOffers(): Promise<AxiosResponse<IOffer[]>> {
