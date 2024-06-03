@@ -73,7 +73,6 @@ export default class ChatsStore {
 		channels.map(channel => {
 			const subscribedChannel = this.pusher.subscribe(channel);
 			subscribedChannel.bind('message', (data: MessageDto) => {
-				console.log(JSON.stringify(data, null, 4));
 				let { chatId, ...message } = data;
 				this.updateChat(chatId, message);
 			});

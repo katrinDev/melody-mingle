@@ -165,4 +165,15 @@ export class JointProjectsService {
     );
     return resultJointsForMusician;
   }
+
+  async getJointsCount(musicianId: number): Promise<number> {
+    return this.jointsRepository.count({
+      include: [
+        {
+          model: Musician,
+          where: { id: musicianId },
+        },
+      ],
+    });
+  }
 }

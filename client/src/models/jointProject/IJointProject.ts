@@ -17,3 +17,7 @@ export type IJointMusician = {
 		email: string;
 	};
 };
+
+export type SmartJoints = Omit<IJointProject, 'musicians'> & {
+	companion: IJointMusician;
+};

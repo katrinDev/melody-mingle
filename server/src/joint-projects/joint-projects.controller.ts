@@ -60,4 +60,9 @@ export class JointProjectsController {
       id,
     );
   }
+
+  @Get('count')
+  async getJointsCount(@Req() req: RequestWithUser) {
+    return this.jointProjectsService.getJointsCount(req.user.musicianId);
+  }
 }

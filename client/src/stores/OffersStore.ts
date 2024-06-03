@@ -28,7 +28,7 @@ export default class OffersStore {
 	async createOffer(offer: MyOffer, snackbarStore: SnackbarPropsStore) {
 		try {
 			const { photo, ...offerDto } = offer;
-			const { data } = await OffersService.createOffer(offerDto, photo!);
+			await OffersService.createOffer(offerDto, photo!);
 			this.fetchOffersForMusician(snackbarStore);
 			snackbarStore.changeAll(true, 'success', 'Заявка успешно создана');
 		} catch (error) {
