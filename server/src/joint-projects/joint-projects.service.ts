@@ -69,6 +69,9 @@ export class JointProjectsService {
     jointProjectId: number,
   ) {
     try {
+      console.log(JSON.stringify(addChunkDto));
+      console.log('!!!!!!');
+      console.log(jointProjectId);
       const jointProject = await this.findById(jointProjectId);
 
       const uploadResult = await this.awsService.uploadPublicFile(
@@ -78,6 +81,7 @@ export class JointProjectsService {
 
       const newSongChunk = await this.songChunksService.createSongChunk({
         ...addChunkDto,
+        creatorId: Number(addChunkDto.creatorId),
         chunkKey: uploadResult.Key,
         jointProjectId: jointProject.id,
       });
@@ -91,6 +95,7 @@ export class JointProjectsService {
         audioUrl: uploadResult.Location,
       };
     } catch (error) {
+      console.log(error);
       throw new HttpException(
         'Не удалось добавить аудио файл',
         HttpStatus.INTERNAL_SERVER_ERROR,

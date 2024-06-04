@@ -35,6 +35,7 @@ import {
 	MY_OFFERS,
 	CHATS,
 	JOINT_PROJECTS,
+	USERS_MANAGEMENT,
 } from '../../router/paths';
 import { Context } from '../../main';
 import { observer } from 'mobx-react-lite';
@@ -189,15 +190,16 @@ const Sidebar: React.FC = observer(() => {
 						</ListItemButton>
 					</ListItem>
 
-					<ListItem>
-						<ListItemButton component={Link} to={MY_PROFILE}>
-							<GroupRoundedIcon />
-							<ListItemContent>
-								<Typography level="title-sm">Профиль</Typography>
-							</ListItemContent>
-						</ListItemButton>
-					</ListItem>
-
+					{!userStore.isAdmin && (
+						<ListItem>
+							<ListItemButton component={Link} to={MY_PROFILE}>
+								<GroupRoundedIcon />
+								<ListItemContent>
+									<Typography level="title-sm">Профиль</Typography>
+								</ListItemContent>
+							</ListItemButton>
+						</ListItem>
+					)}
 					<ListItem nested>
 						<Toggler
 							renderToggle={({ open, setOpen }) => (
@@ -244,46 +246,67 @@ const Sidebar: React.FC = observer(() => {
 						</ListItemButton>
 					</ListItem>
 
-					<ListItem>
-						<ListItemButton component={Link} to={JOINT_PROJECTS}>
-							<PianoRoundedIcon />
-							<ListItemContent>
-								<Typography level="title-sm">Творчество</Typography>
-							</ListItemContent>
-						</ListItemButton>
-					</ListItem>
+					{userStore.isAdmin && (
+						<ListItem>
+							<ListItemButton component={Link} to={USERS_MANAGEMENT}>
+								<LyricsRoundedIcon />
+								<ListItemContent>
+									<Typography level="title-sm">
+										Управление пользователями
+									</Typography>
+								</ListItemContent>
+							</ListItemButton>
+						</ListItem>
+					)}
 
-					<ListItem>
-						<ListItemButton role="menuitem" component={Link} to={MY_OFFERS}>
-							<ShoppingCartRoundedIcon />
-							<ListItemContent>
-								<Typography level="title-sm">Личные заявки</Typography>
-							</ListItemContent>
-						</ListItemButton>
-					</ListItem>
-					<ListItem nested>
-						<Toggler
-							renderToggle={({ open, setOpen }) => (
-								<ListItemButton onClick={() => setOpen(!open)}>
-									<SettingsRoundedIcon />
+					{!userStore.isAdmin && (
+						<>
+							<ListItem>
+								<ListItemButton component={Link} to={JOINT_PROJECTS}>
+									<PianoRoundedIcon />
 									<ListItemContent>
-										<Typography level="title-sm">Настройки</Typography>
+										<Typography level="title-sm">Творчество</Typography>
 									</ListItemContent>
-									<KeyboardArrowDownIcon
-										sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
-									/>
 								</ListItemButton>
-							)}
-						>
-							<List sx={{ gap: 0.5 }}>
-								<ListItem sx={{ mt: 0.5 }}>
-									<ListItemButton component={Link} to={EDIT_PROFILE}>
-										Изменить профиль
-									</ListItemButton>
-								</ListItem>
-							</List>
-						</Toggler>
-					</ListItem>
+							</ListItem>
+							<ListItem>
+								<ListItemButton role="menuitem" component={Link} to={MY_OFFERS}>
+									<ShoppingCartRoundedIcon />
+									<ListItemContent>
+										<Typography level="title-sm">Личные заявки</Typography>
+									</ListItemContent>
+								</ListItemButton>
+							</ListItem>
+							<ListItem nested>
+								<Toggler
+									renderToggle={({ open, setOpen }) => (
+										<ListItemButton onClick={() => setOpen(!open)}>
+											<SettingsRoundedIcon />
+											<ListItemContent>
+												<Typography level="title-sm">Настройки</Typography>
+											</ListItemContent>
+											<KeyboardArrowDownIcon
+												sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
+											/>
+										</ListItemButton>
+									)}
+								>
+									<List sx={{ gap: 0.5 }}>
+										<ListItem sx={{ mt: 0.5 }}>
+											<ListItemButton component={Link} to={EDIT_PROFILE}>
+												Изменить профиль
+											</ListItemButton>
+										</ListItem>
+										<ListItem sx={{ mt: 0.5 }}>
+											<ListItemButton component={Link} to={EDIT_PROFILE}>
+												Удалить профиль
+											</ListItemButton>
+										</ListItem>
+									</List>
+								</Toggler>
+							</ListItem>
+						</>
+					)}
 				</List>
 			</Box>
 			<Divider />

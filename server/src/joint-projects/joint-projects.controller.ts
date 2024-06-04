@@ -41,7 +41,7 @@ export class JointProjectsController {
       new ParseFilePipe({
         validators: [
           new FileTypeValidator({
-            fileType: 'audio/mpeg' || 'audio/wav' || 'audio/ogg',
+            fileType: 'audio/mpeg' || 'audio/wav' || 'audio/ogg' || 'audio/mp3',
           }),
         ],
       }),

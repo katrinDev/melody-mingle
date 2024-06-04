@@ -8,7 +8,10 @@ export type ISongChunk = {
 	updatedAt: Date;
 };
 
-export type AddChunkDto = Omit<
-	ISongChunk,
-	'createdAt' | 'updatedAt' | 'audioUrl'
->;
+export type AddChunkDto = {
+	name: string;
+	description: string;
+	audio: File;
+};
+
+export type SimpleAddChunkDto = Omit<AddChunkDto, 'audio'>;

@@ -15,6 +15,7 @@ import { SmartJoint } from '../../models/jointProject/IJointProject';
 import { useContext, useEffect, useState } from 'react';
 import { Context } from '../../main';
 import AudioButtons from '../../components/audio/AudioButtons';
+import AddSongChunkModal from './AddSongChunkModal';
 type SongChunksInterfaceProps = {
 	jointProject: SmartJoint;
 };
@@ -29,6 +30,7 @@ function dateFormatWithTime(date: Date): string {
 function SongChunksInterface({ jointProject }: SongChunksInterfaceProps) {
 	const [songChunks, setSongChunks] = useState(jointProject.songChunks);
 	const { musicianStore, profileStore } = useContext(Context);
+	const [isAddChunkOpen, setIsAddChunkModal] = useState<boolean>(false);
 
 	useEffect(() => {
 		setSongChunks(jointProject.songChunks);
@@ -109,10 +111,16 @@ function SongChunksInterface({ jointProject }: SongChunksInterfaceProps) {
 					variant="plain"
 					endDecorator={<KeyboardArrowRightRoundedIcon fontSize="small" />}
 					sx={{ px: 1, mt: 1 }}
+					onClick={() => setIsAddChunkModal(true)}
 				>
 					Добавить
 				</Button>
 			</Sheet>
+			<AddSongChunkModal
+				jointProjectId={jointProject.id}
+				isOpen={isAddChunkOpen}
+				setIsOpen={setIsAddChunkModal}
+			/>
 		</List>
 	);
 }
