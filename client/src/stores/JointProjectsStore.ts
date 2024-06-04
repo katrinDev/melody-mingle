@@ -73,13 +73,17 @@ export default class JointProjectsStore {
 
 	async createSongChunk(
 		snackbarStore: SnackbarPropsStore,
-		audio: File,
-		addChunkDto: AddChunkDto
+		jointProjectId: number,
+		addChunkDto: AddChunkDto,
+		myId: number
 	) {
 		try {
+			const { audio, ...songChunkDto } = addChunkDto;
 			const { data } = await JointProjectsService.addSongChunk(
 				audio,
-				addChunkDto
+				jointProjectId,
+				songChunkDto,
+				myId
 			);
 			this.addSongChunk(data);
 			snackbarStore.changeAll(true, 'success', 'Проект успешно дополнен');

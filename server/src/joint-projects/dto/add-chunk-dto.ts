@@ -1,9 +1,9 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class AddChunkDto {
-  @IsNumber()
+  @IsString()
   @IsNotEmpty({ message: 'Must not be empty' })
-  readonly creatorId: number;
+  readonly creatorId: string;
 
   @IsString()
   @IsNotEmpty({ message: 'Must not be empty' })

@@ -1,109 +1,118 @@
-import { makeAutoObservable } from "mobx";
-import { AuthRequest } from "../models/request/AuthRequest";
-import AuthService from "../services/AuthService";
-import { jwtDecode } from "jwt-decode";
-import { IUser } from "../models/IUser";
-import SnackbarPropsStore from "./SnackbarPropsStore";
-import axios, { AxiosError } from "axios";
-import { AuthResponse } from "../models/response/AuthResponse";
-import { API_URL } from "../http/axiosSetUp";
+import { makeAutoObservable } from 'mobx';
+import { AuthRequest } from '../models/request/AuthRequest';
+import AuthService from '../services/AuthService';
+import { jwtDecode } from 'jwt-decode';
+import { IUser } from '../models/IUser';
+import SnackbarPropsStore from './SnackbarPropsStore';
+import axios, { AxiosError } from 'axios';
+import { AuthResponse } from '../models/response/AuthResponse';
+import { API_URL } from '../http/axiosSetUp';
+import { RolesEnum } from '../models/RolesEnum';
 
 export default class UserStore {
-  user = {} as IUser;
-  isAuth = false;
+	user = {} as IUser;
+	isAuth = false;
+	isAdmin = false;
 
-  constructor() {
-    makeAutoObservable(this);
-  }
+	constructor() {
+		makeAutoObservable(this);
+	}
 
-  setAuth(bool: boolean) {
-    this.isAuth = bool;
-  }
+	setAuth(bool: boolean) {
+		this.isAuth = bool;
+	}
 
-  setUser(user: IUser) {
-    this.user = user;
-  }
+	setUser(user: IUser) {
+		this.user = user;
+	}
 
-  async login(requestData: AuthRequest, snackbarStore: SnackbarPropsStore) {
-    try {
-      const { data } = await AuthService.login(requestData);
+	setIsAdmin(bool: boolean) {
+		this.isAdmin = bool;
+	}
 
-      localStorage.setItem("accessToken", data.accessToken);
-      this.setAuth(true);
+	async login(requestData: AuthRequest, snackbarStore: SnackbarPropsStore) {
+		try {
+			const { data } = await AuthService.login(requestData);
 
-      const userData: IUser = jwtDecode(data.accessToken);
-      this.setUser(userData);
+			localStorage.setItem('accessToken', data.accessToken);
+			this.setAuth(true);
 
-      snackbarStore.changeAll(true, "success", "Добро пожаловать!");
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        const serverMessage = error.response?.data.message;
+			const userData: IUser = jwtDecode(data.accessToken);
+			this.setUser(userData);
 
-        snackbarStore.changeAll(true, "danger", `${serverMessage}`);
-      }
-    }
-  }
+			if (userData.roles.includes(RolesEnum.ADMIN)) {
+				this.setIsAdmin(true);
+			}
+			snackbarStore.changeAll(true, 'success', 'Добро пожаловать!');
+		} catch (error) {
+			if (error instanceof AxiosError) {
+				const serverMessage = error.response?.data.message;
 
-  async registation(
-    requestData: AuthRequest,
-    snackbarStore: SnackbarPropsStore
-  ) {
-    try {
-      const { data } = await AuthService.registration(requestData);
+				snackbarStore.changeAll(true, 'danger', `${serverMessage}`);
+			}
+		}
+	}
 
-      localStorage.setItem("accessToken", data.accessToken);
-      this.setAuth(true);
+	async registation(
+		requestData: AuthRequest,
+		snackbarStore: SnackbarPropsStore
+	) {
+		try {
+			const { data } = await AuthService.registration(requestData);
 
-      const userData: IUser = jwtDecode(data.accessToken);
-      this.setUser(userData);
+			localStorage.setItem('accessToken', data.accessToken);
+			this.setAuth(true);
 
-      snackbarStore.changeAll(true, "success", "Регистрация прошла успешно");
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        const serverMessage = error.response?.data.message;
+			const userData: IUser = jwtDecode(data.accessToken);
+			this.setUser(userData);
 
-        snackbarStore.changeAll(true, "danger", `${serverMessage}`);
-      }
-    }
-  }
+			snackbarStore.changeAll(true, 'success', 'Регистрация прошла успешно');
+		} catch (error) {
+			if (error instanceof AxiosError) {
+				const serverMessage = error.response?.data.message;
 
-  async logout(snackbarStore: SnackbarPropsStore) {
-    try {
-      await AuthService.logout();
-      localStorage.removeItem("accessToken");
+				snackbarStore.changeAll(true, 'danger', `${serverMessage}`);
+			}
+		}
+	}
 
-      this.setAuth(false);
+	async logout(snackbarStore: SnackbarPropsStore) {
+		try {
+			await AuthService.logout();
+			localStorage.removeItem('accessToken');
 
-      this.setUser({} as IUser);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        const serverMessage = error.response?.data.message;
+			this.setAuth(false);
 
-        snackbarStore.changeAll(true, "danger", `${serverMessage}`);
-      }
-    }
-  }
+			this.setUser({} as IUser);
+		} catch (error) {
+			if (error instanceof AxiosError) {
+				const serverMessage = error.response?.data.message;
 
-  async refresh(snackbarStore: SnackbarPropsStore) {
-    try {
-      const { data } = await axios.get<AuthResponse>(
-        `${API_URL}/auth/refresh`,
-        {
-          withCredentials: true,
-        }
-      );
+				snackbarStore.changeAll(true, 'danger', `${serverMessage}`);
+			}
+		}
+	}
 
-      localStorage.setItem("accessToken", data.accessToken);
-      this.setAuth(true);
+	async refresh(snackbarStore: SnackbarPropsStore) {
+		try {
+			const { data } = await axios.get<AuthResponse>(
+				`${API_URL}/auth/refresh`,
+				{
+					withCredentials: true,
+				}
+			);
 
-      const userData: IUser = jwtDecode(data.accessToken);
-      this.setUser(userData);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        const serverMessage = error.response?.data.message;
+			localStorage.setItem('accessToken', data.accessToken);
+			this.setAuth(true);
 
-        snackbarStore.changeAll(true, "danger", `${serverMessage}`);
-      }
-    }
-  }
+			const userData: IUser = jwtDecode(data.accessToken);
+			this.setUser(userData);
+		} catch (error) {
+			if (error instanceof AxiosError) {
+				const serverMessage = error.response?.data.message;
+
+				snackbarStore.changeAll(true, 'danger', `${serverMessage}`);
+			}
+		}
+	}
 }

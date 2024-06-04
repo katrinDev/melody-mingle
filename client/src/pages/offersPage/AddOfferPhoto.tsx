@@ -30,7 +30,7 @@ function AddOfferPhoto({ newOffer, setNewOffer, control }: AddOfferPhotoProps) {
 	const validateFileSize = (file: File | undefined) => {
 		if (file) {
 			if (file.size > MAX_SIZE) {
-				return 'File size exceeds the limit (3MB)';
+				return 'Размер файла превышает лимит (3MB)';
 			}
 			return true;
 		}

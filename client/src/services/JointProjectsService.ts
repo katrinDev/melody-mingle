@@ -3,7 +3,10 @@ import $api from '../http/axiosSetUp';
 import { IJointProject } from '../models/jointProject/IJointProject';
 import { CreateJointDto } from '../models/jointProject/dto/CreateJointDto';
 import { CreateJointResponse } from '../models/response/CreateJointResponse';
-import { AddChunkDto, ISongChunk } from '../models/jointProject/ISongChunk';
+import {
+	ISongChunk,
+	SimpleAddChunkDto,
+} from '../models/jointProject/ISongChunk';
 
 export default class JointProjectsService {
 	static async getAllJointsForMusician(): Promise<
@@ -20,10 +23,14 @@ export default class JointProjectsService {
 
 	static async addSongChunk(
 		audio: File,
-		addChunkDto: AddChunkDto
+		jointProjectId: number,
+		addChunkDto: SimpleAddChunkDto,
+		creatorId: number
 	): Promise<AxiosResponse<ISongChunk>> {
 		const formData = new FormData();
 		formData.append('audio', audio);
+
+		formData.append('creatorId', creatorId.toString());
 
 		for (let [key, value] of Object.entries(addChunkDto)) {
 			formData.append(key, value.toString());
@@ -36,7 +43,7 @@ export default class JointProjectsService {
 		};
 
 		return $api.post<ISongChunk>(
-			`joint-projects/${addChunkDto.jointProjectId}`,
+			`joint-projects/${jointProjectId}`,
 			formData,
 			config
 		);

@@ -9,6 +9,7 @@ const MUSICIAN_PROFILE = '/musicians/:id';
 const CHATS = '/chats';
 const MY_OFFERS = '/my-offers';
 const JOINT_PROJECTS = '/joint-projects';
+const USERS_MANAGEMENT = '/users-management';
 
 export {
 	ABOUT,
@@ -22,4 +23,5 @@ export {
 	CHATS,
 	MY_OFFERS,
 	JOINT_PROJECTS,
+	USERS_MANAGEMENT,
 };
