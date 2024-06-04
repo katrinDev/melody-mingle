@@ -6,6 +6,8 @@ export type IJointProject = {
 	description: string;
 	musicians: IJointMusician[];
 	songChunks: ISongChunk[];
+	createdAt: Date;
+	updatedAt: Date;
 };
 
 export type IJointMusician = {
@@ -18,6 +20,6 @@ export type IJointMusician = {
 	};
 };
 
-export type SmartJoints = Omit<IJointProject, 'musicians'> & {
+export type SmartJoint = Omit<IJointProject, 'musicians'> & {
 	companion: IJointMusician;
 };

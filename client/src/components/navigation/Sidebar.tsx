@@ -34,6 +34,7 @@ import {
 	MY_PROFILE,
 	MY_OFFERS,
 	CHATS,
+	JOINT_PROJECTS,
 } from '../../router/paths';
 import { Context } from '../../main';
 import { observer } from 'mobx-react-lite';
@@ -136,6 +137,7 @@ const Sidebar: React.FC = observer(() => {
 					left: 0,
 					width: '100vw',
 					height: '100vh',
+					JOINT_PROJECTS,
 					opacity: 'var(--SideNavigation-slideIn)',
 					backgroundColor: 'var(--joy-palette-background-backdrop)',
 					transition: 'opacity 0.4s',
@@ -243,7 +245,7 @@ const Sidebar: React.FC = observer(() => {
 					</ListItem>
 
 					<ListItem>
-						<ListItemButton component={Link} to={MY_PROFILE}>
+						<ListItemButton component={Link} to={JOINT_PROJECTS}>
 							<PianoRoundedIcon />
 							<ListItemContent>
 								<Typography level="title-sm">Творчество</Typography>

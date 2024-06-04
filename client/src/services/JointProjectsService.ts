@@ -6,14 +6,16 @@ import { CreateJointResponse } from '../models/response/CreateJointResponse';
 import { AddChunkDto, ISongChunk } from '../models/jointProject/ISongChunk';
 
 export default class JointProjectsService {
-	static async getAllChatsForUser(): Promise<AxiosResponse<IJointProject[]>> {
-		return $api.get<IJointProject[]>(`joint-project/by-musician`);
+	static async getAllJointsForMusician(): Promise<
+		AxiosResponse<IJointProject[]>
+	> {
+		return $api.get<IJointProject[]>(`joint-projects/by-musician`);
 	}
 
 	static async createJoint(
 		createJointDto: CreateJointDto
 	): Promise<AxiosResponse<CreateJointResponse>> {
-		return $api.post<CreateJointResponse>(`joint-project`, createJointDto);
+		return $api.post<CreateJointResponse>(`joint-projects`, createJointDto);
 	}
 
 	static async addSongChunk(
@@ -34,7 +36,7 @@ export default class JointProjectsService {
 		};
 
 		return $api.post<ISongChunk>(
-			`joint-project/${addChunkDto.jointProjectId}`,
+			`joint-projects/${addChunkDto.jointProjectId}`,
 			formData,
 			config
 		);

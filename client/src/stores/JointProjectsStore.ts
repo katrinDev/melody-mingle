@@ -4,13 +4,13 @@ import { makeAutoObservable } from 'mobx';
 import {
 	IJointMusician,
 	IJointProject,
-	SmartJoints,
+	SmartJoint,
 } from '../models/jointProject/IJointProject';
 import JointProjectsService from '../services/JointProjectsService';
 import { AddChunkDto, ISongChunk } from '../models/jointProject/ISongChunk';
 
 export default class JointProjectsStore {
-	joints = [] as SmartJoints[];
+	joints = [] as SmartJoint[];
 	jointsCount = 0;
 
 	constructor() {
@@ -46,7 +46,7 @@ export default class JointProjectsStore {
 
 	async fetchJointsForUser(snackbarStore: SnackbarPropsStore, myId: number) {
 		try {
-			const { data } = await JointProjectsService.getAllChatsForUser();
+			const { data } = await JointProjectsService.getAllJointsForMusician();
 			this.setSmartJoints(data, myId);
 		} catch (error) {
 			if (error instanceof AxiosError) {

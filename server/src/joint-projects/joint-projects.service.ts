@@ -13,6 +13,7 @@ import { SongChunk } from 'src/song-chunks/song-chunks.model';
 import { CreateJointProjectDto } from './dto/create-joint-dto';
 import { AddChunkDto } from './dto/add-chunk-dto';
 import { AwsService } from 'src/aws/aws.service';
+import { updateLocale } from 'moment';
 
 export interface JointsMusicianInfo {
   id: number;
@@ -121,6 +122,8 @@ export class JointProjectsService {
         id: joint.id,
         headline: joint.headline,
         description: joint.description,
+        createdAt: joint.createdAt,
+        updatedAt: joint.updatedAt,
         musicians: musiciansId,
         songChunks: joint.songChunks,
       };
@@ -150,6 +153,8 @@ export class JointProjectsService {
             id: joint.id,
             headline: joint.headline,
             description: joint.description,
+            createdAt: joint.createdAt,
+            updatedAt: joint.updatedAt,
             musicians: jointsMusicianInfo,
             songChunks: jointsChunksWithUrl,
           };
@@ -159,6 +164,8 @@ export class JointProjectsService {
           id: joint.id,
           headline: joint.headline,
           description: joint.description,
+          createdAt: joint.createdAt,
+          updatedAt: joint.updatedAt,
           musicians: jointsMusicianInfo,
         };
       }),
