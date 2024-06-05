@@ -14,7 +14,7 @@ export interface ChatsUserInfo {
   userId: number;
   name: string;
   mainRole: string;
-  avatarUrl: string;
+  avatarUrl?: string;
 }
 
 @Injectable()

@@ -1,4 +1,5 @@
 import Avatar from '@mui/joy/Avatar';
+import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import Button from '@mui/joy/Button';
 import Chip from '@mui/joy/Chip';
 import IconButton from '@mui/joy/IconButton';
@@ -40,7 +41,19 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
 				>
 					<ArrowBackIosNewRoundedIcon />
 				</IconButton>
-				<Avatar size="lg" src={sender.avatarUrl} />
+
+				{sender.avatarUrl ? (
+					<Avatar size="lg" src={sender.avatarUrl} />
+				) : (
+					<IconButton
+						variant="soft"
+						color="primary"
+						size="lg"
+						sx={{ borderRadius: '100%' }}
+					>
+						<LibraryMusicRoundedIcon />
+					</IconButton>
+				)}
 
 				<div>
 					<Typography
@@ -76,16 +89,18 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
 				</div>
 			</Stack>
 			<Stack spacing={1} direction="row" alignItems="center">
-				<Button
-					color="neutral"
-					variant="outlined"
-					size="sm"
-					sx={{
-						display: { xs: 'none', md: 'inline-flex' },
-					}}
-				>
-					Посмотреть профиль
-				</Button>
+				{sender.avatarUrl && (
+					<Button
+						color="neutral"
+						variant="outlined"
+						size="sm"
+						sx={{
+							display: { xs: 'none', md: 'inline-flex' },
+						}}
+					>
+						Посмотреть профиль
+					</Button>
+				)}
 				<IconButton size="sm" variant="plain" color="neutral">
 					<MoreVertRoundedIcon />
 				</IconButton>

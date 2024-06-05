@@ -18,7 +18,7 @@ type ChatBubbleProps = IMessage & {
 	variant: 'sent' | 'received';
 };
 
-const dateLookBetter = (date: Date): string => {
+export const dateLookBetter = (date: Date): string => {
 	date = new Date(date);
 	const HOUR = 3600000;
 	const SECOND = 1000;

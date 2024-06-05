@@ -69,9 +69,6 @@ export class JointProjectsService {
     jointProjectId: number,
   ) {
     try {
-      console.log(JSON.stringify(addChunkDto));
-      console.log('!!!!!!');
-      console.log(jointProjectId);
       const jointProject = await this.findById(jointProjectId);
 
       const uploadResult = await this.awsService.uploadPublicFile(

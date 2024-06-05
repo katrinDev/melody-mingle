@@ -26,7 +26,7 @@ export default class JointProjectsStore {
 			joint => joint.id === songChunk.jointProjectId
 		)!;
 
-		joint.songChunks.push(songChunk);
+		joint.songChunks.unshift(songChunk);
 	}
 
 	private setSmartJoints(allInfoJoints: IJointProject[], myId: number) {

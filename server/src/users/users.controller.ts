@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Req,
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
@@ -16,9 +17,11 @@ import { ValidationPipe } from '../pipes/validation.pipe';
 import { Roles } from '../guards/decorators/roles.decorator';
 import { RolesGuard } from '../guards/roles.guard';
 import { AddRoleDto } from './dto/add-role.dto';
+import RequestWithUser from 'src/auth/IRequestWithUser';
+import { ChangePasswDto } from './dto/change-passw.dto';
+import { Public } from 'src/guards/decorators/public.decorator';
 
 @ApiTags('Пользователи')
-@Roles('ADMIN')
 @UseGuards(RolesGuard)
 @Controller('users')
 export class UsersController {
@@ -29,6 +32,12 @@ export class UsersController {
   @Get()
   async findAll(): Promise<User[]> {
     return this.usersService.findAll();
+  }
+
+  @Public()
+  @Get('not-admins')
+  async findNotAdmins() {
+    return this.usersService.findNotAdmins();
   }
 
   @ApiOperation({ summary: 'Получение 1 пользователя' })
@@ -59,5 +68,16 @@ export class UsersController {
   @Post('/role')
   async addRole(@Body() addRoleDto: AddRoleDto) {
     return this.usersService.addRole(addRoleDto);
+  }
+
+  @Post('/change-passw')
+  async changePassword(
+    @Body() changePasswDto: ChangePasswDto,
+    @Req() req: RequestWithUser,
+  ) {
+    return this.usersService.changePassword(
+      req.user.id,
+      changePasswDto.password,
+    );
   }
 }

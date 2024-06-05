@@ -39,7 +39,7 @@ function JointListItem({
 					}}
 					selected={selected}
 					color="neutral"
-					sx={{ p: 2 }}
+					sx={{ p: 2, alignItems: 'flex-start' }}
 				>
 					<ListItemDecorator sx={{ alignSelf: 'flex-start' }}>
 						<Avatar alt="Аватар" src={project.companion.avatarUrl} />

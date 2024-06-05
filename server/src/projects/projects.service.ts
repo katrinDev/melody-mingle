@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Project } from './projects.model';
 import { AwsService } from '../aws/aws.service';
+import { AddProjectDto } from './dto/add-project.dto';
 
 export interface GetProjectResponse {
   id: number;
@@ -39,5 +40,39 @@ export class ProjectsService {
     });
 
     return projectsWithUrl;
+  }
+
+  async addProject(
+    addProjectDto: AddProjectDto,
+    fileName: string,
+    project: Buffer,
+    musicianId: number,
+  ): Promise<GetProjectResponse> {
+    try {
+      const uploadResult = await this.awsService.uploadPublicFile(
+        project,
+        fileName,
+      );
+
+      const newProject = await this.projectRepository.create({
+        ...addProjectDto,
+        musicianId,
+        projectKey: uploadResult.Key,
+      });
+
+      const projectPlain = newProject.get({ plain: true });
+      delete projectPlain.projectKey;
+
+      return {
+        ...projectPlain,
+        projectUrl: uploadResult.Location,
+      };
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        'Не удалось добавить проект',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

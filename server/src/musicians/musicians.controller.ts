@@ -44,7 +44,7 @@ export class MusiciansController {
   @ApiResponse({ status: 200, type: Musician })
   @Get('/by-user')
   async findByUserId(@Req() request: RequestWithUser) {
-    return this.musiciansService.findByUserId(request.user.id);
+    return this.musiciansService.findByUserId(request.user.id, true);
   }
 
   @ApiOperation({ summary: 'Создание музыканта' })

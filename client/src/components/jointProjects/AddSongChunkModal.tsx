@@ -173,7 +173,7 @@ function AddSongChunkModal({
 							<FormLabel>Название</FormLabel>
 							<Input
 								size="sm"
-								placeholder="Вокал куплет"
+								placeholder="Вокал бридж"
 								{...register('name', {
 									validate: value =>
 										(value.length >= 2 && value.length <= 30) ||

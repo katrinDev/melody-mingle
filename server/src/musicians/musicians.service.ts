@@ -38,8 +38,24 @@ export class MusiciansService {
     private awsService: AwsService,
   ) {}
 
-  async findAll() {
-    return this.musicianRepository.findAll();
+  async findAll(): Promise<GetMusicianResponse[]> {
+    const musicians = await this.musicianRepository.findAll({
+      attributes: {
+        exclude: ['userId'],
+      },
+      include: [
+        {
+          model: User,
+          attributes: ['email'],
+        },
+        {
+          model: ProfileInfo,
+          attributes: ['avatarKey'],
+        },
+      ],
+    });
+
+    return this.getMusiciansWithUrl(musicians);
   }
 
   async findAllTheOthers(musicianId: number): Promise<GetMusicianResponse[]> {
@@ -85,7 +101,7 @@ export class MusiciansService {
     return musiciansWithUrl;
   }
 
-  async findByUserId(userId: number): Promise<Musician> {
+  async findByUserId(userId: number, check: boolean): Promise<Musician> {
     const musician = await this.musicianRepository.findOne({
       where: { userId },
       attributes: {
@@ -93,15 +109,30 @@ export class MusiciansService {
       },
     });
 
-    if (!musician) {
+    if (check && !musician) {
       throw new NotFoundException('Музыкант не был найден');
     }
     return musician;
   }
 
+  private async filterAsync<T>(
+    array: T[],
+    callback: (value: T) => Promise<boolean>,
+  ): Promise<T[]> {
+    const results = await Promise.all(array.map(callback));
+    return array.filter((_, index) => results[index]);
+  }
+
   async findChatsFormat(usersId: number[]): Promise<ChatsUserInfo[]> {
-    const musicians = await this.musicianRepository.findAll({
-      where: { userId: { [Op.in]: usersId } },
+    const adminsIdArr = await this.filterAsync(usersId, async (id) => {
+      const user = await this.usersService.findById(id);
+      return user.roles.some((role) => role.value === 'ADMIN');
+    });
+
+    const userRoleIdsArr = usersId.filter((id) => !adminsIdArr.includes(id));
+
+    const userRoleMusicians = await this.musicianRepository.findAll({
+      where: { userId: { [Op.in]: userRoleIdsArr } },
       attributes: {
         exclude: [
           'createdAt',
@@ -122,7 +153,17 @@ export class MusiciansService {
       ],
     });
 
-    return this.getMusiciansWithUrl(musicians);
+    const musiciansWithUrl = this.getMusiciansWithUrl(userRoleMusicians);
+
+    const adminRoleInfo = adminsIdArr.map((id) => {
+      return {
+        userId: id,
+        mainRole: 'Admin',
+        name: 'Melody Mingle',
+      };
+    });
+
+    return [...musiciansWithUrl, ...adminRoleInfo];
   }
 
   async getJointProjectsFormat(
@@ -176,7 +217,7 @@ export class MusiciansService {
       throw new BadRequestException('Некорректный ID пользователя');
     }
 
-    const existingMusician = await this.findByUserId(userId);
+    const existingMusician = await this.findByUserId(userId, false);
 
     if (existingMusician) {
       throw new BadRequestException(

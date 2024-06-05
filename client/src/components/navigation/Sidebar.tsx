@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
@@ -26,6 +26,7 @@ import PianoRoundedIcon from '@mui/icons-material/PianoRounded';
 import LyricsRoundedIcon from '@mui/icons-material/LyricsRounded';
 import { closeSidebar } from './toggleSidebar';
 import ColorSchemeProfileToggle from '../mainLayout/ColorSchemeProfileToggle';
+import GroupAddRoundedIcon from '@mui/icons-material/GroupAddRounded';
 import {
 	ABOUT,
 	EDIT_PROFILE,
@@ -40,6 +41,7 @@ import {
 import { Context } from '../../main';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
+import DeleteProfileModal from '../../pages/profile/DeleteProfileModal';
 
 function Toggler({
 	defaultExpanded = false,
@@ -84,14 +86,18 @@ const Sidebar: React.FC = observer(() => {
 	} = useContext(Context);
 
 	const { avatarUrl } = profileStore.profileInfo;
+	const [isDeleteProfileOpen, setIsDeleteProfileOpen] =
+		useState<boolean>(false);
 
 	const onLogoutClick = async () => {
 		await userStore.logout(snackbarStore);
 	};
 
 	useEffect(() => {
-		musicianStore.fetchMusicianByUser(snackbarStore);
-		profileStore.fetchProfileData(snackbarStore);
+		if (!userStore.isAdmin) {
+			musicianStore.fetchMusicianByUser(snackbarStore);
+			profileStore.fetchProfileData(snackbarStore);
+		}
 		offersStore.fetchOffersCount(snackbarStore);
 		chatsStore.fetchChatsCount(snackbarStore);
 	}, []);
@@ -156,11 +162,6 @@ const Sidebar: React.FC = observer(() => {
 				<Typography level="title-md">Melody Mingle</Typography>
 				<ColorSchemeProfileToggle sx={{ ml: 'auto' }} />
 			</Box>
-			<Input
-				size="sm"
-				startDecorator={<SearchRoundedIcon />}
-				placeholder="Search"
-			/>
 			<Box
 				sx={{
 					minHeight: 0,
@@ -249,7 +250,7 @@ const Sidebar: React.FC = observer(() => {
 					{userStore.isAdmin && (
 						<ListItem>
 							<ListItemButton component={Link} to={USERS_MANAGEMENT}>
-								<LyricsRoundedIcon />
+								<GroupAddRoundedIcon />
 								<ListItemContent>
 									<Typography level="title-sm">
 										Управление пользователями
@@ -298,7 +299,11 @@ const Sidebar: React.FC = observer(() => {
 											</ListItemButton>
 										</ListItem>
 										<ListItem sx={{ mt: 0.5 }}>
-											<ListItemButton component={Link} to={EDIT_PROFILE}>
+											<ListItemButton
+												onClick={() => {
+													setIsDeleteProfileOpen(true);
+												}}
+											>
 												Удалить профиль
 											</ListItemButton>
 										</ListItem>
@@ -311,10 +316,20 @@ const Sidebar: React.FC = observer(() => {
 			</Box>
 			<Divider />
 			<Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+				{userStore.isAdmin && (
+					<IconButton
+						variant="soft"
+						color="primary"
+						size="sm"
+						sx={{ borderRadius: '100%' }}
+					>
+						<LibraryMusicRoundedIcon />
+					</IconButton>
+				)}
 				{avatarUrl && <Avatar variant="outlined" size="lg" src={avatarUrl} />}
 				<Box sx={{ minWidth: 0, flex: 1 }}>
 					<Typography level="title-md">
-						{musicianStore.musician.name}
+						{userStore.isAdmin ? 'Melody Mingle' : musicianStore.musician.name}
 					</Typography>
 					<Typography level="body-sm">{userStore.user.email}</Typography>
 				</Box>
@@ -322,6 +337,11 @@ const Sidebar: React.FC = observer(() => {
 					<LogoutRoundedIcon onClick={onLogoutClick} />
 				</IconButton>
 			</Box>
+
+			<DeleteProfileModal
+				isOpen={isDeleteProfileOpen}
+				setIsOpen={setIsDeleteProfileOpen}
+			/>
 		</Sheet>
 	);
 });

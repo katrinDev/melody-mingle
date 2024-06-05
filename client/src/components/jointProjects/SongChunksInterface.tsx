@@ -20,11 +20,15 @@ type SongChunksInterfaceProps = {
 	jointProject: SmartJoint;
 };
 
-function dateFormatWithTime(date: Date): string {
+export function dateFormatWithTime(date: Date): string {
 	date = new Date(date);
 	const month = date.getMonth() + 1;
 	const monthString: string = month < 10 ? `0${month}` : `${month}`;
-	return `${date.getDate()}.${monthString} ${date.getHours()}:${date.getMinutes()}`;
+
+	const minutes = date.getMinutes();
+	const minutesString = minutes < 10 ? `0${minutes}` : `${minutes}`;
+
+	return `${date.getDate()}.${monthString} ${date.getHours()}:${minutesString}`;
 }
 
 function SongChunksInterface({ jointProject }: SongChunksInterfaceProps) {
@@ -54,57 +58,60 @@ function SongChunksInterface({ jointProject }: SongChunksInterfaceProps) {
 				}}
 			>
 				<List sx={{ '--ListItemDecorator-size': '30px', gap: 2 }}>
-					{songChunks.map((songChunk, index) => (
-						<ListItem
-							key={index}
-							sx={{
-								alignItems: 'center',
-								justifyContent: 'space-between',
-							}}
-						>
-							<Box sx={{ display: 'flex', minWidth: '300px' }}>
-								<ListItemDecorator
-									sx={{
-										'&::before': {
-											content: '""',
-											position: 'absolute',
-											height: '100%',
-											width: '1px',
-											bgcolor: 'divider',
-											left: 'calc(var(--ListItem-paddingLeft) + 18px)',
-											top: '50%',
-										},
-
-										mr: '20px',
-									}}
-								>
-									<Avatar
-										variant="outlined"
-										src={
-											songChunk.creatorId === musicianStore.musician.id
-												? profileStore.profileInfo.avatarUrl!
-												: jointProject.companion.avatarUrl!
-										}
+					{songChunks
+						.slice()
+						.reverse()
+						.map((songChunk, index) => (
+							<ListItem
+								key={index}
+								sx={{
+									alignItems: 'center',
+									justifyContent: 'space-between',
+								}}
+							>
+								<Box sx={{ display: 'flex', minWidth: '300px' }}>
+									<ListItemDecorator
 										sx={{
-											borderRadius: '50%',
-											'--Avatar-size': '35px',
-										}}
-									/>
-								</ListItemDecorator>
+											'&::before': {
+												content: '""',
+												position: 'absolute',
+												height: '100%',
+												width: '1px',
+												bgcolor: 'divider',
+												left: 'calc(var(--ListItem-paddingLeft) + 18px)',
+												top: '50%',
+											},
 
-								<ListItemContent sx={{ textAlign: 'left' }}>
-									<Typography level="title-sm">{songChunk.name}</Typography>
-									<Typography level="body-xs">
-										{songChunk.description}
-									</Typography>
-								</ListItemContent>
-							</Box>
-							<AudioButtons audioUrl={songChunk.audioUrl} />
-							<Typography level="body-xs">
-								{dateFormatWithTime(songChunk.createdAt)}
-							</Typography>
-						</ListItem>
-					))}
+											mr: '20px',
+										}}
+									>
+										<Avatar
+											variant="outlined"
+											src={
+												songChunk.creatorId === musicianStore.musician.id
+													? profileStore.profileInfo.avatarUrl!
+													: jointProject.companion.avatarUrl!
+											}
+											sx={{
+												borderRadius: '50%',
+												'--Avatar-size': '35px',
+											}}
+										/>
+									</ListItemDecorator>
+
+									<ListItemContent sx={{ textAlign: 'left' }}>
+										<Typography level="title-sm">{songChunk.name}</Typography>
+										<Typography level="body-xs">
+											{songChunk.description}
+										</Typography>
+									</ListItemContent>
+								</Box>
+								<AudioButtons audioUrl={songChunk.audioUrl} />
+								<Typography level="body-xs">
+									{dateFormatWithTime(songChunk.createdAt)}
+								</Typography>
+							</ListItem>
+						))}
 				</List>
 				<Button
 					size="sm"

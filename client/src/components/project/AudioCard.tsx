@@ -10,7 +10,7 @@ function AudioCard({ project }: { project: IProject }) {
 				<Stack
 					direction="row"
 					spacing={1}
-					justifyContent="center"
+					justifyContent="space-between"
 					alignItems="center"
 				>
 					<Stack direction="column" minWidth="200px">

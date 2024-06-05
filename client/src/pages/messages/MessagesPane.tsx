@@ -1,4 +1,5 @@
 import * as React from 'react';
+import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import Box from '@mui/joy/Box';
 import Sheet from '@mui/joy/Sheet';
 import Stack from '@mui/joy/Stack';
@@ -10,6 +11,7 @@ import { SmartChat } from '../../models/chat/IChat';
 import { observer } from 'mobx-react-lite';
 import { IMessage } from '../../models/chat/IMessage';
 import { Context } from '../../main';
+import { IconButton } from '@mui/joy';
 
 type MessagesPaneProps = {
 	chat: SmartChat;
@@ -52,6 +54,7 @@ function MessagesPane(props: MessagesPaneProps) {
 						.reverse()
 						.map((message: IMessage, index: number) => {
 							const isYou = message.senderId === userStore.user.id;
+
 							return (
 								<Stack
 									key={index}
@@ -59,11 +62,24 @@ function MessagesPane(props: MessagesPaneProps) {
 									spacing={2}
 									flexDirection={isYou ? 'row-reverse' : 'row'}
 								>
-									{message.senderId !== userStore.user.id && (
-										<AvatarWithStatus
-											online={chat.sender.online}
-											src={chat.sender.avatarUrl}
-										/>
+									{message.senderId !== userStore.user.id ? (
+										chat.sender.avatarUrl ? (
+											<AvatarWithStatus
+												online={chat.sender.online}
+												src={chat.sender.avatarUrl}
+											/>
+										) : (
+											<IconButton
+												variant="soft"
+												color="primary"
+												size="sm"
+												sx={{ borderRadius: '100%', height: '32px' }}
+											>
+												<LibraryMusicRoundedIcon />
+											</IconButton>
+										)
+									) : (
+										<></>
 									)}
 									<ChatBubble
 										variant={isYou ? 'sent' : 'received'}

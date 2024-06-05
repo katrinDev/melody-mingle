@@ -8,11 +8,14 @@ import axios, { AxiosError } from 'axios';
 import { AuthResponse } from '../models/response/AuthResponse';
 import { API_URL } from '../http/axiosSetUp';
 import { RolesEnum } from '../models/RolesEnum';
+import { IManagedUser } from '../models/manageUsers/IManagedUser';
+import UsersService from '../services/UsersService';
 
 export default class UserStore {
 	user = {} as IUser;
 	isAuth = false;
 	isAdmin = false;
+	notAdminUsers = [] as IManagedUser[];
 
 	constructor() {
 		makeAutoObservable(this);
@@ -24,10 +27,17 @@ export default class UserStore {
 
 	setUser(user: IUser) {
 		this.user = user;
+		if (user.roles.includes(RolesEnum.ADMIN)) {
+			this.setIsAdmin(true);
+		}
 	}
 
 	setIsAdmin(bool: boolean) {
 		this.isAdmin = bool;
+	}
+
+	setAllUsers(users: IManagedUser[]) {
+		this.notAdminUsers = users;
 	}
 
 	async login(requestData: AuthRequest, snackbarStore: SnackbarPropsStore) {
@@ -40,9 +50,6 @@ export default class UserStore {
 			const userData: IUser = jwtDecode(data.accessToken);
 			this.setUser(userData);
 
-			if (userData.roles.includes(RolesEnum.ADMIN)) {
-				this.setIsAdmin(true);
-			}
 			snackbarStore.changeAll(true, 'success', 'Добро пожаловать!');
 		} catch (error) {
 			if (error instanceof AxiosError) {
@@ -107,6 +114,19 @@ export default class UserStore {
 
 			const userData: IUser = jwtDecode(data.accessToken);
 			this.setUser(userData);
+		} catch (error) {
+			if (error instanceof AxiosError) {
+				const serverMessage = error.response?.data.message;
+
+				snackbarStore.changeAll(true, 'danger', `${serverMessage}`);
+			}
+		}
+	}
+
+	async getAllUsers(snackbarStore: SnackbarPropsStore) {
+		try {
+			const { data } = await UsersService.getAllUsers();
+			this.setAllUsers(data);
 		} catch (error) {
 			if (error instanceof AxiosError) {
 				const serverMessage = error.response?.data.message;

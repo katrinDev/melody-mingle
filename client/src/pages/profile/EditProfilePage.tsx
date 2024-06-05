@@ -244,7 +244,7 @@ function EditProfilePage() {
                                 message: "Слишком короткое имя",
                               },
                               maxLength: {
-                                value: 15,
+                                value: 40,
                                 message: "Слишком длинное имя",
                               },
                             })}
